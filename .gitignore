@@ -3,3 +3,4 @@ node_modules/
 market-state.json
 reports/*.xlsx
 reports/*.csv
+.github-token
