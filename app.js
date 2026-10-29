@@ -341,6 +341,7 @@ async function loadChain(mode) {
     chainStates[mode].data = chain;
     chainStates[mode].ce = null;
     chainStates[mode].pe = null;
+    chainStates[mode]._hasScrolledToAtm = false;
 
     const spot = Number(chain.last_price || 0);
     const spotLabel = byId(mode === 'indices' ? 'indicesMarketPrices' : 'stockMarketPrices');
