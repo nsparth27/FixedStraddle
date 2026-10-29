@@ -545,6 +545,11 @@ async function removeWatchlistPair(event) {
   try {
     const res = await fetch(`/api/watchlist/${encodeURIComponent(symbol)}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Could not remove');
+    try {
+      const localSaved = JSON.parse(localStorage.getItem('fixed_straddle_saved_contracts') || '[]');
+      const updated = localSaved.filter(c => c.symbol !== symbol);
+      localStorage.setItem('fixed_straddle_saved_contracts', JSON.stringify(updated));
+    } catch {}
     toast(`Removed ${symbol}`);
     await refreshState();
   } catch (err) {
