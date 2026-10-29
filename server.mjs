@@ -1242,22 +1242,45 @@ async function apiFetch(url, options) {
   return response;
 }
 const optionChainCache = new Map();
+const inFlightOptionChains = new Map();
 // Dhan's Option Chain endpoint expects the IDX_I API identifiers, not the
 // underlying IDs (for example 26000) carried on OPTIDX rows in the scrip master.
 const indexOptionChainIds = { NIFTY:13, BANKNIFTY:25, FINNIFTY:27, MIDCPNIFTY:442 };
-async function getOptionChain(item, expiry) {
-  const task=optionChainQueue.then(async()=>{
-    const wait = Math.max(0, 3000 - (Date.now() - lastOptionChainAt));
-    if (wait) await new Promise(resolve=>setTimeout(resolve, wait));
+async function getOptionChain(item, expiry, maxCacheAgeMs = 15_000) {
+  const cacheKey = `${item.key}:${expiry}`;
+  const cached = optionChainCache.get(cacheKey);
+  if (cached && (Date.now() - cached.at) <= maxCacheAgeMs) {
+    return cached.data;
+  }
+  if (inFlightOptionChains.has(cacheKey)) {
+    return inFlightOptionChains.get(cacheKey);
+  }
+
+  const task = optionChainQueue.then(async () => {
+    const secondCheck = optionChainCache.get(cacheKey);
+    if (secondCheck && (Date.now() - secondCheck.at) <= maxCacheAgeMs) {
+      return secondCheck.data;
+    }
+
+    const wait = Math.max(0, 300 - (Date.now() - lastOptionChainAt));
+    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
     lastOptionChainAt = Date.now();
-    const underlyingScrip=item.kind==='Index'?(indexOptionChainIds[item.symbol]||Number(item.id)):Number(item.id);
-    if(!underlyingScrip)throw new Error(`Dhan option-chain ID is missing for ${item.symbol}.`);
-    const response = await apiFetch('https://api.dhan.co/v2/optionchain', { method:'POST', headers:{
-      'Content-Type':'application/json', Accept:'application/json', 'access-token':dhanCredentials.accessToken, 'client-id':dhanCredentials.clientId
-    }, body:JSON.stringify({ UnderlyingScrip:underlyingScrip, UnderlyingSeg:item.segment, Expiry:expiry }) });
+
+    const underlyingScrip = item.kind === 'Index' ? (indexOptionChainIds[item.symbol] || Number(item.id)) : Number(item.id);
+    if (!underlyingScrip) throw new Error(`Dhan option-chain ID is missing for ${item.symbol}.`);
+    const response = await apiFetch('https://api.dhan.co/v2/optionchain', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'access-token': dhanCredentials.accessToken,
+        'client-id': dhanCredentials.clientId
+      },
+      body: JSON.stringify({ UnderlyingScrip: underlyingScrip, UnderlyingSeg: item.segment, Expiry: expiry })
+    });
     let result = {};
     try { result = await response.json(); } catch {}
-    if (!response.ok) throw new Error(`Dhan option chain HTTP ${response.status}${result.errorCode?` ${result.errorCode}`:''}${result.errorMessage?`: ${result.errorMessage}`:''}`);
+    if (!response.ok) throw new Error(`Dhan option chain HTTP ${response.status}${result.errorCode ? ` ${result.errorCode}` : ''}${result.errorMessage ? `: ${result.errorMessage}` : ''}`);
     const data = result.data || result;
     if (data && data.oc && typeof data.oc === 'object') {
       const normalizedOc = {};
@@ -1271,11 +1294,15 @@ async function getOptionChain(item, expiry) {
       }
       data.oc = normalizedOc;
     }
-    if(Number(data.last_price)>0)underlyingPriceState[item.key]={...underlyingPriceState[item.key],spot:Number(data.last_price),updatedAt:new Date().toISOString()};
-    optionChainCache.set(`${item.key}:${expiry}`, { data, at:Date.now() });
+    if (Number(data.last_price) > 0) underlyingPriceState[item.key] = { ...underlyingPriceState[item.key], spot: Number(data.last_price), updatedAt: new Date().toISOString() };
+    optionChainCache.set(cacheKey, { data, at: Date.now() });
     return data;
+  }).finally(() => {
+    inFlightOptionChains.delete(cacheKey);
   });
-  optionChainQueue=task.then(()=>undefined,()=>undefined);
+
+  inFlightOptionChains.set(cacheKey, task);
+  optionChainQueue = task.then(() => undefined, () => undefined);
   return task;
 }
 async function syncFnoUniverse() {
