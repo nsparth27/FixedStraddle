@@ -1509,7 +1509,12 @@ const server = http.createServer(async (req, res) => {
       }
       const profile = await profileResponse.json();
       if (String(profile.dhanClientId) !== clientId) return json(res, 401, { error: 'The Client ID does not match the account for this access token.' });
-      dhanCredentials = { clientId, accessToken };
+      dhanCredentials.clientId = clientId;
+      dhanCredentials.accessToken = accessToken;
+      settings.dhanClientId = clientId;
+      settings.dhanAccessToken = accessToken;
+      saveJson(SETTINGS_FILE, settings);
+      saveEnvCredentials();
       lastError = null;
       refreshFeedSubscriptions();
       void syncFnoUniverse();
