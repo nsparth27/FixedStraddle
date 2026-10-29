@@ -324,6 +324,8 @@ async function chooseUnderlying(mode) {
   }
 }
 
+const clientChainCache = new Map();
+
 async function loadChain(mode) {
   const ids = chainIds(mode);
   const key = byId(ids.underlying)?.value;
@@ -331,6 +333,23 @@ async function loadChain(mode) {
   const tbody = byId(ids.rows);
 
   if (!key || !expiry) return;
+  const cacheKey = `${key}:${expiry}`;
+  const cached = clientChainCache.get(cacheKey);
+
+  if (cached && (Date.now() - cached.at) <= 25_000) {
+    chainStates[mode].data = cached.chain;
+    chainStates[mode].ce = null;
+    chainStates[mode].pe = null;
+    chainStates[mode]._hasScrolledToAtm = false;
+
+    const spot = Number(cached.chain.last_price || 0);
+    const spotLabel = byId(mode === 'indices' ? 'indicesMarketPrices' : 'stockMarketPrices');
+    if (spotLabel && spot > 0) spotLabel.textContent = `Spot ${fmt(spot)}`;
+
+    renderChainTable(mode);
+    return;
+  }
+
   if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="empty">Loading ${safeText(expiry)} option chain…</td></tr>`;
 
   try {
@@ -338,6 +357,8 @@ async function loadChain(mode) {
     if (!res.ok) throw new Error('Option chain error');
     const data = await res.json();
     const chain = data.chain || {};
+    clientChainCache.set(cacheKey, { chain, at: Date.now() });
+
     chainStates[mode].data = chain;
     chainStates[mode].ce = null;
     chainStates[mode].pe = null;
