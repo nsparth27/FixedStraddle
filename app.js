@@ -645,6 +645,58 @@ async function refreshState() {
     const signalsCount = (data.contracts || []).filter(c => c.alert > 0).length;
     const fiveStarCount = (data.contracts || []).filter(c => c.alert === 5).length;
 
+    // -------------------------------------------------------------
+    // Auto-Restore & LocalStorage Persistence for Pairs
+    // -------------------------------------------------------------
+    if (Array.isArray(data.contracts) && data.contracts.length > 0) {
+      try {
+        localStorage.setItem('fixed_straddle_saved_contracts', JSON.stringify(data.contracts));
+      } catch (e) {}
+    } else if (Array.isArray(data.contracts) && data.contracts.length === 0 && !window._hasRestoredContracts) {
+      try {
+        const localSaved = JSON.parse(localStorage.getItem('fixed_straddle_saved_contracts') || '[]');
+        if (Array.isArray(localSaved) && localSaved.length > 0) {
+          window._hasRestoredContracts = true;
+          console.log(`Auto-restoring ${localSaved.length} saved straddle/strangle pairs from local storage…`);
+          fetch('/api/watchlist/sync-batch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contracts: localSaved })
+          }).then(() => refreshState());
+        }
+      } catch (e) {}
+    }
+
+    // -------------------------------------------------------------
+    // Auto-Restore & LocalStorage Persistence for Dhan Credentials
+    // -------------------------------------------------------------
+    if (data.configured) {
+      try {
+        const creds = {
+          clientId: byId('dhanClientId')?.value || data.clientId || '1100616877',
+          pin: byId('dhanPin')?.value || '172711',
+          totpSecret: byId('dhanTotpSecret')?.value || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC'
+        };
+        localStorage.setItem('fixed_straddle_dhan_creds', JSON.stringify(creds));
+      } catch (e) {}
+    } else if (!data.configured && !window._hasAutoRestoredDhan) {
+      try {
+        const creds = JSON.parse(localStorage.getItem('fixed_straddle_dhan_creds') || '{}');
+        const clientId = creds.clientId || byId('dhanClientId')?.value || '1100616877';
+        const pin = creds.pin || byId('dhanPin')?.value || '172711';
+        const totpSecret = creds.totpSecret || byId('dhanTotpSecret')?.value || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC';
+        if (clientId && pin && totpSecret) {
+          window._hasAutoRestoredDhan = true;
+          console.log('Auto-restoring Dhan TOTP login from local storage…');
+          fetch('/api/dhan/totp-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ clientId, pin, totpSecret })
+          }).then(() => refreshState());
+        }
+      } catch (e) {}
+    }
+
     if (byId('universeCount')) byId('universeCount').innerHTML = `${totalPairs}<span class="metric-foot">monitored</span>`;
     if (byId('signalCount')) byId('signalCount').innerHTML = `${signalsCount}<span class="metric-foot">qualifying</span>`;
     if (byId('fiveCount')) byId('fiveCount').innerHTML = `${fiveStarCount}<span class="metric-foot">5★ alerts</span>`;
