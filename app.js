@@ -783,16 +783,6 @@ function setupNavigation() {
     }
   });
 
-  byId('stocksToggle')?.addEventListener('click', () => {
-    const menu = byId('stocksMenu');
-    const btn = byId('stocksToggle');
-    if (menu) {
-      const isOpen = !menu.hidden;
-      menu.hidden = isOpen;
-      btn?.setAttribute('aria-expanded', String(!isOpen));
-    }
-  });
-
   // Initial page from hash
   const hash = window.location.hash.replace(/^#/, '');
   if (pages.includes(hash)) showPage(hash);
