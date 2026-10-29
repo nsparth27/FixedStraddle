@@ -18,13 +18,6 @@ if (!fs.existsSync(REPORTS_DIR)) fs.mkdirSync(REPORTS_DIR, { recursive: true });
 const ALERTS_HISTORY_FILE = path.join(REPORTS_DIR, 'alerts-history.json');
 let alertsHistory = loadJson(ALERTS_HISTORY_FILE, []);
 const TZ_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-let dhanCredentials = {
-  clientId: process.env.DHAN_CLIENT_ID || '1100616877',
-  accessToken: process.env.DHAN_ACCESS_TOKEN || '',
-  pin: process.env.DHAN_PIN || '172711',
-  totpSecret: process.env.DHAN_TOTP_SECRET || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC',
-  tokenExpiry: null
-};
 const config = loadJson(CONFIG_FILE, { contracts: [] });
 let settings = loadJson(SETTINGS_FILE, {
   strikeCount: 3, stockTimeframe: 15, indexTimeframe: 5,
@@ -34,12 +27,21 @@ let settings = loadJson(SETTINGS_FILE, {
   telegramEnabled: true, telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || '9066894671:AAF0y0eoWlddAlmE1EfDdyDkx33U2f33f7g', telegramChatId: process.env.TELEGRAM_CHAT_ID || '723433781',
   telegramAlertThree: true, telegramAlertFive: true,
   dhanClientId: '1100616877', dhanPin: '172711', dhanTotpSecret: '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC',
+  dhanAccessToken: '',
   autoTotpRefresh: true,
   eodTelegramReport: true
 });
 settings.dhanClientId ||= '1100616877';
 settings.dhanPin ||= '172711';
 settings.dhanTotpSecret ||= '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC';
+
+let dhanCredentials = {
+  clientId: process.env.DHAN_CLIENT_ID || settings.dhanClientId || '1100616877',
+  accessToken: process.env.DHAN_ACCESS_TOKEN || settings.dhanAccessToken || '',
+  pin: process.env.DHAN_PIN || settings.dhanPin || '172711',
+  totpSecret: process.env.DHAN_TOTP_SECRET || settings.dhanTotpSecret || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC',
+  tokenExpiry: null
+};
 settings.indexStrangleTimeframe = Number(settings.indexStrangleTimeframe) || 1;
 settings.indexStraddleTimeframe = Number(settings.indexStraddleTimeframe || settings.indexTimeframe) || 5;
 settings.stockStrangleTimeframe = Number(settings.stockStrangleTimeframe) || 5;
