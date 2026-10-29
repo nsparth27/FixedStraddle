@@ -1652,6 +1652,40 @@ const server = http.createServer(async (req, res) => {
     delete state.contracts[symbol]; candles.delete(symbol); saveJson(CONFIG_FILE,config); saveJson(STATE_FILE,state);
     refreshFeedSubscriptions(); return json(res,200,{ok:true});
   }
+  if (req.method === 'POST' && url.pathname === '/api/watchlist/sync-batch') {
+    let body = ''; for await (const chunk of req) { body += chunk; if (body.length > 500_000) return json(res, 413, { error: 'Request too large' }); }
+    try {
+      const incoming = body ? JSON.parse(body) : {};
+      const contracts = Array.isArray(incoming.contracts) ? incoming.contracts : [];
+      let added = 0;
+      for (const contract of contracts) {
+        if (!validContract(contract)) continue;
+        if (!config.contracts.some(c => c.symbol === contract.symbol)) {
+          config.contracts.push(contract);
+          added++;
+          const old = state.contracts[contract.symbol] || {};
+          state.contracts[contract.symbol] = {
+            ...old,
+            symbol: contract.symbol,
+            underlying: contract.underlying,
+            ceLtp: contract.ce?.lastPrice || 0,
+            peLtp: contract.pe?.lastPrice || 0,
+            straddle: Number(((contract.ce?.lastPrice || 0) + (contract.pe?.lastPrice || 0)).toFixed(2)),
+            status: 'waiting for live feed'
+          };
+          void warmupContract(contract);
+        }
+      }
+      if (added > 0) {
+        saveJson(CONFIG_FILE, config);
+        saveJson(STATE_FILE, state);
+        refreshFeedSubscriptions();
+      }
+      return json(res, 200, { ok: true, added, total: config.contracts.length });
+    } catch (err) {
+      return json(res, 400, { error: err.message || 'Invalid JSON' });
+    }
+  }
   if (req.method === 'GET' && url.pathname === '/api/state') {
     pruneExpiredContracts();
     const rows = config.contracts.filter(validContract).map(contractState);
