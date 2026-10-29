@@ -17,6 +17,7 @@ No orders are placed. The server binds to localhost only. Do not expose this app
 
 - Custom CE/PE pairs are saved locally in `scanner.config.json` and survive a server restart.
 - Dhan's market feed updates the selected option LTPs and summed straddle premium.
+- Real-time continuous deployment to Render is supported via GitHub auto-sync.
 - MACD (12/26/9) and EMA (200) use 15-minute combined-premium candles. Dhan historical candles for the manually selected legs are fetched only to initialize these indicators; historical prices and OI do not select strikes. Live feed candles take over as they arrive.
 - 3-star alert: MACD is at or above zero. 5-star alert: MACD is at or above zero and combined premium is above EMA. These are informational alerts, not trading recommendations.
 - The Stocks → 200 EMA page automatically scans the NSE equity universe, separately from the F&O straddle watchlist. It shows stocks whose last completed weekly close is within 5% above or below the 200-week EMA. It scans when Dhan connects and after Friday's market close; new listings remain in warm-up until 200 weekly closes are available.
