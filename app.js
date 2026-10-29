@@ -376,10 +376,8 @@ function renderChainTable(mode) {
     if (diff < minDiff) { minDiff = diff; atmStrike = s; }
   }
 
-  // Slice to 24 strikes centered on ATM
-  const atmIdx = strikes.indexOf(atmStrike);
-  const startIdx = Math.max(0, atmIdx - 12);
-  const visible = strikes.slice(startIdx, startIdx + 25);
+  // Display the FULL option chain (all strikes available from Dhan)
+  const visible = strikes;
 
   let maxCallOi = 1, maxPutOi = 1;
   for (const s of visible) {
@@ -400,7 +398,7 @@ function renderChainTable(mode) {
     const isCeSel = chainStates[mode].ce === s;
     const isPeSel = chainStates[mode].pe === s;
 
-    return `<tr class="${isAtm ? 'at-the-money' : ''}">
+    return `<tr class="${isAtm ? 'at-the-money' : ''}" ${isAtm ? `id="${mode}_atm_row"` : ''}>
       <td class="call-delta">${fmt(ce.delta ?? ce.greeks?.delta ?? 0.5, 2)}</td>
       <td>
         <label class="price-choice call">
@@ -432,6 +430,20 @@ function renderChainTable(mode) {
       <td class="put-delta">${fmt(pe.delta ?? pe.greeks?.delta ?? -0.5, 2)}</td>
     </tr>`;
   }).join('');
+
+  const summaryEl = byId(ids.summary);
+  if (summaryEl) {
+    summaryEl.textContent = `Showing full option chain (${visible.length} strikes) · ATM: ${atmStrike}`;
+  }
+
+  // Auto-scroll to center on ATM strike when option chain first loads
+  if (!chainStates[mode]._hasScrolledToAtm) {
+    chainStates[mode]._hasScrolledToAtm = true;
+    setTimeout(() => {
+      const atmRow = byId(`${mode}_atm_row`);
+      if (atmRow) atmRow.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 60);
+  }
 
   updateSelectionUI(mode);
 }
