@@ -1126,56 +1126,7 @@ function stockEmaInstruments() {
   return stockUniverse.map(item=>({key:item.symbol,symbol:item.symbol,securityId:String(item.securityId),exchangeSegment:item.exchangeSegment||'NSE_EQ'}));
 }
 async function refreshStockEmaUniverse() {
-  if(!configured())return;
-  if(stockEmaRefreshPromise)return stockEmaRefreshPromise;
-  stockEmaRefreshPromise=(async()=>{
-    const now=new Date(),today=indiaDateParts(now),todayKey=`${today.year}-${today.month}-${today.day}`;
-    const startClock=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(now),startMinutes=Number(startClock.find(p=>p.type==='hour')?.value||0)*60+Number(startClock.find(p=>p.type==='minute')?.value||0),startWeekday=new Date(Date.UTC(Number(today.year),Number(today.month)-1,Number(today.day))).getUTCDay(),startedAfterFridayClose=startWeekday===5&&startMinutes>=15*60+35;
-    const startDate=formatDate(new Date(now.getTime()-8*365*86400_000));
-    const items=stockEmaInstruments();
-    stockEmaState={};
-    stockEmaScan={status:'running',done:0,total:items.length,alerts:0,errors:0,updatedAt:new Date().toISOString()};
-    for(let offset=0;offset<items.length;offset+=20) {
-      const batch=items.slice(offset,offset+20);
-      await Promise.all(batch.map(async item=>{
-        try {
-          const data=await fetchCandles({securityId:item.securityId,exchangeSegment:item.exchangeSegment,instrument:'EQUITY'},startDate,formatDate(now),'day');
-        const daily=[];
-        for(let i=0;i<(data.timestamp||[]).length;i++) {
-          const timestamp=Number(data.timestamp[i]),close=Number(data.close?.[i]);
-          if(!Number.isFinite(timestamp)||timestamp<=0||!Number.isFinite(close)||close<=0)continue;
-          const date=indiaDateParts(new Date(timestamp*1000));
-          daily.push({date:`${date.year}-${date.month}-${date.day}`,close});
-        }
-        daily.sort((a,b)=>a.date.localeCompare(b.date));
-        const weeks=new Map();
-        for(const point of daily)weeks.set(weekKeyForDate(point.date),point);
-        let weekly=[...weeks.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([week,point])=>({...point,week}));
-        const currentWeek=weekKeyForDate(todayKey),clockParts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(now),clock=Number(clockParts.find(p=>p.type==='hour')?.value||0)*60+Number(clockParts.find(p=>p.type==='minute')?.value||0),weekday=new Date(Date.UTC(Number(today.year),Number(today.month)-1,Number(today.day))).getUTCDay();
-        const currentWeekCompleted=weekday===5&&clock>=15*60+30;
-        if(weekly.at(-1)?.week===currentWeek&&!currentWeekCompleted)weekly=weekly.slice(0,-1);
-        const weeklyCloses=weekly.map(point=>point.close),latest=weekly.at(-1),ema200=ema(weeklyCloses,200);
-        if(!latest||ema200===null) {
-          stockEmaState[item.key]={symbol:item.symbol,status:'warming-up',weeklyBars:weekly.length,requiredBars:200,asOf:latest?.date||null,updatedAt:new Date().toISOString()};
-          return;
-        }
-        const distancePct=((latest.close-ema200)/ema200)*100,alert=Math.abs(distancePct)<=5;
-        stockEmaState[item.key]={symbol:item.symbol,status:alert?'near-ema':distancePct>0?'above-range':'below-range',weeklyClose:Number(latest.close.toFixed(2)),ema200:Number(ema200.toFixed(2)),distancePct:Number(distancePct.toFixed(2)),alert,weeklyBars:weekly.length,requiredBars:200,asOf:latest.date,updatedAt:new Date().toISOString()};
-        } catch(error) {
-          console.error(`Weekly 200 EMA refresh failed for ${item.symbol}: ${error.message}`);
-          stockEmaState[item.key]={symbol:item.symbol,status:'history-error',error:error.message,updatedAt:new Date().toISOString()};
-          stockEmaScan.errors++;
-        }
-      }));
-      stockEmaScan.done+=batch.length;
-      stockEmaScan.alerts=Object.values(stockEmaState).filter(row=>row.alert).length;
-      stockEmaScan.updatedAt=new Date().toISOString();
-    }
-    stockEmaScan.status=stockEmaScan.errors?'partial':'complete';
-    stockEmaScan.updatedAt=new Date().toISOString();
-    if(startedAfterFridayClose)stockEmaLastRefreshDay=todayKey;
-  })().finally(()=>{stockEmaRefreshPromise=null;});
-  return stockEmaRefreshPromise;
+  return Promise.resolve();
 }
 function stockEmaRows() {
   return Object.values(stockEmaState).filter(row=>row.alert).sort((a,b)=>a.symbol.localeCompare(b.symbol));
