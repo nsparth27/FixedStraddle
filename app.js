@@ -1071,6 +1071,16 @@ function updateTodayClock() {
 async function boot() {
   updateTodayClock();
   setInterval(updateTodayClock, 1000);
+
+  // Pre-fill credentials from localStorage or defaults
+  try {
+    const creds = JSON.parse(localStorage.getItem('fixed_straddle_dhan_creds') || '{}');
+    if (byId('dhanClientId')) byId('dhanClientId').value = creds.clientId || '1100616877';
+    if (byId('dhanPin')) byId('dhanPin').value = creds.pin || '172711';
+    if (byId('dhanTotpSecret')) byId('dhanTotpSecret').value = creds.totpSecret || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC';
+    if (byId('dhanAccessToken') && creds.accessToken) byId('dhanAccessToken').value = creds.accessToken;
+  } catch {}
+
   setupNavigation();
   setupEventListeners();
   await refreshState();
