@@ -722,12 +722,11 @@ async function refreshState() {
 // Navigation & Page Switching
 // -------------------------------------------------------------
 function setupNavigation() {
-  const pages = ['alertsPage', 'indicesPage', 'watchlistPage', 'stockEmaPage', 'apiSettingsPage', 'strategyPage'];
+  const pages = ['alertsPage', 'indicesPage', 'watchlistPage', 'apiSettingsPage', 'strategyPage'];
   const titles = {
     alertsPage: { title: 'Live straddle alerts', desc: 'Real-time alerts meeting your specific Straddle and Strangle timeframe rules.' },
     indicesPage: { title: 'Indices workspace', desc: 'Browse Index option chains and monitor custom Index Straddles and Strangles.' },
     watchlistPage: { title: 'F&O Stocks workspace', desc: 'Select individual F&O stock options to build custom fixed straddles and strangles.' },
-    stockEmaPage: { title: 'Stocks · 200 EMA Scanner', desc: 'Automatic weekly close scan against the 200-week EMA.' },
     apiSettingsPage: { title: 'API & Strategy Settings', desc: 'Configure Dhan TOTP auto-connect, specific timeframes, and Telegram notifications.' },
     strategyPage: { title: 'MACD Momentum Strategy', desc: 'Option strike momentum views based on MACD zero line crossings.' }
   };
