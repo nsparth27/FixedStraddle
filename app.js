@@ -990,6 +990,9 @@ function setupEventListeners() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Login failed');
+      try {
+        localStorage.setItem('fixed_straddle_dhan_creds', JSON.stringify({ clientId, pin, totpSecret, accessToken: data.accessToken }));
+      } catch {}
       toast('Connected to Dhan via TOTP!');
       universeLoaded = false;
       await refreshState();
@@ -1019,6 +1022,10 @@ function setupEventListeners() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Connection failed');
+      try {
+        const existing = JSON.parse(localStorage.getItem('fixed_straddle_dhan_creds') || '{}');
+        localStorage.setItem('fixed_straddle_dhan_creds', JSON.stringify({ ...existing, clientId, accessToken }));
+      } catch {}
       toast('Dhan connected with manual token!');
       universeLoaded = false;
       await refreshState();
