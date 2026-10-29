@@ -226,6 +226,12 @@ async function loginWithDhanTotp(clientId, pin, totpSecret) {
     dhanCredentials.totpSecret = totpSecret;
     dhanCredentials.tokenExpiry = data.expiryTime || null;
 
+    settings.dhanClientId = clientId;
+    settings.dhanAccessToken = data.accessToken;
+    settings.dhanPin = pin;
+    settings.dhanTotpSecret = totpSecret;
+    saveJson(SETTINGS_FILE, settings);
+
     lastError = null;
     saveEnvCredentials();
     refreshFeedSubscriptions();
