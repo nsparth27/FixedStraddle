@@ -1,0 +1,3836 @@
+[
+  {
+    "key": "13061:360ONE:OPTSTK",
+    "id": "13061",
+    "symbol": "360ONE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61474",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "13:ABB:OPTSTK",
+    "id": "13",
+    "symbol": "ABB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61475",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "21614:ABCAPITAL:OPTSTK",
+    "id": "21614",
+    "symbol": "ABCAPITAL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61476",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10217:ADANIENSOL:OPTSTK",
+    "id": "10217",
+    "symbol": "ADANIENSOL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61477",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "25:ADANIENT:OPTSTK",
+    "id": "25",
+    "symbol": "ADANIENT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61478",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3563:ADANIGREEN:OPTSTK",
+    "id": "3563",
+    "symbol": "ADANIGREEN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61479",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "15083:ADANIPORTS:OPTSTK",
+    "id": "15083",
+    "symbol": "ADANIPORTS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61480",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17388:ADANIPOWER:OPTSTK",
+    "id": "17388",
+    "symbol": "ADANIPOWER",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61481",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11703:ALKEM:OPTSTK",
+    "id": "11703",
+    "symbol": "ALKEM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61482",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1185:AMBER:OPTSTK",
+    "id": "1185",
+    "symbol": "AMBER",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61483",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1270:AMBUJACEM:OPTSTK",
+    "id": "1270",
+    "symbol": "AMBUJACEM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61484",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "7145:ANANDRATHI:OPTSTK",
+    "id": "7145",
+    "symbol": "ANANDRATHI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "58890",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "324:ANGELONE:OPTSTK",
+    "id": "324",
+    "symbol": "ANGELONE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61485",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "25780:APLAPOLLO:OPTSTK",
+    "id": "25780",
+    "symbol": "APLAPOLLO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61486",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "157:APOLLOHOSP:OPTSTK",
+    "id": "157",
+    "symbol": "APOLLOHOSP",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61487",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "212:ASHOKLEY:OPTSTK",
+    "id": "212",
+    "symbol": "ASHOKLEY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61488",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "236:ASIANPAINT:OPTSTK",
+    "id": "236",
+    "symbol": "ASIANPAINT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61489",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14418:ASTRAL:OPTSTK",
+    "id": "14418",
+    "symbol": "ASTRAL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61490",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "757645:ATHERENERG:OPTSTK",
+    "id": "757645",
+    "symbol": "ATHERENERG",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61497",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "21238:AUBANK:OPTSTK",
+    "id": "21238",
+    "symbol": "AUBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61502",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "275:AUROPHARMA:OPTSTK",
+    "id": "275",
+    "symbol": "AUROPHARMA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61503",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "5900:AXISBANK:OPTSTK",
+    "id": "5900",
+    "symbol": "AXISBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61504",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "16669:BAJAJ-AUTO:OPTSTK",
+    "id": "16669",
+    "symbol": "BAJAJ-AUTO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61505",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "16675:BAJAJFINSV:OPTSTK",
+    "id": "16675",
+    "symbol": "BAJAJFINSV",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61506",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "317:BAJFINANCE:OPTSTK",
+    "id": "317",
+    "symbol": "BAJFINANCE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61507",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2263:BANDHANBNK:OPTSTK",
+    "id": "2263",
+    "symbol": "BANDHANBNK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61508",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4668:BANKBARODA:OPTSTK",
+    "id": "4668",
+    "symbol": "BANKBARODA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61509",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4745:BANKINDIA:OPTSTK",
+    "id": "4745",
+    "symbol": "BANKINDIA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61510",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "26009:BANKNIFTY:OPTIDX",
+    "id": "26009",
+    "symbol": "BANKNIFTY",
+    "instrument": "OPTIDX",
+    "segment": "IDX_I",
+    "kind": "Index",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25",
+      "2027-03-30",
+      "2027-06-29",
+      "2027-09-28"
+    ],
+    "market": {
+      "spotSecurityId": "25",
+      "spotExchangeSegment": "IDX_I",
+      "futureSecurityId": "61466",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2144:BDL:OPTSTK",
+    "id": "2144",
+    "symbol": "BDL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61511",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "383:BEL:OPTSTK",
+    "id": "383",
+    "symbol": "BEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61512",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "422:BHARATFORG:OPTSTK",
+    "id": "422",
+    "symbol": "BHARATFORG",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61513",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10604:BHARTIARTL:OPTSTK",
+    "id": "10604",
+    "symbol": "BHARTIARTL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61515",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "438:BHEL:OPTSTK",
+    "id": "438",
+    "symbol": "BHEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "spotSecurityId": "438",
+      "spotExchangeSegment": "NSE_EQ",
+      "futureSecurityId": "61516",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11373:BIOCON:OPTSTK",
+    "id": "11373",
+    "symbol": "BIOCON",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61520",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "8311:BLUESTARCO:OPTSTK",
+    "id": "8311",
+    "symbol": "BLUESTARCO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61521",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2181:BOSCHLTD:OPTSTK",
+    "id": "2181",
+    "symbol": "BOSCHLTD",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61522",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "526:BPCL:OPTSTK",
+    "id": "526",
+    "symbol": "BPCL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61523",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "547:BRITANNIA:OPTSTK",
+    "id": "547",
+    "symbol": "BRITANNIA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61524",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "19585:BSE:OPTSTK",
+    "id": "19585",
+    "symbol": "BSE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61525",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "342:CAMS:OPTSTK",
+    "id": "342",
+    "symbol": "CAMS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61526",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10794:CANBK:OPTSTK",
+    "id": "10794",
+    "symbol": "CANBK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61527",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "21174:CDSL:OPTSTK",
+    "id": "21174",
+    "symbol": "CDSL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61528",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "760:CGPOWER:OPTSTK",
+    "id": "760",
+    "symbol": "CGPOWER",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61537",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "685:CHOLAFIN:OPTSTK",
+    "id": "685",
+    "symbol": "CHOLAFIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61538",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "694:CIPLA:OPTSTK",
+    "id": "694",
+    "symbol": "CIPLA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61539",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "20374:COALINDIA:OPTSTK",
+    "id": "20374",
+    "symbol": "COALINDIA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61540",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "21508:COCHINSHIP:OPTSTK",
+    "id": "21508",
+    "symbol": "COCHINSHIP",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61541",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11543:COFORGE:OPTSTK",
+    "id": "11543",
+    "symbol": "COFORGE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61542",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "15141:COLPAL:OPTSTK",
+    "id": "15141",
+    "symbol": "COLPAL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61543",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4749:CONCOR:OPTSTK",
+    "id": "4749",
+    "symbol": "CONCOR",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61544",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "739:COROMANDEL:OPTSTK",
+    "id": "739",
+    "symbol": "COROMANDEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "54913",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17094:CROMPTON:OPTSTK",
+    "id": "17094",
+    "symbol": "CROMPTON",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61545",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "5701:CUB:OPTSTK",
+    "id": "5701",
+    "symbol": "CUB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "54919",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1901:CUMMINSIND:OPTSTK",
+    "id": "1901",
+    "symbol": "CUMMINSIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61546",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "772:DABUR:OPTSTK",
+    "id": "772",
+    "symbol": "DABUR",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61555",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "7358:DATAPATTNS:OPTSTK",
+    "id": "7358",
+    "symbol": "DATAPATTNS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "54924",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "9599:DELHIVERY:OPTSTK",
+    "id": "9599",
+    "symbol": "DELHIVERY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61556",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10940:DIVISLAB:OPTSTK",
+    "id": "10940",
+    "symbol": "DIVISLAB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61558",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "21690:DIXON:OPTSTK",
+    "id": "21690",
+    "symbol": "DIXON",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61560",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14732:DLF:OPTSTK",
+    "id": "14732",
+    "symbol": "DLF",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61561",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "19913:DMART:OPTSTK",
+    "id": "19913",
+    "symbol": "DMART",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61562",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "881:DRREDDY:OPTSTK",
+    "id": "881",
+    "symbol": "DRREDDY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61563",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "910:EICHERMOT:OPTSTK",
+    "id": "910",
+    "symbol": "EICHERMOT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61564",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "756871:ENRIN:OPTSTK",
+    "id": "756871",
+    "symbol": "ENRIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "58957",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "5097:ETERNAL:OPTSTK",
+    "id": "5097",
+    "symbol": "ETERNAL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61565",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1023:FEDERALBNK:OPTSTK",
+    "id": "1023",
+    "symbol": "FEDERALBNK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61566",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "26037:FINNIFTY:OPTIDX",
+    "id": "26037",
+    "symbol": "FINNIFTY",
+    "instrument": "OPTIDX",
+    "segment": "IDX_I",
+    "kind": "Index",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "spotSecurityId": "27",
+      "spotExchangeSegment": "IDX_I",
+      "futureSecurityId": "61469",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11573:FORCEMOT:OPTSTK",
+    "id": "11573",
+    "symbol": "FORCEMOT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61567",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14592:FORTIS:OPTSTK",
+    "id": "14592",
+    "symbol": "FORTIS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61568",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4717:GAIL:OPTSTK",
+    "id": "4717",
+    "symbol": "GAIL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61569",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "7406:GLENMARK:OPTSTK",
+    "id": "7406",
+    "symbol": "GLENMARK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61570",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "13528:GMRAIRPORT:OPTSTK",
+    "id": "13528",
+    "symbol": "GMRAIRPORT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61571",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1181:GODFRYPHLP:OPTSTK",
+    "id": "1181",
+    "symbol": "GODFRYPHLP",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61572",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10099:GODREJCP:OPTSTK",
+    "id": "10099",
+    "symbol": "GODREJCP",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61573",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17875:GODREJPROP:OPTSTK",
+    "id": "17875",
+    "symbol": "GODREJPROP",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61574",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1232:GRASIM:OPTSTK",
+    "id": "1232",
+    "symbol": "GRASIM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61575",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "16783:GVT&D:OPTSTK",
+    "id": "16783",
+    "symbol": "GVT&D",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61576",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2303:HAL:OPTSTK",
+    "id": "2303",
+    "symbol": "HAL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61578",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "9819:HAVELLS:OPTSTK",
+    "id": "9819",
+    "symbol": "HAVELLS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61579",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "7229:HCLTECH:OPTSTK",
+    "id": "7229",
+    "symbol": "HCLTECH",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61580",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4244:HDFCAMC:OPTSTK",
+    "id": "4244",
+    "symbol": "HDFCAMC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61581",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1333:HDFCBANK:OPTSTK",
+    "id": "1333",
+    "symbol": "HDFCBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61582",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "467:HDFCLIFE:OPTSTK",
+    "id": "467",
+    "symbol": "HDFCLIFE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61583",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1348:HEROMOTOCO:OPTSTK",
+    "id": "1348",
+    "symbol": "HEROMOTOCO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61584",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1363:HINDALCO:OPTSTK",
+    "id": "1363",
+    "symbol": "HINDALCO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61585",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1406:HINDPETRO:OPTSTK",
+    "id": "1406",
+    "symbol": "HINDPETRO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61590",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1394:HINDUNILVR:OPTSTK",
+    "id": "1394",
+    "symbol": "HINDUNILVR",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61591",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1424:HINDZINC:OPTSTK",
+    "id": "1424",
+    "symbol": "HINDZINC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61592",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "25844:HYUNDAI:OPTSTK",
+    "id": "25844",
+    "symbol": "HYUNDAI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61594",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4963:ICICIBANK:OPTSTK",
+    "id": "4963",
+    "symbol": "ICICIBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61595",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "21770:ICICIGI:OPTSTK",
+    "id": "21770",
+    "symbol": "ICICIGI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61596",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18652:ICICILIFE:OPTSTK",
+    "id": "18652",
+    "symbol": "ICICILIFE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61597",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14366:IDEA:OPTSTK",
+    "id": "14366",
+    "symbol": "IDEA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61598",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11184:IDFCFIRSTB:OPTSTK",
+    "id": "11184",
+    "symbol": "IDFCFIRSTB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61599",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "220:IEX:OPTSTK",
+    "id": "220",
+    "symbol": "IEX",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23"
+    ],
+    "market": {
+      "futureSecurityId": "61600",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1512:INDHOTEL:OPTSTK",
+    "id": "1512",
+    "symbol": "INDHOTEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61601",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14309:INDIANB:OPTSTK",
+    "id": "14309",
+    "symbol": "INDIANB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61602",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11195:INDIGO:OPTSTK",
+    "id": "11195",
+    "symbol": "INDIGO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61603",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "5258:INDUSINDBK:OPTSTK",
+    "id": "5258",
+    "symbol": "INDUSINDBK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61606",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "29135:INDUSTOWER:OPTSTK",
+    "id": "29135",
+    "symbol": "INDUSTOWER",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61607",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1594:INFY:OPTSTK",
+    "id": "1594",
+    "symbol": "INFY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61608",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "7852:INOXWIND:OPTSTK",
+    "id": "7852",
+    "symbol": "INOXWIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29"
+    ],
+    "market": {
+      "futureSecurityId": "61611",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1624:IOC:OPTSTK",
+    "id": "1624",
+    "symbol": "IOC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61612",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "20261:IREDA:OPTSTK",
+    "id": "20261",
+    "symbol": "IREDA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23"
+    ],
+    "market": {
+      "futureSecurityId": "61613",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2029:IRFC:OPTSTK",
+    "id": "2029",
+    "symbol": "IRFC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61614",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1660:ITC:OPTSTK",
+    "id": "1660",
+    "symbol": "ITC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61615",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "6733:JINDALSTEL:OPTSTK",
+    "id": "6733",
+    "symbol": "JINDALSTEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61616",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18143:JIOFIN:OPTSTK",
+    "id": "18143",
+    "symbol": "JIOFIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61617",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17869:JSWENERGY:OPTSTK",
+    "id": "17869",
+    "symbol": "JSWENERGY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61618",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11723:JSWSTEEL:OPTSTK",
+    "id": "11723",
+    "symbol": "JSWSTEEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61619",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18096:JUBLFOOD:OPTSTK",
+    "id": "18096",
+    "symbol": "JUBLFOOD",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61620",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2955:KALYANKJIL:OPTSTK",
+    "id": "2955",
+    "symbol": "KALYANKJIL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61621",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1838:KARURVYSYA:OPTSTK",
+    "id": "1838",
+    "symbol": "KARURVYSYA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "55040",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "12092:KAYNES:OPTSTK",
+    "id": "12092",
+    "symbol": "KAYNES",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61624",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "13310:KEI:OPTSTK",
+    "id": "13310",
+    "symbol": "KEI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61625",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "13359:KFINTECH:OPTSTK",
+    "id": "13359",
+    "symbol": "KFINTECH",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61626",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1922:KOTAKBANK:OPTSTK",
+    "id": "1922",
+    "symbol": "KOTAKBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61627",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "9683:KPITTECH:OPTSTK",
+    "id": "9683",
+    "symbol": "KPITTECH",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61628",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "19234:LAURUSLABS:OPTSTK",
+    "id": "19234",
+    "symbol": "LAURUSLABS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61629",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1997:LICHSGFIN:OPTSTK",
+    "id": "1997",
+    "symbol": "LICHSGFIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61630",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "9480:LICI:OPTSTK",
+    "id": "9480",
+    "symbol": "LICI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61631",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3220:LODHA:OPTSTK",
+    "id": "3220",
+    "symbol": "LODHA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61632",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11483:LT:OPTSTK",
+    "id": "11483",
+    "symbol": "LT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61633",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "24948:LTF:OPTSTK",
+    "id": "24948",
+    "symbol": "LTF",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61634",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17818:LTM:OPTSTK",
+    "id": "17818",
+    "symbol": "LTM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61635",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10440:LUPIN:OPTSTK",
+    "id": "10440",
+    "symbol": "LUPIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61636",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2031:M&M:OPTSTK",
+    "id": "2031",
+    "symbol": "M&M",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61637",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11377:MAHABANK:OPTSTK",
+    "id": "11377",
+    "symbol": "MAHABANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61640",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "19061:MANAPPURAM:OPTSTK",
+    "id": "19061",
+    "symbol": "MANAPPURAM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61641",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "15380:MANKIND:OPTSTK",
+    "id": "15380",
+    "symbol": "MANKIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61642",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4067:MARICO:OPTSTK",
+    "id": "4067",
+    "symbol": "MARICO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61643",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10999:MARUTI:OPTSTK",
+    "id": "10999",
+    "symbol": "MARUTI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61644",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "22377:MAXHEALTH:OPTSTK",
+    "id": "22377",
+    "symbol": "MAXHEALTH",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61645",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "509:MAZDOCK:OPTSTK",
+    "id": "509",
+    "symbol": "MAZDOCK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61648",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "31181:MCX:OPTSTK",
+    "id": "31181",
+    "symbol": "MCX",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61649",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2142:MFSL:OPTSTK",
+    "id": "2142",
+    "symbol": "MFSL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61650",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "26074:MIDCPNIFTY:OPTIDX",
+    "id": "26074",
+    "symbol": "MIDCPNIFTY",
+    "instrument": "OPTIDX",
+    "segment": "IDX_I",
+    "kind": "Index",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "spotSecurityId": "442",
+      "spotExchangeSegment": "IDX_I",
+      "futureSecurityId": "61470",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4204:MOTHERSON:OPTSTK",
+    "id": "4204",
+    "symbol": "MOTHERSON",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61651",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14947:MOTILALOFS:OPTSTK",
+    "id": "14947",
+    "symbol": "MOTILALOFS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61652",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4503:MPHASIS:OPTSTK",
+    "id": "4503",
+    "symbol": "MPHASIS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61653",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "23650:MUTHOOTFIN:OPTSTK",
+    "id": "23650",
+    "symbol": "MUTHOOTFIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61654",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "357:NAM-INDIA:OPTSTK",
+    "id": "357",
+    "symbol": "NAM-INDIA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61655",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "6364:NATIONALUM:OPTSTK",
+    "id": "6364",
+    "symbol": "NATIONALUM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61656",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "13751:NAUKRI:OPTSTK",
+    "id": "13751",
+    "symbol": "NAUKRI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61657",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14672:NAVINFLUOR:OPTSTK",
+    "id": "14672",
+    "symbol": "NAVINFLUOR",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "55076",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "31415:NBCC:OPTSTK",
+    "id": "31415",
+    "symbol": "NBCC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61658",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17963:NESTLEIND:OPTSTK",
+    "id": "17963",
+    "symbol": "NESTLEIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61661",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17400:NHPC:OPTSTK",
+    "id": "17400",
+    "symbol": "NHPC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61662",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "26000:NIFTY:OPTIDX",
+    "id": "26000",
+    "symbol": "NIFTY",
+    "instrument": "OPTIDX",
+    "segment": "IDX_I",
+    "kind": "Index",
+    "expiries": [
+      "2026-11-03",
+      "2026-11-09",
+      "2026-11-17",
+      "2026-11-23",
+      "2026-12-01",
+      "2026-12-29",
+      "2027-01-25",
+      "2027-03-30",
+      "2027-06-29",
+      "2027-09-28",
+      "2027-12-28",
+      "2028-06-27",
+      "2028-12-26",
+      "2029-06-26",
+      "2029-12-24",
+      "2030-06-25",
+      "2030-12-31",
+      "2031-06-24"
+    ],
+    "market": {
+      "spotSecurityId": "13",
+      "spotExchangeSegment": "IDX_I",
+      "futureSecurityId": "61471",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "26137:NIFTYFPI:OPTIDX",
+    "id": "26137",
+    "symbol": "NIFTYFPI",
+    "instrument": "OPTIDX",
+    "segment": "IDX_I",
+    "kind": "Index",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "spotSecurityId": "26137",
+      "spotExchangeSegment": "IDX_I",
+      "futureSecurityId": "61472",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "26013:NIFTYNXT50:OPTIDX",
+    "id": "26013",
+    "symbol": "NIFTYNXT50",
+    "instrument": "OPTIDX",
+    "segment": "IDX_I",
+    "kind": "Index",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "spotSecurityId": "26013",
+      "spotExchangeSegment": "IDX_I",
+      "futureSecurityId": "61473",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "15332:NMDC:OPTSTK",
+    "id": "15332",
+    "symbol": "NMDC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61663",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11630:NTPC:OPTSTK",
+    "id": "11630",
+    "symbol": "NTPC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61664",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "6545:NYKAA:OPTSTK",
+    "id": "6545",
+    "symbol": "NYKAA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61665",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "20242:OBEROIRLTY:OPTSTK",
+    "id": "20242",
+    "symbol": "OBEROIRLTY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61666",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10738:OFSS:OPTSTK",
+    "id": "10738",
+    "symbol": "OFSS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61667",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17438:OIL:OPTSTK",
+    "id": "17438",
+    "symbol": "OIL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61668",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2475:ONGC:OPTSTK",
+    "id": "2475",
+    "symbol": "ONGC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61669",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14413:PAGEIND:OPTSTK",
+    "id": "14413",
+    "symbol": "PAGEIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61672",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17029:PATANJALI:OPTSTK",
+    "id": "17029",
+    "symbol": "PATANJALI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61673",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "6705:PAYTM:OPTSTK",
+    "id": "6705",
+    "symbol": "PAYTM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61674",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18365:PERSISTENT:OPTSTK",
+    "id": "18365",
+    "symbol": "PERSISTENT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61675",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11351:PETRONET:OPTSTK",
+    "id": "11351",
+    "symbol": "PETRONET",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61676",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14299:PFC:OPTSTK",
+    "id": "14299",
+    "symbol": "PFC",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61677",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "25358:PGEL:OPTSTK",
+    "id": "25358",
+    "symbol": "PGEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61678",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14552:PHOENIXLTD:OPTSTK",
+    "id": "14552",
+    "symbol": "PHOENIXLTD",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61679",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2664:PIDILITIND:OPTSTK",
+    "id": "2664",
+    "symbol": "PIDILITIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61680",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "24184:PIIND:OPTSTK",
+    "id": "24184",
+    "symbol": "PIIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61681",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10666:PNB:OPTSTK",
+    "id": "10666",
+    "symbol": "PNB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61682",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18908:PNBHOUSING:OPTSTK",
+    "id": "18908",
+    "symbol": "PNBHOUSING",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61683",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "6656:POLICYBZR:OPTSTK",
+    "id": "6656",
+    "symbol": "POLICYBZR",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61686",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "9590:POLYCAB:OPTSTK",
+    "id": "9590",
+    "symbol": "POLYCAB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29"
+    ],
+    "market": {
+      "futureSecurityId": "61689",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14977:POWERGRID:OPTSTK",
+    "id": "14977",
+    "symbol": "POWERGRID",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61690",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18457:POWERINDIA:OPTSTK",
+    "id": "18457",
+    "symbol": "POWERINDIA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61691",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "25049:PREMIERENE:OPTSTK",
+    "id": "25049",
+    "symbol": "PREMIERENE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61692",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "20302:PRESTIGE:OPTSTK",
+    "id": "20302",
+    "symbol": "PRESTIGE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61693",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10990:RADICO:OPTSTK",
+    "id": "10990",
+    "symbol": "RADICO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61694",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18391:RBLBANK:OPTSTK",
+    "id": "18391",
+    "symbol": "RBLBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61695",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "15355:RECLTD:OPTSTK",
+    "id": "15355",
+    "symbol": "RECLTD",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61696",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2885:RELIANCE:OPTSTK",
+    "id": "2885",
+    "symbol": "RELIANCE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61697",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "9552:RVNL:OPTSTK",
+    "id": "9552",
+    "symbol": "RVNL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61698",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "27052:SAGILITY:OPTSTK",
+    "id": "27052",
+    "symbol": "SAGILITY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61701",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "2963:SAIL:OPTSTK",
+    "id": "2963",
+    "symbol": "SAIL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61702",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "17971:SBICARD:OPTSTK",
+    "id": "17971",
+    "symbol": "SBICARD",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61704",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "21808:SBILIFE:OPTSTK",
+    "id": "21808",
+    "symbol": "SBILIFE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61705",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3045:SBIN:OPTSTK",
+    "id": "3045",
+    "symbol": "SBIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61706",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3103:SHREECEM:OPTSTK",
+    "id": "3103",
+    "symbol": "SHREECEM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61707",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4306:SHRIRAMFIN:OPTSTK",
+    "id": "4306",
+    "symbol": "SHRIRAMFIN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61708",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3150:SIEMENS:OPTSTK",
+    "id": "3150",
+    "symbol": "SIEMENS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61709",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "13332:SOLARINDS:OPTSTK",
+    "id": "13332",
+    "symbol": "SOLARINDS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61710",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "4684:SONACOMS:OPTSTK",
+    "id": "4684",
+    "symbol": "SONACOMS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61711",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3273:SRF:OPTSTK",
+    "id": "3273",
+    "symbol": "SRF",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61712",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3351:SUNPHARMA:OPTSTK",
+    "id": "3351",
+    "symbol": "SUNPHARMA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61713",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3363:SUPREMEIND:OPTSTK",
+    "id": "3363",
+    "symbol": "SUPREMEIND",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61714",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "12018:SUZLON:OPTSTK",
+    "id": "12018",
+    "symbol": "SUZLON",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61715",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "27066:SWIGGY:OPTSTK",
+    "id": "27066",
+    "symbol": "SWIGGY",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61716",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10793:SYRMA:OPTSTK",
+    "id": "10793",
+    "symbol": "SYRMA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "55144",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3432:TATACONSUM:OPTSTK",
+    "id": "3432",
+    "symbol": "TATACONSUM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61718",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3411:TATAELXSI:OPTSTK",
+    "id": "3411",
+    "symbol": "TATAELXSI",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61721",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3426:TATAPOWER:OPTSTK",
+    "id": "3426",
+    "symbol": "TATAPOWER",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61722",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3499:TATASTEEL:OPTSTK",
+    "id": "3499",
+    "symbol": "TATASTEEL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61723",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11536:TCS:OPTSTK",
+    "id": "11536",
+    "symbol": "TCS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61724",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "13538:TECHM:OPTSTK",
+    "id": "13538",
+    "symbol": "TECHM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61725",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "312:TIINDIA:OPTSTK",
+    "id": "312",
+    "symbol": "TIINDIA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61728",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3506:TITAN:OPTSTK",
+    "id": "3506",
+    "symbol": "TITAN",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61729",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3456:TMPV:OPTSTK",
+    "id": "3456",
+    "symbol": "TMPV",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61730",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3518:TORNTPHARM:OPTSTK",
+    "id": "3518",
+    "symbol": "TORNTPHARM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61731",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "1964:TRENT:OPTSTK",
+    "id": "1964",
+    "symbol": "TRENT",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61732",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "8479:TVSMOTOR:OPTSTK",
+    "id": "8479",
+    "symbol": "TVSMOTOR",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61735",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "15228:UJJIVANSFB:OPTSTK",
+    "id": "15228",
+    "symbol": "UJJIVANSFB",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "59141",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11532:ULTRACEMCO:OPTSTK",
+    "id": "11532",
+    "symbol": "ULTRACEMCO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61736",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10753:UNIONBANK:OPTSTK",
+    "id": "10753",
+    "symbol": "UNIONBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61737",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "10447:UNITDSPR:OPTSTK",
+    "id": "10447",
+    "symbol": "UNITDSPR",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61738",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "14154:UNOMINDA:OPTSTK",
+    "id": "14154",
+    "symbol": "UNOMINDA",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61739",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11287:UPL:OPTSTK",
+    "id": "11287",
+    "symbol": "UPL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61740",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "18921:VBL:OPTSTK",
+    "id": "18921",
+    "symbol": "VBL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61741",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3063:VEDL:OPTSTK",
+    "id": "3063",
+    "symbol": "VEDL",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61742",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "27969:VMM:OPTSTK",
+    "id": "27969",
+    "symbol": "VMM",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61743",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3718:VOLTAS:OPTSTK",
+    "id": "3718",
+    "symbol": "VOLTAS",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61744",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "25907:WAAREEENER:OPTSTK",
+    "id": "25907",
+    "symbol": "WAAREEENER",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61745",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "3787:WIPRO:OPTSTK",
+    "id": "3787",
+    "symbol": "WIPRO",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61746",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "11915:YESBANK:OPTSTK",
+    "id": "11915",
+    "symbol": "YESBANK",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61750",
+      "futureExpiry": "2026-11-23"
+    }
+  },
+  {
+    "key": "7929:ZYDUSLIFE:OPTSTK",
+    "id": "7929",
+    "symbol": "ZYDUSLIFE",
+    "instrument": "OPTSTK",
+    "segment": "NSE_EQ",
+    "kind": "Stock",
+    "expiries": [
+      "2026-11-23",
+      "2026-12-29",
+      "2027-01-25"
+    ],
+    "market": {
+      "futureSecurityId": "61751",
+      "futureExpiry": "2026-11-23"
+    }
+  }
+]

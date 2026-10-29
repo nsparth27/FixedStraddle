@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#09111c" />
+  <title>Future &amp; Option — Straddle Signal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+    :root{color-scheme:dark;--bg:#09111c;--panel:#0e1927;--panel2:#111f30;--line:#1d2d40;--muted:#8192a8;--text:#e7eef8;--mint:#51e0b0;--lime:#c0f278;--amber:#f6c66b;--red:#fd7f85;--blue:#74a9ff;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Manrope',sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -20%,#183454 0,transparent 38%),var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer;color:inherit}.shell{max-width:1540px;margin:auto;padding:0 38px 48px}.topbar{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff10}.brand{display:flex;gap:12px;align-items:center}.brand-icon{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#8affd0,#3aa9f0);color:#09202a;font-weight:800;font-size:18px;box-shadow:0 0 28px #51e0b044}.brand-name{font:700 15px var(--display);letter-spacing:.01em}.brand-sub{font-size:11px;color:var(--muted);margin-top:3px}.top-right{display:flex;align-items:center;gap:18px}.market-status{display:flex;align-items:center;gap:8px;color:#b2c0d1;font-size:12px}.dot{width:7px;height:7px;background:var(--amber);border-radius:50%;box-shadow:0 0 10px #f6c66b80}.mode-tag{border:1px solid #675330;color:#f5cf86;border-radius:20px;padding:6px 10px;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}.avatar{width:31px;height:31px;background:#20334a;border:1px solid #354c66;border-radius:50%;display:grid;place-items:center;color:#c1d3e6;font-size:11px;font-weight:700}
+    .intro{padding:36px 0 27px;display:flex;justify-content:space-between;align-items:flex-end}.eyebrow{font:11px var(--mono);color:var(--mint);letter-spacing:.16em;text-transform:uppercase}.intro h1{font:700 31px var(--display);margin:10px 0 7px;letter-spacing:-.04em}.intro p{margin:0;color:var(--muted);font-size:13px}.date-label{text-align:right;color:var(--muted);font-size:11px}.date-label strong{display:block;color:#dce7f3;font:500 13px var(--mono);margin-bottom:5px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}.metric,.panel{background:linear-gradient(160deg,#101e2e,#0c1724);border:1px solid var(--line);border-radius:13px}.metric{padding:16px 18px;min-height:94px}.metric-label{color:var(--muted);font-size:11px;display:flex;justify-content:space-between;align-items:center}.metric-value{font:600 22px var(--display);margin-top:11px;letter-spacing:-.02em}.metric-foot{font-size:10px;color:#91a2b6;margin-left:6px;font-family:var(--sans);font-weight:400;letter-spacing:0}.up{color:var(--mint)}.warn{color:var(--amber)}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px;align-items:start}.panel{overflow:hidden}.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.panel-title{font:700 13px var(--display);letter-spacing:.01em}.panel-desc{font-size:11px;color:var(--muted);margin-top:4px}.head-actions{display:flex;gap:8px;align-items:center}.search{width:210px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:#091320;color:var(--text);font-size:11px;outline:none}.search:focus{border-color:#4e8f8a}.select{background:#101d2b;color:#c4d0dd;border:1px solid var(--line);border-radius:7px;padding:8px 9px;font-size:11px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font:10px var(--mono);letter-spacing:.055em;text-transform:uppercase;color:#8193a9;padding:12px 13px;background:#0d1825}td{padding:13px;border-top:1px solid #192839;font-size:12px;color:#d3ddea}tbody tr:hover{background:#122033}th:first-child,td:first-child{padding-left:19px}.symbol{font-weight:700;color:#eff5fc;font-size:12px}.instrument-type{display:inline-block;margin-left:7px;color:#8396ac;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}.subline{font:10px var(--mono);color:#788ba1;margin-top:4px}.num{font-family:var(--mono);font-size:11px}.strike{color:#c3d3e6}.oi{color:#d4dfeb}.signal{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.05em}.star{color:var(--lime);font-size:14px;letter-spacing:1px}.signal-three .star{color:var(--amber)}.neutral{color:#71849b;font-size:10px}.icon-btn{border:0;background:transparent;color:#72869f;font-size:16px;padding:4px}.icon-btn:hover{color:var(--text)}.table-foot{padding:12px 18px;border-top:1px solid var(--line);color:#8192a8;font-size:10px;display:flex;justify-content:space-between}.right-col{display:grid;gap:14px}.config{padding:18px}.config-title{font:700 13px var(--display)}.config-note{font-size:11px;color:var(--muted);line-height:1.55;margin:6px 0 18px}.field{margin:14px 0}.field label{display:flex;justify-content:space-between;color:#aab9ca;font-size:11px;margin-bottom:7px}.field label span{font:10px var(--mono);color:#71849c}.field input,.field select{width:100%;background:#091521;border:1px solid #23344a;border-radius:7px;color:#e5edf7;padding:9px 10px;outline:none;font:12px var(--mono)}.field input:focus,.field select:focus{border-color:#4ba994}.inline-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.save-btn{margin-top:8px;width:100%;border:1px solid #337d70;background:linear-gradient(100deg,#184d48,#153a40);border-radius:8px;padding:10px;color:#b4f3dc;font-size:11px;font-weight:700}.save-btn:hover{background:#1c5b52}.rule-card{padding:17px 18px}.rule-card h3{font:700 12px var(--display);margin:0}.rule-row{display:flex;gap:10px;margin-top:15px;align-items:flex-start}.rule-star{font-size:13px;min-width:36px;color:var(--amber)}.rule-star.five{color:var(--lime)}.rule-copy{color:#c6d3e2;font-size:11px;line-height:1.5}.rule-copy span{display:block;color:#8192a7;font-size:10px;margin-top:3px}.history-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1a2939;font-size:11px}.history-row:last-child{border:0;padding-bottom:0}.history-row span:first-child{color:#b7c5d4}.history-row span:last-child{font:10px var(--mono);color:#8294a9}.notice{margin-top:15px;padding:10px 12px;border:1px solid #344050;border-radius:8px;background:#172131;color:#9aabc0;font-size:10px;line-height:1.55}.notice b{color:#d5e1ef}.empty{padding:40px;text-align:center;color:var(--muted)}.toast{position:fixed;right:24px;bottom:22px;padding:12px 16px;border:1px solid #315c53;border-radius:9px;background:#10271f;color:#b7f3d6;font-size:12px;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}
+    .credential-copy{font-size:11px;color:var(--muted);line-height:1.55;margin:6px 0 14px}.credential-actions{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.credential-actions .save-btn{margin:0}.disconnect-btn{height:36px;padding:0 10px;background:#1d2633;border:1px solid #39495d;border-radius:8px;color:#bac8d8;font-size:10px}.credential-state{min-height:14px;font-size:10px;color:#91a2b7;margin-top:9px}
+    @media(max-width:1100px){.shell{padding:0 22px 38px}.layout{grid-template-columns:minmax(0,1fr) 280px}.search{width:150px}.metrics{gap:9px}.metric{padding:14px}}
+    @media(max-width:800px){.layout{grid-template-columns:1fr}.right-col{grid-template-columns:1fr 1fr}.rules-panel{grid-column:span 2}.metrics{grid-template-columns:repeat(2,1fr)}.intro h1{font-size:27px}}
+    @media(max-width:540px){.shell{padding:0 14px 32px}.topbar{height:65px}.market-status{display:none}.intro{padding:26px 0 20px;display:block}.date-label{text-align:left;margin-top:14px}.metrics{gap:8px}.metric{min-height:82px;padding:12px}.metric-value{font-size:18px}.metric-label{font-size:10px}.right-col{grid-template-columns:1fr}.rules-panel{grid-column:auto}.panel-head{align-items:flex-start;gap:12px;flex-direction:column}.head-actions{width:100%}.search{width:100%}.select{flex-shrink:0}.table-foot{gap:8px;flex-direction:column}.intro h1{font-size:25px}}
+    /* Options workspace visual refresh: familiar trading-terminal structure, original branding. */
+    :root{color-scheme:light;--bg:#f4f6fa;--panel:#fff;--panel2:#f8f9fc;--line:#e5e9f0;--muted:#758196;--text:#202b3c;--mint:#13876f;--lime:#16866d;--amber:#b87808;--red:#ce4a5d;--blue:#3869c8;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Manrope',sans-serif}
+    body{background:#f4f6fa;color:#202b3c}.shell{max-width:none;padding:0 34px 48px}.topbar{height:68px;margin:0 -34px;padding:0 34px;background:#fff;border-bottom:1px solid #e6eaf0;box-shadow:0 2px 8px #1b2b3c08}.brand-icon{border-radius:10px;background:#173c35;color:#9cf0d0;box-shadow:none}.brand-name{color:#1d2b3c}.brand-sub{color:#8290a2}.top-right{gap:14px}.market-status{color:#59677a}.dot{background:#d18b19;box-shadow:0 0 0 3px #d18b191c}.mode-tag{border-color:#e8d7af;background:#fff9eb;color:#9a690e}.avatar{background:#edf2f8;border-color:#dfe6ef;color:#526174}
+    .intro{padding:30px 0 20px}.eyebrow{color:#16866d}.intro h1{color:#1d2b3c;font-size:28px}.intro p{color:#758196}.date-label strong{color:#344256}.metrics{gap:12px;margin-bottom:18px}.metric,.panel{background:#fff;border:1px solid #e6eaf0;border-radius:11px;box-shadow:0 2px 8px #1b2b3c07}.metric{min-height:87px;padding:14px 17px}.metric-label{color:#738095}.metric-value{color:#202b3c;font-size:21px}.metric-foot{color:#8994a5}.layout{gap:14px;grid-template-columns:minmax(0,1fr) 300px}.panel-head{padding:15px 17px;border-bottom-color:#edf0f4}.panel-title{color:#26364a}.panel-desc{color:#8390a1}.search,.select{background:#fff;color:#344256;border-color:#dce2ea}.search:focus,.field input:focus,.field select:focus{border-color:#62ad98}.table-wrap{background:#fff}th{background:#f7f9fb;color:#7b8798}td{border-top-color:#edf0f4;color:#3c4b60}tbody tr:hover{background:#f5faf8}.symbol{color:#243449}.subline{color:#8490a1}.strike{color:#48617e}.neutral{color:#8490a1}.config-title,.rule-card h3{color:#27374b}.config-note,.credential-copy{color:#758196}.field label{color:#59677a}.field label span{color:#8a95a5}.field input,.field select{background:#fff;border-color:#dce2ea;color:#2d3c50}.save-btn{border-color:#187b67;background:#177c68;color:#fff}.save-btn:hover{background:#126b5a}.disconnect-btn{background:#f5f7fa;border-color:#dce2ea;color:#516176}.history-row{border-bottom-color:#edf0f4}.history-row span:first-child{color:#59677a}.history-row span:last-child{color:#748196}.notice{border-color:#e4e9ef;background:#f7f9fb;color:#718096}.notice b{color:#344256}.table-foot{border-top-color:#edf0f4;color:#78869a}.rule-copy{color:#45556a}.rule-copy span{color:#8390a1}.toast{border-color:#bde3d5;background:#effaf5;color:#17694f}
+    @media(max-width:1100px){.shell{padding:0 22px 38px}.topbar{margin:0 -22px;padding:0 22px}.layout{grid-template-columns:minmax(0,1fr) 280px}}
+    @media(max-width:540px){.shell{padding:0 14px 32px}.topbar{margin:0 -14px;padding:0 14px}}
+    html,body{max-width:100%;overflow-x:hidden}.app-frame,main,.layout,.scanner-panel,.chain-panel{min-width:0}.app-frame{display:grid;grid-template-columns:190px minmax(0,1fr);gap:26px}.side-nav{padding-top:27px;position:sticky;top:10px;height:max-content}.nav-caption{padding:0 11px 10px;color:#929dad;font:10px var(--mono);letter-spacing:.12em}.brand-icon{font-size:12px}.nav-item{display:flex;align-items:center;gap:11px;padding:10px 11px;margin-bottom:4px;text-decoration:none;border-radius:8px;color:#637187;font-size:12px;font-weight:600}.nav-item i{font-style:normal;font-size:15px;width:18px;text-align:center}.nav-item:hover{background:#eaf3f0;color:#176c59}.nav-item.active{background:#e9f4f0;color:#176c59}.nav-group-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;margin:10px 0 4px;padding:10px 11px;border:0;border-radius:8px;background:transparent;color:#34465d;font-size:11px;font-weight:700;text-align:left;cursor:pointer}.nav-group-toggle:hover,.nav-group-toggle[aria-expanded="true"]{background:#f1f5f7;color:#176c59}.nav-group-toggle i{font-style:normal;font-size:14px;transition:transform .15s}.nav-group-toggle[aria-expanded="true"] i{transform:rotate(180deg)}.nav-submenu{padding-left:10px}.nav-separator{height:1px;background:#e1e6ed;margin:18px 10px}.nav-note{margin:0 10px;padding:12px;border:1px solid #e4e9ef;border-radius:9px;background:#fff;color:#617087;font-size:11px;line-height:1.6}.nav-note b{display:block;color:#2d3d51;font-size:11px;margin-bottom:4px}
+    .chain-panel{margin-bottom:15px}.chain-actions,.chain-controls{display:flex;align-items:center;gap:10px}.chain-selection{font:11px var(--mono);color:#78869a}.chain-add{margin:0;padding:9px 14px;white-space:nowrap}.chain-add:disabled{background:#e9eef2;color:#8492a2;border-color:#e1e6ed;opacity:1;cursor:not-allowed}.chain-controls{padding:13px 17px;border-bottom:1px solid #edf0f4;background:#fbfcfd}.chain-controls label{display:grid;gap:5px;color:#738095;font-size:10px}.chain-controls select{min-width:190px;padding:8px 10px;border:1px solid #dce2ea;border-radius:7px;background:white;color:#344256;font:12px var(--sans)}.chain-controls label:nth-child(2) select{min-width:145px}.secondary-btn{align-self:end;padding:8px 13px;border:1px solid #dce2ea;border-radius:7px;background:#fff;color:#43546a;font-size:11px;font-weight:700}.secondary-btn:disabled{opacity:.45;cursor:not-allowed}.chain-price-mode{margin-left:auto;color:#16866d;font:10px var(--mono)}.chain-scroll{max-height:570px;overflow:auto}.option-chain-table{table-layout:fixed;min-width:790px}.option-chain-table th,.option-chain-table td{text-align:center;padding:9px 7px}.option-chain-table th{position:sticky;top:0;z-index:2}.option-chain-table td:nth-child(4),.option-chain-table th:nth-child(4){background:#f7f9fb}.option-chain-table tr.at-the-money td{background:#f1f7ff}.option-chain-table .strike-cell{font:12px var(--mono);font-weight:600;color:#344256}.chain-select{border:0;border-radius:5px;padding:5px 7px;background:transparent;color:#344256;font:12px var(--mono);cursor:pointer}.chain-select:hover{background:#eaf0f7}.chain-select.selected-call{background:#fdebed;color:#ba4351;box-shadow:inset 0 0 0 1px #efc3c8}.chain-select.selected-put{background:#e5f5ef;color:#147459;box-shadow:inset 0 0 0 1px #c3e7d8}.oi-cell{position:relative;overflow:hidden;font:11px var(--mono)}.oi-bar{position:absolute;left:0;top:4px;bottom:4px;border-radius:10px;opacity:.42;pointer-events:none}.oi-bar.call{background:#f5b9c0}.oi-bar.put{background:#9cdec4}.oi-value{position:relative;z-index:1}.call-delta{color:#4e6074}.put-delta{color:#4e6074}.remove-watch{border:0;background:transparent;color:#a0a9b6;font-size:17px}.remove-watch:hover{color:#c44858}.watch-expiry{display:block;margin-top:4px;color:#8390a1;font:10px var(--mono)}
+    .price-choice{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;font:12px var(--mono);color:#344256;cursor:pointer}.price-choice input,.strike-choice input{appearance:none;width:13px;height:13px;margin:0;border:1px solid #c9d2df;border-radius:3px;background:#fff;cursor:pointer;flex:none}.price-choice input:checked{background:#fff;border-color:var(--choice-color);box-shadow:inset 0 0 0 3px var(--choice-color)}.price-choice.call{--choice-color:#c44858}.price-choice.put{--choice-color:#16866d}.price-choice input:disabled,.strike-choice input:disabled{opacity:.4;cursor:not-allowed}.strike-choice{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}.strike-choice input:checked{background:#177c68;border-color:#177c68;box-shadow:inset 0 0 0 3px #fff}.option-chain-table th:nth-child(4){font-size:9px}
+    @media(max-width:900px){.app-frame{grid-template-columns:1fr;gap:0}.side-nav{display:flex;align-items:center;gap:5px;overflow-x:auto;padding:12px 0 2px;position:static}.nav-caption,.nav-separator,.nav-note{display:none}.nav-item{white-space:nowrap;margin:0;padding:9px 11px}}
+    @media(max-width:800px){.chain-controls{flex-wrap:wrap}.chain-price-mode{margin-left:0}.chain-actions{width:100%;justify-content:space-between}}
+    @media(max-width:800px){.layout{grid-template-columns:minmax(0,1fr)}.right-col{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:540px){.layout{grid-template-columns:minmax(0,1fr)}.right-col{grid-template-columns:minmax(0,1fr)}.chain-actions{align-items:stretch;flex-direction:column}.chain-add{width:100%}.chain-controls label{flex:1;min-width:125px}.chain-controls select,.chain-controls label:nth-child(2) select{width:100%;min-width:0}.chain-price-mode{width:100%}}
+    .page-view[hidden]{display:none}.alert-page-panel{min-height:340px}.settings-layout{grid-template-columns:minmax(0,1fr)}.settings-layout .right-col{grid-template-columns:repeat(2,minmax(0,1fr))}.chain-live-prices{margin-left:auto;color:#176c59;background:#eef7f3;border:1px solid #dceee7;border-radius:7px;padding:8px 10px;font:10px var(--mono);white-space:nowrap}.chain-controls .chain-timeframe-control select{min-width:110px}
+    @media(max-width:540px){.settings-layout .right-col{grid-template-columns:minmax(0,1fr)}}
+    .strategy-nav-group{display:flex;flex-direction:column;gap:5px;margin:2px 0 12px}
+    .strategy-nav-item{display:flex!important;flex-direction:column;align-items:stretch!important;padding:8px 10px!important;border-radius:8px;background:#fff;border:1px solid #e6eaf0;transition:all .15s;text-decoration:none}
+    .strategy-nav-item:hover{background:#f0f7f4;border-color:#bde3d5}
+    .strategy-nav-item.active{background:#e8f5f0!important;border-color:#50ba9a!important;box-shadow:0 1px 4px #13876f18}
+    .strategy-nav-title-row{display:flex;align-items:center;justify-content:space-between;width:100%}
+    .strategy-title-text{font-size:11px;font-weight:700;color:#27374b;display:flex;align-items:center;gap:6px}
+    .strategy-icon{font-style:normal;font-size:11px}
+    .strategy-icon.up{color:var(--mint)}
+    .strategy-icon.warn{color:var(--amber)}
+    .strategy-icon.lime{color:#13876f}
+    .strategy-icon.star{color:#e5a11c}
+    .strategy-icon.down{color:var(--red)}
+    .strategy-badge{font:700 11px var(--mono);padding:2px 7px;border-radius:10px;background:#eef2f6;color:#45556a;line-height:1}
+    .strategy-badge.up{background:#e0f5ed;color:#0f6b57}
+    .strategy-badge.warn{background:#fdf2dc;color:#9b6507}
+    .strategy-badge.down{background:#fdebed;color:#ce4a5d}
+    .strategy-badge.five{background:#fff3d6;color:#9a690e}
+    .strategy-sub{font-size:10px;color:#7e8d9f;margin-top:4px;font-family:var(--mono)}
+    .strategy-cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+    .strategy-card{background:#fff;border:1px solid #e6eaf0;border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+    .strategy-card:hover{border-color:#bde3d5;transform:translateY(-1px)}
+    .strategy-card.active{border-color:#177c68;background:linear-gradient(170deg,#ffffff,#f1f9f6);box-shadow:0 3px 10px #13876f15}
+    .strategy-card-head{display:flex;align-items:center;justify-content:space-between;color:#738095;font-size:11px;font-weight:600}
+    .strategy-card-val{font:700 24px var(--display);color:#202b3c;margin:8px 0 4px;display:flex;align-items:baseline;gap:6px}
+    .strategy-card-val.down{color:var(--red)}
+    .signal-red{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--red)}
+    .signal-red .star{color:var(--red)}
+    .strategy-card-breakdown{font:10px var(--mono);color:#7b889a}
+    .sector-tag{display:inline-block;padding:3px 8px;background:#edf3f8;color:#354960;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap}
+    .kind-tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+    .kind-tag.stock{background:#e7f0fa;color:#28569c}
+    .kind-tag.index{background:#f5eafc;color:#7a2fb5}
+    .macd-positive{color:var(--mint);font-weight:700}
+    .macd-negative{color:var(--red);font-weight:700}
+    .strategy-panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:15px 17px;border-bottom:1px solid #edf0f4}
+    .strategy-head-controls{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+    .strategy-timeframe-section{display:flex;align-items:center;gap:7px;background:#f6f8fb;padding:5px 9px;border-radius:8px;border:1px solid #e2e8f0}
+    .strategy-tf-label{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#52647c}
+    .tf-icon{font-style:normal;font-size:12px}
+    .strategy-tf-pills{display:flex;align-items:center;gap:3px}
+    .tf-pill-btn{border:1px solid #dce2ea;background:#fff;color:#516377;padding:3px 8px;border-radius:5px;font:700 11px var(--mono);cursor:pointer;transition:all .15s}
+    .tf-pill-btn:hover{background:#edf6f3;color:#13876f;border-color:#bce5d8}
+    .tf-pill-btn.active{background:#177c68;color:#fff;border-color:#177c68;box-shadow:0 1px 3px #177c6833}
+    .strategy-tf-select{padding:4px 7px!important;font-size:11px!important;height:26px;min-width:88px}
+    @media(max-width:850px){
+      .strategy-panel-head{flex-direction:column;align-items:stretch}
+      .strategy-head-controls{align-items:stretch}
+      .strategy-timeframe-section{flex-wrap:wrap;justify-content:space-between}
+    }
+    @media(max-width:900px){.strategy-cards-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:540px){.strategy-cards-grid{grid-template-columns:1fr}}
+    .eod-export-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 17px;background:#f8fafc;border-bottom:1px solid #edf0f4;gap:12px;flex-wrap:wrap}
+    .eod-export-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .eod-badge{display:inline-flex;align-items:center;gap:6px;background:#eef6f3;color:#13876f;border:1px solid #bfe3d6;border-radius:20px;padding:4px 10px;font:700 11px var(--mono)}
+    .eod-dot{width:7px;height:7px;background:#13876f;border-radius:50%;display:inline-block;box-shadow:0 0 6px #13876f80}
+    .eod-sub{font-size:11px;color:#78869a}
+    .eod-export-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .btn-export-excel{display:inline-flex;align-items:center;gap:6px;background:#177c68;color:#fff;border:1px solid #136958;padding:7px 13px;border-radius:7px;font-size:11px;font-weight:700;text-decoration:none;cursor:pointer;transition:all .15s}
+    .btn-export-excel:hover{background:#126353;color:#fff}
+    .btn-export-csv{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#334458;border:1px solid #dce2ea;padding:7px 12px;border-radius:7px;font-size:11px;font-weight:700;text-decoration:none;cursor:pointer;transition:all .15s}
+    .btn-export-csv:hover{background:#f1f4f8}
+    .btn-export-telegram{display:inline-flex;align-items:center;gap:6px;background:#f0f7ff;color:#206bc4;border:1px solid #c7ddf7;padding:7px 12px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
+    .btn-export-telegram:hover{background:#e1effe}
+    .pair-type-tag{display:inline-block;padding:2px 6px;border-radius:4px;font:700 9px var(--mono);margin-left:6px;letter-spacing:.03em;text-transform:uppercase}
+    .pair-type-tag.straddle{background:#e8f5f0;color:#13876f;border:1px solid #bde3d5}
+    .pair-type-tag.strangle{background:#f0eafa;color:#6b28b2;border:1px solid #d9c5f2}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-icon">F&amp;O</div><div><div class="brand-name">Future &amp; Option</div><div class="brand-sub">Straddle Signal workspace</div></div></div>
+      <div class="top-right"><div class="market-status"><i class="dot" id="statusDot"></i><span id="marketStatus">Checking backend…</span></div><span class="mode-tag" id="modeTag">Connecting</span><div class="avatar">PS</div></div>
+    </header>
+    <div class="app-frame">
+      <nav class="side-nav" aria-label="Workspace navigation">
+        <div class="nav-caption">WORKSPACE</div>
+        <a class="nav-item active" href="#alertsPage" data-page-link="alertsPage"><i>✳</i>Alerts</a>
+        <button class="nav-group-toggle" id="futureOptionToggle" type="button" aria-expanded="false" aria-controls="futureOptionMenu"><span>Future &amp; Option</span><i aria-hidden="true">⌄</i></button>
+        <div class="nav-submenu" id="futureOptionMenu" hidden>
+          <a class="nav-item" href="#indicesPage" data-page-link="indicesPage"><i>⌁</i>Indices</a>
+          <a class="nav-item" href="#watchlistPage" data-page-link="watchlistPage"><i>◉</i>F&amp;O Stocks</a>
+        </div>
+        <button class="nav-group-toggle" id="stocksToggle" type="button" aria-expanded="false" aria-controls="stocksMenu"><span>Stocks</span><i aria-hidden="true">⌄</i></button>
+        <div class="nav-submenu" id="stocksMenu" hidden>
+          <a class="nav-item" href="#stockEmaPage" data-page-link="stockEmaPage"><i>⌁</i>200 EMA</a>
+        </div>
+        <a class="nav-item" href="#apiSettingsPage" data-page-link="apiSettingsPage"><i>⚙</i>API &amp; Settings</a>
+        <div class="nav-separator"></div>
+        <div class="nav-caption">STRATEGY</div>
+        <div class="strategy-nav-group">
+          <a class="nav-item strategy-nav-item active" href="#strategyCeMacdPosPage" data-page-link="strategyPage" data-strategy="ceMacdPos" id="navStratCeMacdPos">
+            <div class="strategy-nav-title-row">
+              <span class="strategy-title-text"><i class="strategy-icon up">▲</i>CE MACD &gt; 0</span>
+              <span class="strategy-badge up" id="navCeMacdPosCount">0</span>
+            </div>
+            <div class="strategy-sub" id="navCeMacdPosSub">Call momentum</div>
+          </a>
+          <a class="nav-item strategy-nav-item" href="#strategyCeMacdNegPage" data-page-link="strategyPage" data-strategy="ceMacdNeg" id="navStratCeMacdNeg">
+            <div class="strategy-nav-title-row">
+              <span class="strategy-title-text"><i class="strategy-icon down">▼</i>CE MACD &lt; 0</span>
+              <span class="strategy-badge down" id="navCeMacdNegCount">0</span>
+            </div>
+            <div class="strategy-sub" id="navCeMacdNegSub">Call cooling</div>
+          </a>
+          <a class="nav-item strategy-nav-item" href="#strategyPeMacdPosPage" data-page-link="strategyPage" data-strategy="peMacdPos" id="navStratPeMacdPos">
+            <div class="strategy-nav-title-row">
+              <span class="strategy-title-text"><i class="strategy-icon up">▲</i>PE MACD &gt; 0</span>
+              <span class="strategy-badge up" id="navPeMacdPosCount">0</span>
+            </div>
+            <div class="strategy-sub" id="navPeMacdPosSub">Put momentum</div>
+          </a>
+          <a class="nav-item strategy-nav-item" href="#strategyPeMacdNegPage" data-page-link="strategyPage" data-strategy="peMacdNeg" id="navStratPeMacdNeg">
+            <div class="strategy-nav-title-row">
+              <span class="strategy-title-text"><i class="strategy-icon down">▼</i>PE MACD &lt; 0</span>
+              <span class="strategy-badge down" id="navPeMacdNegCount">0</span>
+            </div>
+            <div class="strategy-sub" id="navPeMacdNegSub">Put cooling</div>
+          </a>
+        </div>
+      </nav>
+    <main>
+      <section class="intro"><div><div class="eyebrow">NSE derivatives · Options workspace</div><h1 id="pageTitle">Live straddle alerts</h1><p id="pageDescription">See only the pairs that currently meet your 15-minute signal rules.</p></div><div class="date-label"><strong id="today">—</strong><span>Live option chain · IST</span></div></section>
+      <section class="metrics" aria-label="Scanner summary">
+        <article class="metric"><div class="metric-label">Watchlist pairs <span>◉</span></div><div class="metric-value" id="universeCount">—<span class="metric-foot">custom straddles</span></div></article>
+        <article class="metric"><div class="metric-label">Active signals <span>↗</span></div><div class="metric-value up" id="signalCount">—<span class="metric-foot">qualifying now</span></div></article>
+        <article class="metric"><div class="metric-label">5-star alerts <span class="star">★</span></div><div class="metric-value" id="fiveCount">—<span class="metric-foot">MACD + EMA</span></div></article>
+        <article class="metric"><div class="metric-label">Data connection <span>⌁</span></div><div class="metric-value warn" style="font-size:16px" id="connectionState">Demo mode</div></article>
+      </section>
+      <section class="page-view" id="alertsPage">
+        <section class="panel scanner-panel alert-page-panel" id="alertsPanel">
+          <div class="panel-head"><div><div class="panel-title">Live alerts</div><div class="panel-desc" id="alertDescription">Only pairs currently meeting your signal rules.</div></div><div class="head-actions"><select class="select" id="alertLevelFilter" aria-label="Filter alert level"><option value="all">All alerts</option><option value="five">5-star alerts</option><option value="three">3-star alerts</option></select></div></div>
+          <div class="eod-export-bar">
+            <div class="eod-export-left">
+              <div class="eod-badge">
+                <span class="eod-dot"></span>
+                <span id="eodAlertCountBadge">0 alerts logged today</span>
+              </div>
+              <span class="eod-sub">Auto EOD Excel export &amp; Telegram dispatch after 08:30 PM IST</span>
+            </div>
+            <div class="eod-export-actions">
+              <button class="btn-export-excel" id="btnDownloadExcel" type="button" title="Download Excel (.xlsx) file for backtesting">
+                <span>📊</span> Download Excel (.xlsx)
+              </button>
+              <button class="btn-export-csv" id="btnDownloadCsv" type="button" title="Download CSV file for backtesting">
+                <span>📄</span> Download CSV
+              </button>
+              <button class="btn-export-telegram" id="btnSendTelegramReport" type="button" title="Send today's Excel report to your Telegram chat now">
+                <span>📱</span> Send to Telegram
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Underlying · Expiry</th><th>Call strike</th><th>Call LTP</th><th>Put strike</th><th>Put LTP</th><th>Straddle</th><th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th><th>200 EMA</th><th>Alert</th></tr></thead><tbody id="alertRows"></tbody></table></div>
+          <div class="table-foot"><span id="alertSummary">Waiting for live signals…</span><span>3★ MACD (12 EMA − 26 EMA) ≥ 0 · 5★ MACD ≥ 0 and straddle above EMA</span></div>
+        </section>
+      </section>
+      <section class="page-view" id="strategyPage" hidden>
+        <section class="strategy-cards-grid">
+          <div class="strategy-card active" data-strategy="ceMacdPos" id="cardStratCeMacdPos">
+            <div class="strategy-card-head">
+              <span>CE MACD &gt; 0</span>
+              <span class="strategy-icon up">▲</span>
+            </div>
+            <div class="strategy-card-val up" id="cardCeMacdPosCount">—</div>
+            <div class="strategy-card-breakdown" id="cardCeMacdPosBreakdown">Stock &amp; Index Call strikes</div>
+          </div>
+          <div class="strategy-card" data-strategy="ceMacdNeg" id="cardStratCeMacdNeg">
+            <div class="strategy-card-head">
+              <span>CE MACD &lt; 0</span>
+              <span class="strategy-icon down">▼</span>
+            </div>
+            <div class="strategy-card-val down" id="cardCeMacdNegCount">—</div>
+            <div class="strategy-card-breakdown" id="cardCeMacdNegBreakdown">Stock &amp; Index Call strikes</div>
+          </div>
+          <div class="strategy-card" data-strategy="peMacdPos" id="cardStratPeMacdPos">
+            <div class="strategy-card-head">
+              <span>PE MACD &gt; 0</span>
+              <span class="strategy-icon up">▲</span>
+            </div>
+            <div class="strategy-card-val up" id="cardPeMacdPosCount">—</div>
+            <div class="strategy-card-breakdown" id="cardPeMacdPosBreakdown">Stock &amp; Index Put strikes</div>
+          </div>
+          <div class="strategy-card" data-strategy="peMacdNeg" id="cardStratPeMacdNeg">
+            <div class="strategy-card-head">
+              <span>PE MACD &lt; 0</span>
+              <span class="strategy-icon down">▼</span>
+            </div>
+            <div class="strategy-card-val down" id="cardPeMacdNegCount">—</div>
+            <div class="strategy-card-breakdown" id="cardPeMacdNegBreakdown">Stock &amp; Index Put strikes</div>
+          </div>
+        </section>
+
+        <section class="panel scanner-panel" id="strategyPanel">
+          <div class="panel-head strategy-panel-head">
+            <div>
+              <div class="panel-title" id="strategyTableTitle">Call Strike MACD &gt; 0 (CE Leg)</div>
+              <div class="panel-desc" id="strategyTableDesc">Showing hand-picked Call option strikes from your F&amp;O Stocks and Indices watchlist where MACD is greater than 0.</div>
+            </div>
+            <div class="strategy-head-controls">
+              <!-- Timeframe section directly above highest MACD tab -->
+              <div class="strategy-timeframe-section" id="strategyTimeframeSection">
+                <div class="strategy-tf-label">
+                  <span class="tf-icon">⏱</span>
+                  <span>Timeframe:</span>
+                </div>
+                <div class="strategy-tf-pills" id="strategyTfPills">
+                  <button type="button" class="tf-pill-btn" data-tf="1">1m</button>
+                  <button type="button" class="tf-pill-btn" data-tf="3">3m</button>
+                  <button type="button" class="tf-pill-btn" data-tf="5">5m</button>
+                  <button type="button" class="tf-pill-btn active" data-tf="15">15m</button>
+                  <button type="button" class="tf-pill-btn" data-tf="30">30m</button>
+                  <button type="button" class="tf-pill-btn" data-tf="60">1h</button>
+                  <button type="button" class="tf-pill-btn" data-tf="1440">1D</button>
+                </div>
+                <select class="select strategy-tf-select" id="strategyTimeframeSelect" aria-label="Select Signal Timeframe">
+                  <option value="1">1 min</option>
+                  <option value="2">2 min</option>
+                  <option value="3">3 min</option>
+                  <option value="5">5 min</option>
+                  <option value="15" selected>15 min</option>
+                  <option value="30">30 min</option>
+                  <option value="60">1 hour</option>
+                  <option value="120">2 hours</option>
+                  <option value="180">3 hours</option>
+                  <option value="240">4 hours</option>
+                  <option value="1440">1 day</option>
+                </select>
+              </div>
+              <div class="head-actions">
+                <input class="search" id="strategySearch" type="search" placeholder="Search stock, index, sector…" aria-label="Search strategy results"/>
+                <select class="select" id="strategyTypeFilter" aria-label="Filter by instrument kind">
+                  <option value="all">All Types</option>
+                  <option value="Stock">F&amp;O Stocks only</option>
+                  <option value="Index">Indices / Sectors only</option>
+                </select>
+                <select class="select" id="strategySortFilter" aria-label="Sort strategy results">
+                  <option value="macdDesc">Highest MACD</option>
+                  <option value="macdAsc">Lowest MACD</option>
+                  <option value="symbolAsc">Symbol (A-Z)</option>
+                  <option value="ltpDesc">Highest LTP</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr id="strategyTableHeadRow">
+                  <th>Stock / Index</th>
+                  <th>Sector</th>
+                  <th>Type</th>
+                  <th>Expiry</th>
+                  <th>Selected Strike</th>
+                  <th>Strike LTP</th>
+                  <th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26)</th>
+                  <th>12 EMA</th>
+                  <th>26 EMA</th>
+                  <th>Signal</th>
+                </tr>
+              </thead>
+              <tbody id="strategyRows"></tbody>
+            </table>
+          </div>
+          <div class="table-foot">
+            <span id="strategySummary">Waiting for strategy data…</span>
+            <span id="strategyFootNote">CE MACD &gt; 0 indicates positive short-term momentum on the selected call option strike.</span>
+          </div>
+        </section>
+      </section>
+      <section class="page-view" id="indicesPage" hidden>
+        <section class="panel chain-panel" id="indicesOptionChainPanel">
+          <div class="panel-head"><div><div class="panel-title">Index option chain</div><div class="panel-desc">Browse index options by weekly or monthly expiry. Add selected legs to your watchlist.</div></div><div class="chain-actions"><span class="chain-selection" id="indicesChainSelectionStatus">Select a call and a put</span><button class="save-btn chain-add" id="addIndexWatchlist" disabled>Add pair to watchlist</button></div></div>
+          <div class="chain-controls"><label>Index<select id="indexUnderlyingSelect"><option value="">Connect Dhan to load indices</option></select></label><label>Expiry type<select id="indicesExpiryType"><option value="all" selected>All</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></label><label>Expiry<select id="indicesExpirySelect" disabled><option value="">Choose index first</option></select></label><span class="chain-live-prices" id="indicesMarketPrices">Spot — · Future —</span><label class="chain-timeframe-control">Signal TF<select id="indexTimeframe"><option value="1">1 min</option><option value="2">2 min</option><option value="3">3 min</option><option value="5">5 min</option><option value="15" selected>15 min</option><option value="30">30 min</option><option value="60">1 hour</option><option value="120">2 hours</option><option value="180">3 hours</option><option value="240">4 hours</option><option value="1440">1 day</option></select></label><button class="secondary-btn" id="loadIndicesChain" disabled>Load chain</button></div>
+          <div class="table-wrap chain-scroll"><table class="option-chain-table"><thead><tr><th>Call Δ</th><th>Call LTP</th><th>Call OI</th><th>Strike · Both</th><th>IV</th><th>Put OI</th><th>Put LTP</th><th>Put Δ</th></tr></thead><tbody id="indicesChainRows"><tr><td colspan="8" class="empty">Connect Dhan and choose an index to load its option chain.</td></tr></tbody></table></div>
+          <div class="table-foot"><span id="indicesChainSummary">Choose an index and expiry type to view available expiries.</span><span id="indicesChainUnderlyingPrice">Underlying —</span></div>
+        </section>
+        <section class="panel scanner-panel" id="indexScannerPanel">
+          <div class="panel-head"><div><div class="panel-title">Index watchlist</div><div class="panel-desc">Saved index straddles · Live prices and signals</div></div><div class="head-actions"><input class="search" id="indexSearch" type="search" placeholder="Search index…" aria-label="Search indices"/><select class="select" id="indexSignalFilter" aria-label="Filter index signals"><option value="all">All pairs</option><option value="alerts">With alerts</option><option value="five">5-star only</option></select></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Index · Expiry</th><th>Call strike</th><th>Call LTP</th><th>Put strike</th><th>Put LTP</th><th>Straddle</th><th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th><th>200 EMA</th><th>Alert</th><th></th></tr></thead><tbody id="indexScannerRows"></tbody></table></div>
+          <div class="table-foot"><span id="indexRowSummary">Waiting for backend…</span><span>Index pairs are separate from the F&amp;O Stocks watchlist.</span></div>
+        </section>
+      </section>
+      <section class="page-view" id="watchlistPage" hidden>
+      <section class="panel chain-panel" id="optionChainPanel">
+        <div class="panel-head"><div><div class="panel-title">Option chain</div><div class="panel-desc">Select one call and one put to create your custom fixed straddle.</div></div><div class="chain-actions"><span class="chain-selection" id="chainSelectionStatus">Select a call and a put</span><button class="save-btn chain-add" id="addWatchlist" disabled>Add pair to watchlist</button></div></div>
+        <div class="chain-controls"><label>Underlying<select id="underlyingSelect"><option value="">Connect Dhan to load NSE F&amp;O</option></select></label><label>Expiry<select id="expirySelect" disabled><option value="">Choose underlying first</option></select></label><span class="chain-live-prices" id="stockMarketPrices">Spot — · Future —</span><label class="chain-timeframe-control">Signal TF<select id="stockTimeframe"><option value="1">1 min</option><option value="2">2 min</option><option value="3">3 min</option><option value="5">5 min</option><option value="15" selected>15 min</option><option value="30">30 min</option><option value="60">1 hour</option><option value="120">2 hours</option><option value="180">3 hours</option><option value="240">4 hours</option><option value="1440">1 day</option></select></label><button class="secondary-btn" id="loadChain" disabled>Load chain</button></div>
+        <div class="table-wrap chain-scroll"><table class="option-chain-table"><thead><tr><th>Call Δ</th><th>Call LTP</th><th>Call OI</th><th>Strike · Both</th><th>IV</th><th>Put OI</th><th>Put LTP</th><th>Put Δ</th></tr></thead><tbody id="chainRows"><tr><td colspan="8" class="empty">Connect Dhan and choose an underlying to load live strikes.</td></tr></tbody></table></div>
+        <div class="table-foot"><span id="chainSummary">Dhan option-chain snapshots are refreshed on demand.</span><span id="chainUnderlyingPrice">Underlying —</span></div>
+      </section>
+      <section class="layout">
+        <div class="panel scanner-panel" id="scannerPanel">
+          <div class="panel-head"><div><div class="panel-title">My watchlist</div><div class="panel-desc">Your hand-picked option pairs · Live prices and signals</div></div><div class="head-actions"><input class="search" id="search" type="search" placeholder="Search symbol…" aria-label="Search symbols"/><select class="select" id="signalFilter" aria-label="Filter signals"><option value="all">All pairs</option><option value="alerts">With alerts</option><option value="five">5-star only</option></select></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Underlying · Expiry</th><th>Call strike</th><th>Call LTP</th><th>Put strike</th><th>Put LTP</th><th>Straddle</th><th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th><th>200 EMA</th><th>Alert</th><th></th></tr></thead><tbody id="scannerRows"></tbody></table></div>
+          <div class="table-foot"><span id="rowSummary">Waiting for backend…</span><span id="dataFoot">No data loaded</span></div>
+        </div>
+      </section>
+      </section>
+      <section class="page-view" id="stockEmaPage" hidden>
+        <section class="panel scanner-panel" id="stockEmaPanel">
+          <div class="panel-head"><div><div class="panel-title">Stocks · 200 EMA</div><div class="panel-desc">Automatically scan NSE stocks against their completed weekly close and 200-week EMA.</div></div><div class="head-actions"><span class="chain-selection" id="stockEmaScanStatus">Waiting for Dhan connection…</span></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Stock</th><th>Weekly close</th><th>200-week EMA</th><th>Distance</th><th>Weekly bars</th><th>Alert</th><th>As of</th><th></th></tr></thead><tbody id="stockEmaRows"></tbody></table></div>
+          <div class="table-foot"><span id="stockEmaSummary">Waiting for backend…</span><span>Alerts trigger when the completed weekly close is within ±5% of the 200-week EMA.</span></div>
+        </section>
+      </section>
+      <section class="page-view" id="apiSettingsPage" hidden>
+        <section class="layout settings-layout">
+          <div class="right-col">
+            <section class="panel config" id="connectionPanel">
+              <div class="config-title" style="display:flex;align-items:center;justify-content:space-between">
+                <span>Dhan account connection</span>
+                <span class="auth-mode-badge" id="authModeBadge" style="font-size:12px;padding:3px 8px;border-radius:4px;background:rgba(0,230,118,0.12);color:var(--mint);font-weight:600">⚡ Auto-Login (TOTP)</span>
+              </div>
+
+              <!-- Connected Status Card (Visible when connected) -->
+              <div id="dhanConnectedCard" style="display:none;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.28);border-radius:9px;padding:14px 16px;margin:12px 0 16px 0">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)"></span>
+                    <strong style="color:var(--mint);font-size:14px">Connected to Dhan (Live Feed Active)</strong>
+                  </div>
+                  <button class="disconnect-btn" id="disconnectDhan" type="button" style="background:#2a1f24;border:1px solid #5c2b33;color:#ff8a80;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600">Disconnect Account</button>
+                </div>
+                <div style="font-size:12px;color:var(--text);line-height:1.7">
+                  <div>• <b>Client ID:</b> <span id="connectedClientId">1100616877</span></div>
+                  <div>• <b>Token Validity:</b> <span id="connectedTokenExpiry" style="color:var(--mint)">Active</span></div>
+                  <div>• <b>Daily Auto-Renewal:</b> <span id="connectedAutoRefresh">Enabled (Every morning at 08:30 AM IST)</span></div>
+                </div>
+                <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">
+                  <button type="button" id="toggleCredentialsForm" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;text-decoration:underline;padding:0">Update Login Credentials / Change PIN</button>
+                </div>
+              </div>
+
+              <!-- Login Form Container (Visible when disconnected or updating) -->
+              <div id="dhanLoginFormContainer">
+                <div style="display:flex;gap:10px;margin:12px 0 14px 0;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px">
+                  <button type="button" class="tab-btn active" id="tabTotpAuth" style="background:none;border:none;color:var(--mint);font-weight:700;font-size:13px;cursor:pointer;padding:4px 8px;border-bottom:2px solid var(--mint)">⚡ Auto-Login via TOTP (No daily token needed)</button>
+                  <button type="button" class="tab-btn" id="tabManualAuth" style="background:none;border:none;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;padding:4px 8px">🔑 Manual Access Token</button>
+                </div>
+
+                <!-- TOTP Section -->
+                <div id="totpAuthSection">
+                  <div class="credential-copy">Enter your 6-digit Dhan PIN and TOTP Secret. The system will automatically generate fresh 24-hr tokens every morning at 08:30 AM IST.</div>
+                  <div class="field"><label for="dhanClientId">Dhan Client ID</label><input id="dhanClientId" type="text" inputmode="numeric" autocomplete="off" placeholder="Your client ID" value="1100616877"/></div>
+                  <div class="field"><label for="dhanPin">Dhan 6-Digit PIN <span style="color:var(--muted)">your login PIN</span></label><input id="dhanPin" type="password" maxlength="6" inputmode="numeric" autocomplete="off" placeholder="e.g. 123456" value="172711"/></div>
+                  <div class="field"><label for="dhanTotpSecret">Dhan TOTP Secret Key <span style="color:var(--muted)">from web.dhan.co ➔ Access DhanHQ APIs ➔ Setup TOTP</span></label><input id="dhanTotpSecret" type="password" autocomplete="off" placeholder="e.g. JBSWY3DPEHPK3PXP" value="4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC"/></div>
+                  <div class="field" style="margin-top:10px">
+                    <label class="checkbox-label" for="autoTotpRefresh" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;color:var(--text)">
+                      <input type="checkbox" id="autoTotpRefresh" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
+                      <span>Automatically refresh token every morning at 08:30 AM IST (Hands-free)</span>
+                    </label>
+                  </div>
+                  <div class="credential-actions" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+                    <button class="save-btn" id="loginDhanTotp" type="button">⚡ Login via TOTP &amp; Auto-Connect</button>
+                  </div>
+                </div>
+
+                <!-- Manual Access Token Section -->
+                <div id="manualAuthSection" hidden>
+                  <div class="credential-copy">Enter the Client ID and manual access token from Dhan. Valid for 24 hours.</div>
+                  <div class="field"><label for="dhanAccessToken">Dhan access token</label><input id="dhanAccessToken" type="password" autocomplete="new-password" placeholder="Paste your access token"/></div>
+                  <div class="credential-actions"><button class="save-btn" id="connectDhan" type="button">Connect with Token</button></div>
+                </div>
+              </div>
+
+              <button class="save-btn" id="syncUniverse" style="margin-top:12px">Refresh F&amp;O underlyings</button>
+              <div class="credential-state" id="credentialMessage" role="status">Credentials stay stored securely in your local environment.</div>
+            </section>
+            <section class="panel config"><div class="config-title">Signal &amp; Timeframe settings</div><div class="config-note">Indicators use the selected CE + PE combined premium. Timeframes are automatically applied: <b>Index Strangle:</b> 1 min, <b>Index Straddle:</b> 5 min, <b>Stock Strangle:</b> 5 min, <b>Stock Straddle:</b> 15 min.</div>
+              <div class="field"><label><b>Index timeframes</b> <span>Strangle / Straddle</span></label><div class="inline-fields"><div><span style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Index Strangle</span><select id="indexStrangleTimeframe"><option value="1" selected>1 min</option><option value="2">2 min</option><option value="3">3 min</option><option value="5">5 min</option><option value="15">15 min</option></select></div><div><span style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Index Straddle</span><select id="indexStraddleTimeframe"><option value="1">1 min</option><option value="2">2 min</option><option value="3">3 min</option><option value="5" selected>5 min</option><option value="15">15 min</option></select></div></div></div>
+              <div class="field"><label><b>Stock timeframes</b> <span>Strangle / Straddle</span></label><div class="inline-fields"><div><span style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Stock Strangle</span><select id="stockStrangleTimeframe"><option value="1">1 min</option><option value="2">2 min</option><option value="3">3 min</option><option value="5" selected>5 min</option><option value="15">15 min</option></select></div><div><span style="font-size:10px;color:var(--muted);display:block;margin-bottom:3px">Stock Straddle</span><select id="stockStraddleTimeframe"><option value="1">1 min</option><option value="2">2 min</option><option value="3">3 min</option><option value="5">5 min</option><option value="15" selected>15 min</option></select></div></div></div>
+              <div class="field"><label>MACD parameters <span>fast / slow / signal</span></label><div class="inline-fields"><input id="macdFast" type="number" value="12" aria-label="MACD fast period"/><input id="macdSlow" type="number" value="26" aria-label="MACD slow period"/><input id="macdSignal" type="number" value="9" aria-label="MACD signal period"/></div></div>
+              <div class="field"><label for="emaPeriod">Combined Premium EMA period <span>candles</span></label><input id="emaPeriod" type="number" value="200" min="1"/></div>
+              <button class="save-btn" id="saveSettings">Save strategy settings</button>
+            </section>
+            <section class="panel rule-card rules-panel" id="rulesPanel"><h3>Alert rules</h3><div class="rule-row"><div class="rule-star">★★★</div><div class="rule-copy">MACD at or above zero<span>MACD = 12-Period EMA − 26-Period EMA on the strategy's timeframe:<br/>• <b>Index Strangle:</b> 1 min · <b>Index Straddle:</b> 5 min<br/>• <b>Stock Strangle:</b> 5 min · <b>Stock Straddle:</b> 15 min</span></div></div><div class="rule-row"><div class="rule-star five">★★★★★</div><div class="rule-copy">MACD ≥ 0 and premium above 200 EMA<span>Both conditions must be true on completed candle close</span></div></div></section>
+            <section class="panel config" id="telegramPanel">
+              <div class="config-title" style="display:flex;align-items:center;gap:8px">
+                <span style="color:#29b6f6;font-size:18px">✈</span>
+                <span>Telegram alerts (3★ &amp; 5★)</span>
+              </div>
+              <div class="credential-copy">Receive real-time 3-star (MACD ≥ 0) and 5-star (MACD ≥ 0 + Straddle &gt; 200 EMA) notifications directly on your Telegram app.</div>
+              <div class="field" style="margin-top:10px">
+                <label class="checkbox-label" for="telegramEnabled" style="display:flex;align-items:center;gap:9px;cursor:pointer;font-weight:600;color:var(--text)">
+                  <input type="checkbox" id="telegramEnabled" checked style="width:18px;height:18px;cursor:pointer;accent-color:var(--mint)"/>
+                  <span>Enable Telegram Alerts</span>
+                </label>
+              </div>
+              <div class="field">
+                <label for="telegramBotToken">Telegram Bot Token <span style="color:var(--muted)">from @BotFather</span></label>
+                <input id="telegramBotToken" type="text" autocomplete="off" placeholder="e.g. 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" value="9066894671:AAF0y0eoWlddAlmE1EfDdyDkx33U2f33f7g"/>
+              </div>
+              <div class="field">
+                <label for="telegramChatId">Telegram Chat ID <span style="color:var(--muted)">from @userinfobot or group chat ID</span></label>
+                <input id="telegramChatId" type="text" autocomplete="off" placeholder="e.g. 987654321 or -1001234567890" value="723433781"/>
+              </div>
+              <div class="field">
+                <label>Alert levels to notify</label>
+                <div style="display:flex;gap:20px;margin-top:8px;flex-wrap:wrap">
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text)">
+                    <input type="checkbox" id="telegramAlertThree" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--amber)"/>
+                    <span style="font-size:13px"><b style="color:var(--amber)">★★★</b> 3-Star (MACD ≥ 0)</span>
+                  </label>
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text)">
+                    <input type="checkbox" id="telegramAlertFive" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
+                    <span style="font-size:13px"><b style="color:var(--mint)">★★★★★</b> 5-Star (MACD + 200 EMA)</span>
+                  </label>
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text);width:100%;margin-top:6px">
+                    <input type="checkbox" id="eodTelegramReport" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
+                    <span style="font-size:13px">📊 <b>End-of-Day Excel report:</b> Auto-send .xlsx backtest file after 08:30 PM IST</span>
+                  </label>
+                </div>
+              </div>
+              <div class="credential-actions" style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+                <button class="save-btn" id="saveTelegramSettings" type="button">Save Telegram settings</button>
+                <button class="secondary-btn" id="testTelegramBtn" type="button" title="Send a quick connectivity test">Send Test Message</button>
+                <button class="secondary-btn" id="testTelegramAlertBtn" type="button" title="Send a sample formatted 5-star alert">Send Sample 5★ Alert</button>
+                <button class="secondary-btn" id="sendEodTelegramNowBtn" type="button" title="Send today's End-of-Day Excel report to Telegram now">Send EOD Excel to Telegram Now</button>
+              </div>
+              <div class="credential-state" id="telegramMessage" role="status">Configure your Bot Token and Chat ID to start receiving live straddle alerts.</div>
+            </section>
+            <section class="panel config"><div class="config-title">Selection method</div><div class="config-note" style="margin-bottom:12px">You choose the strikes directly from Dhan’s current option chain. No previous-expiry price or OI-based strike selection is used.</div><div class="history-row"><span>Option prices</span><span>Live LTP</span></div><div class="history-row"><span>Open interest</span><span>Live snapshot</span></div><div class="history-row"><span>Strike choice</span><span>Manual · CE + PE</span></div><div class="notice" id="connectionNotice"><b>Watchlist pairs are local.</b> Pick one call and put above, then add the pair to monitor its combined premium and signals.</div></section>
+          </div>
+        </section>
+      </section>
+    </main>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status">Done.</div>
+  <script src="/app.js"></script>
+</body>
+</html>

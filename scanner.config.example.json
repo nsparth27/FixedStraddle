@@ -1,0 +1,28 @@
+{
+  "contracts": [
+    {
+      "source": "manual",
+      "symbol": "NIFTY 2026-10-29 25000C/25000P",
+      "underlying": "NIFTY",
+      "kind": "Index",
+      "key": "13:NIFTY:OPTIDX",
+      "expiry": "2026-10-29",
+      "ce": {
+        "exchangeSegment": "NSE_FNO",
+        "securityId": "123456",
+        "instrument": "OPTIDX",
+        "strike": 25000,
+        "lastPrice": 100.5,
+        "oiAtSelection": 100000
+      },
+      "pe": {
+        "exchangeSegment": "NSE_FNO",
+        "securityId": "123457",
+        "instrument": "OPTIDX",
+        "strike": 25000,
+        "lastPrice": 98.25,
+        "oiAtSelection": 120000
+      }
+    }
+  ]
+}

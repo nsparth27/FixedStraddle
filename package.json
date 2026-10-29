@@ -1,0 +1,28 @@
+{
+  "name": "fixed-straddle",
+  "version": "1.0.0",
+  "description": "NSE F&O option-chain workspace & straddle/strangle signal scanner with Dhan TOTP auto-connect, 200 EMA & MACD alerts, and automated Telegram dispatch.",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "trading",
+    "straddle",
+    "strangle",
+    "nse",
+    "dhan",
+    "macd"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "lightweight-charts": "^5.2.1",
+    "xlsx": "^0.18.5"
+  }
+}

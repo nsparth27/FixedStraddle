@@ -1,0 +1,23 @@
+{
+  "strikeCount": 3,
+  "stockTimeframe": 15,
+  "indexTimeframe": 5,
+  "indexStrangleTimeframe": 1,
+  "indexStraddleTimeframe": 5,
+  "stockStrangleTimeframe": 5,
+  "stockStraddleTimeframe": 15,
+  "macdFast": 12,
+  "macdSlow": 26,
+  "macdSignal": 9,
+  "emaPeriod": 200,
+  "telegramEnabled": true,
+  "telegramBotToken": "9066894671:AAF0y0eoWlddAlmE1EfDdyDkx33U2f33f7g",
+  "telegramChatId": "723433781",
+  "telegramAlertThree": true,
+  "telegramAlertFive": true,
+  "dhanClientId": "1100616877",
+  "dhanPin": "172711",
+  "dhanTotpSecret": "4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC",
+  "autoTotpRefresh": true,
+  "eodTelegramReport": true
+}
