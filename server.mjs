@@ -211,13 +211,9 @@ async function loginWithDhanTotp(clientId, pin, totpSecret) {
     });
 
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      const errMsg = data.errorMessage || data.message || data.error || `Dhan auth failed (HTTP ${res.status})`;
+    if (!res.ok || data.status === 'error' || data.status === 'failure' || !data.accessToken) {
+      const errMsg = data.errorMessage || data.message || data.error || (data.status === 'error' ? 'Dhan authentication failed' : `Dhan auth failed (HTTP ${res.status})`);
       return { ok: false, error: errMsg };
-    }
-
-    if (!data.accessToken) {
-      return { ok: false, error: 'Dhan response did not contain an access token.' };
     }
 
     dhanCredentials.clientId = clientId;
