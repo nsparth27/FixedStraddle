@@ -1813,6 +1813,8 @@ const server = http.createServer(async (req, res) => {
       tokenValidity: dhanCredentials.tokenExpiry ? new Date(dhanCredentials.tokenExpiry).toLocaleString('en-IN', { timeZone:'Asia/Kolkata' }) : null,
       dhanPinSet: Boolean(dhanCredentials.pin),
       hasTotpSecret: Boolean(dhanCredentials.totpSecret),
+      totpAutoSuspended,
+      totpAutoSuspensionReason,
       autoTotpRefresh: settings.autoTotpRefresh ?? true,
       eodTelegramReport: settings.eodTelegramReport ?? true,
       todayAlertsCount: alertsHistory.filter(a => a.date === indiaDateTime().date).length,
