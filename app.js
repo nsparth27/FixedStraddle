@@ -771,6 +771,17 @@ async function refreshState() {
       if (byId('dhanLoginFormContainer')) byId('dhanLoginFormContainer').style.display = 'block';
     }
 
+    const credMsg = byId('credentialMessage');
+    if (credMsg && !connected) {
+      if (data.totpAutoSuspended && data.totpAutoSuspensionReason) {
+        credMsg.textContent = `🛡️ Anti-Lockout Active: ${data.totpAutoSuspensionReason}`;
+        credMsg.style.color = '#ffb74d';
+      } else if (data.error) {
+        credMsg.textContent = data.error;
+        credMsg.style.color = '#ffb74d';
+      }
+    }
+
     // Populate Settings fields if not yet touched
     if (data.settings) {
       const tfFields = {
