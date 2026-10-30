@@ -2034,12 +2034,14 @@ server.listen(PORT, HOST, async () => {
     return;
   }
 
-  // 2. If token is invalid or missing, attempt TOTP once without looping aggressively
+  // 2. If token is invalid or missing, attempt TOTP once safely
   if (dhanCredentials.pin && dhanCredentials.totpSecret && dhanCredentials.clientId) {
-    console.log('Dhan TOTP credentials found. Logging in via TOTP…');
+    console.log('Dhan TOTP credentials found. Attempting initial single login…');
     const totpResult = await loginWithDhanTotp(dhanCredentials.clientId, dhanCredentials.pin, dhanCredentials.totpSecret);
     if (!totpResult.ok) {
-      lastError = `Dhan login note: ${totpResult.error}. You can also paste your Access Token directly in API & Settings.`;
+      totpAutoSuspended = true;
+      totpAutoSuspensionReason = totpResult.error;
+      lastError = `Dhan login note: ${totpResult.error}. Auto-retries paused to prevent account lockout.`;
       console.warn(`[Dhan] TOTP Auto-Login attempt: ${totpResult.error}`);
     }
   } else if (configured()) {
