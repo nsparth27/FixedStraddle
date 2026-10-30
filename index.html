@@ -313,6 +313,15 @@
           <div class="table-wrap chain-scroll"><table class="option-chain-table"><thead><tr><th>Call Δ</th><th>Call LTP</th><th>Call OI</th><th>Strike · Both</th><th>IV</th><th>Put OI</th><th>Put LTP</th><th>Put Δ</th></tr></thead><tbody id="indicesChainRows"><tr><td colspan="8" class="empty">Connect Dhan and choose an index to load its option chain.</td></tr></tbody></table></div>
           <div class="table-foot"><span id="indicesChainSummary">Choose an index and expiry type to view available expiries.</span><span id="indicesChainUnderlyingPrice">Underlying —</span></div>
         </section>
+        
+        <!-- View Filter Bar for Index Straddles / Strangles -->
+        <div class="view-switch-bar" style="display:flex;align-items:center;gap:8px;margin:16px 0 12px;background:#f8fafc;padding:8px 12px;border:1px solid #edf0f4;border-radius:8px">
+          <span style="font-size:11px;font-weight:700;color:#52647c;text-transform:uppercase;letter-spacing:.05em">Sections:</span>
+          <button type="button" class="tab-pill-btn active" id="pillIdxAll" data-idx-tab="all">All (Straddles + Strangles)</button>
+          <button type="button" class="tab-pill-btn" id="pillIdxStraddle" data-idx-tab="straddle">Only Index Straddles (5m)</button>
+          <button type="button" class="tab-pill-btn" id="pillIdxStrangle" data-idx-tab="strangle">Only Index Strangles (1m)</button>
+        </div>
+
         <!-- Separate Sections for Index Straddles and Index Strangles -->
         <section class="panel scanner-panel" id="indexStraddlePanel">
           <div class="panel-head">
