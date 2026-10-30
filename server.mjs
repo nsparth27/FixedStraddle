@@ -262,6 +262,33 @@ async function loginWithDhanTotp(clientId, pin, totpSecret) {
 }
 
 let lastTotpAttemptAt = 0;
+let totpCooldownMs = 15 * 60_000;
+
+async function validateExistingAccessToken() {
+  if (!dhanCredentials.accessToken || !dhanCredentials.clientId) return false;
+  try {
+    const res = await fetch('https://api.dhan.co/v2/profile', {
+      headers: { Accept: 'application/json', 'access-token': dhanCredentials.accessToken },
+      signal: AbortSignal.timeout(6000)
+    });
+    if (res.ok) {
+      const profile = await res.json().catch(() => ({}));
+      if (String(profile.dhanClientId) === String(dhanCredentials.clientId)) {
+        dhanCredentials.tokenExpiry = profile.tokenValidity || null;
+        lastError = null;
+        console.log(`[Dhan] Valid access token active! Client: ${profile.dhanClientId}. Valid until: ${profile.tokenValidity || '24 hrs'}`);
+        refreshFeedSubscriptions();
+        void syncFnoUniverse();
+        void warmupWatchlist();
+        return true;
+      }
+    }
+  } catch (err) {
+    console.warn('[Dhan] Token check note:', err.message);
+  }
+  return false;
+}
+
 setInterval(async () => {
   if (!settings.autoTotpRefresh) return;
   if (!dhanCredentials.pin || !dhanCredentials.totpSecret || !dhanCredentials.clientId) return;
@@ -272,13 +299,18 @@ setInterval(async () => {
   const minutes = indiaNow.getUTCMinutes();
   const isMorningSlot = hours === 8 && minutes >= 30 && minutes <= 40;
   const isWeekday = indiaNow.getUTCDay() >= 1 && indiaNow.getUTCDay() <= 5;
-  const isExpiredOrExpiringSoon = !dhanCredentials.accessToken || (dhanCredentials.tokenExpiry && new Date(dhanCredentials.tokenExpiry).getTime() - Date.now() < 2 * 3600_000);
+  const isExpiredOrExpiringSoon = !dhanCredentials.accessToken || (dhanCredentials.tokenExpiry && new Date(dhanCredentials.tokenExpiry).getTime() - Date.now() < 30 * 60_000);
 
   if ((isWeekday && isMorningSlot) || isExpiredOrExpiringSoon) {
-    if (Date.now() - lastTotpAttemptAt > 15 * 60_000) {
+    if (Date.now() - lastTotpAttemptAt > totpCooldownMs) {
       lastTotpAttemptAt = Date.now();
-      console.log('Initiating automatic daily Dhan token refresh via TOTP…');
-      await loginWithDhanTotp(dhanCredentials.clientId, dhanCredentials.pin, dhanCredentials.totpSecret);
+      console.log('Initiating automatic Dhan token refresh via TOTP…');
+      const res = await loginWithDhanTotp(dhanCredentials.clientId, dhanCredentials.pin, dhanCredentials.totpSecret);
+      if (!res.ok) {
+        totpCooldownMs = 30 * 60_000; // Backoff 30 minutes on failure so Dhan does not trigger 'Too many attempts'
+      } else {
+        totpCooldownMs = 15 * 60_000;
+      }
     }
   }
 }, 60_000).unref();
@@ -330,8 +362,22 @@ async function requestJson(req, maxBytes=20_000) {
   let body=''; for await (const chunk of req) { body+=chunk; if (body.length>maxBytes) throw new Error('Request too large'); }
   return JSON.parse(body || '{}');
 }
-function validLeg(leg) { return leg && /^[0-9]+$/.test(String(leg.securityId)) && typeof leg.exchangeSegment === 'string'; }
-function validContract(c) { return c && c.source === 'manual' && typeof c.symbol === 'string' && typeof c.expiry === 'string' && validLeg(c.ce) && validLeg(c.pe); }
+function validLeg(leg) {
+  if (!leg) return false;
+  const hasSecId = leg.securityId != null && String(leg.securityId).length > 0;
+  const hasStrike = Number(leg.strike) > 0;
+  return Boolean(hasSecId || hasStrike);
+}
+
+function validContract(c) {
+  if (!c || typeof c.symbol !== 'string') return false;
+  if (!c.expiry || !/^\d{4}-\d{2}-\d{2}/.test(String(c.expiry).trim())) return false;
+  c.source = c.source || 'manual';
+  const hasCe = c.ce && (c.ce.securityId || Number(c.ce.strike) > 0 || Number(c.ceStrike) > 0);
+  const hasPe = c.pe && (c.pe.securityId || Number(c.pe.strike) > 0 || Number(c.peStrike) > 0);
+  return Boolean(hasCe && hasPe);
+}
+
 function pruneExpiredContracts() {
   const todayInIndia = new Date(Date.now() + TZ_OFFSET_MS).toISOString().slice(0, 10);
   const expired = config.contracts.filter(c => validContract(c) && /^\d{4}-\d{2}-\d{2}/.test(String(c.expiry || '').trim()) && String(c.expiry).trim().slice(0, 10) < todayInIndia);
@@ -452,15 +498,28 @@ function contractState(c) {
     }
   }
 
-  return { symbol: c.symbol, underlying: c.underlying || c.symbol, kind: c.kind || 'F&O', expiry: c.expiry,
+  return {
+    source: c.source || 'manual',
+    symbol: c.symbol,
+    underlying: c.underlying || c.symbol,
+    key: c.key || `${c.underlying || c.symbol}:${c.kind || 'Index'}`,
+    underlyingKey: c.key || `${c.underlying || c.symbol}:${c.kind || 'Index'}`,
+    kind: c.kind || 'F&O',
+    expiry: c.expiry,
     sector: getSector(c.underlying || c.symbol, c.kind),
     isStrangle: isStrangle(c),
     pairType: isStrangle(c) ? 'Strangle' : 'Straddle',
     timeframe: timeframeFor(c),
     watchlistTab: c.watchlistTab || 1,
-    customName: c.customName || (c.ce.strike === c.pe.strike ? `${c.underlying || c.symbol} ${c.ce.strike}` : `${c.underlying || c.symbol} ${c.ce.strike}C/${c.pe.strike}P`),
-    ceStrike: c.ce.strike ?? null, peStrike: c.pe.strike ?? null, ceOiAtSelection: c.ce.oiAtSelection ?? null, peOiAtSelection: c.pe.oiAtSelection ?? null,
-    ceLtp: saved.ceLtp ?? c.ce.lastPrice ?? null, peLtp: saved.peLtp ?? c.pe.lastPrice ?? null,
+    customName: c.customName || (c.ce?.strike === c.pe?.strike ? `${c.underlying || c.symbol} ${c.ce?.strike}` : `${c.underlying || c.symbol} ${c.ce?.strike}C/${c.pe?.strike}P`),
+    ce: c.ce || { exchangeSegment: 'NSE_FNO', securityId: String(c.ce?.securityId || ''), strike: Number(c.ceStrike || c.ce?.strike || 0), lastPrice: Number(saved.ceLtp ?? c.ce?.lastPrice ?? 0) },
+    pe: c.pe || { exchangeSegment: 'NSE_FNO', securityId: String(c.pe?.securityId || ''), strike: Number(c.peStrike || c.pe?.strike || 0), lastPrice: Number(saved.peLtp ?? c.pe?.lastPrice ?? 0) },
+    ceStrike: c.ce?.strike ?? c.ceStrike ?? null,
+    peStrike: c.pe?.strike ?? c.peStrike ?? null,
+    ceOiAtSelection: c.ce?.oiAtSelection ?? null,
+    peOiAtSelection: c.pe?.oiAtSelection ?? null,
+    ceLtp: saved.ceLtp ?? c.ce?.lastPrice ?? null,
+    peLtp: saved.peLtp ?? c.pe?.lastPrice ?? null,
     straddle: straddleVal,
     change: saved.change ?? null,
     changePct: saved.changePct ?? null,
@@ -473,11 +532,17 @@ function contractState(c) {
     peMacd,
     peMacdFastEma,
     peMacdSlowEma,
-    ema: saved.ema ?? null, alert: saved.alert || 0, lastUpdated: saved.lastUpdated || null,
-    indicatorBars: saved.indicatorBars ?? 0, macdBarsRequired: saved.macdBarsRequired ?? (settings.macdSlow || 26),
-    emaBarsRequired: saved.emaBarsRequired ?? settings.emaPeriod, macdReady: saved.macdReady ?? false, emaReady: saved.emaReady ?? false,
+    ema: saved.ema ?? null,
+    alert: saved.alert || 0,
+    lastUpdated: saved.lastUpdated || null,
+    indicatorBars: saved.indicatorBars ?? 0,
+    macdBarsRequired: saved.macdBarsRequired ?? (settings.macdSlow || 26),
+    emaBarsRequired: saved.emaBarsRequired ?? settings.emaPeriod,
+    macdReady: saved.macdReady ?? false,
+    emaReady: saved.emaReady ?? false,
     indicatorError: saved.indicatorError || null,
-    status: saved.status || 'warming-up' };
+    status: saved.status || 'warming-up'
+  };
 }
 function ema(values, period) {
   if (values.length < period) return null;
@@ -1654,8 +1719,32 @@ const server = http.createServer(async (req, res) => {
       const incoming = body ? JSON.parse(body) : {};
       const contracts = Array.isArray(incoming.contracts) ? incoming.contracts : [];
       let added = 0;
-      for (const contract of contracts) {
-        if (!validContract(contract)) continue;
+      for (const item of contracts) {
+        if (!item || (!item.symbol && !item.underlying)) continue;
+        const contract = { ...item };
+        contract.source = 'manual';
+        contract.underlying = contract.underlying || contract.symbol.split(' ')[0];
+        contract.expiry = String(contract.expiry || '').trim();
+        if (!/^\d{4}-\d{2}-\d{2}/.test(contract.expiry)) continue;
+
+        const ceStrike = Number(contract.ce?.strike ?? contract.ceStrike ?? 0);
+        const peStrike = Number(contract.pe?.strike ?? contract.peStrike ?? 0);
+        if (!ceStrike || !peStrike) continue;
+
+        if (!contract.ce) contract.ce = {};
+        if (!contract.pe) contract.pe = {};
+        contract.ce.exchangeSegment = contract.ce.exchangeSegment || 'NSE_FNO';
+        contract.pe.exchangeSegment = contract.pe.exchangeSegment || 'NSE_FNO';
+        contract.ce.strike = ceStrike;
+        contract.pe.strike = peStrike;
+        contract.ce.securityId = String(contract.ce.securityId || '');
+        contract.pe.securityId = String(contract.pe.securityId || '');
+
+        if (!contract.symbol) {
+          const expLabel = contract.expiry.slice(0, 10);
+          contract.symbol = `${contract.underlying} ${expLabel} ${ceStrike}C/${peStrike}P`;
+        }
+
         if (!config.contracts.some(c => c.symbol === contract.symbol)) {
           config.contracts.push(contract);
           added++;
@@ -1676,6 +1765,7 @@ const server = http.createServer(async (req, res) => {
         saveJson(CONFIG_FILE, config);
         saveJson(STATE_FILE, state);
         refreshFeedSubscriptions();
+        console.log(`[Watchlist Sync] Auto-restored ${added} contracts (Total monitored: ${config.contracts.length}).`);
       }
       return json(res, 200, { ok: true, added, total: config.contracts.length });
     } catch (err) {
@@ -1902,9 +1992,21 @@ pruneExpiredContracts();
 const HOST = process.env.HOST || '0.0.0.0';
 server.listen(PORT, HOST, async () => {
   console.log(`Straddle Signal running at http://${HOST}:${PORT}`);
-  if (dhanCredentials.pin && dhanCredentials.totpSecret) {
+
+  // 1. First, check if existing Access Token is already valid
+  const tokenValid = await validateExistingAccessToken();
+  if (tokenValid) {
+    return;
+  }
+
+  // 2. If token is invalid or missing, attempt TOTP once without looping aggressively
+  if (dhanCredentials.pin && dhanCredentials.totpSecret && dhanCredentials.clientId) {
     console.log('Dhan TOTP credentials found. Logging in via TOTP…');
-    void loginWithDhanTotp(dhanCredentials.clientId, dhanCredentials.pin, dhanCredentials.totpSecret);
+    const totpResult = await loginWithDhanTotp(dhanCredentials.clientId, dhanCredentials.pin, dhanCredentials.totpSecret);
+    if (!totpResult.ok) {
+      lastError = `Dhan login note: ${totpResult.error}. You can also paste your Access Token directly in API & Settings.`;
+      console.warn(`[Dhan] TOTP Auto-Login attempt: ${totpResult.error}`);
+    }
   } else if (configured()) {
     if(config.contracts.some(validContract)){connectFeed();void warmupWatchlist();}
     if(!stockUniverse.length)void syncFnoUniverse();else void refreshStockEmaUniverse();

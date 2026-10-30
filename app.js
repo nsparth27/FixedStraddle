@@ -97,80 +97,98 @@ function straddleCell(r) {
 // -------------------------------------------------------------
 // Watchlist & Alerts Rendering
 // -------------------------------------------------------------
+function renderPairRow(r) {
+  const isStrg = isStranglePair(r);
+  const pairType = isStrg ? 'Strangle' : 'Straddle';
+  const tf = pairTimeframe(r);
+  const tfLbl = timeframeLabel(tf);
+  return `<tr>
+    <td>
+      <div class="symbol">${safeText(r.underlying || r.symbol)}<span class="instrument-type">${safeText(r.kind || (isIndexPair(r) ? 'Index' : 'Stock'))}</span><span class="pair-type-tag ${isStrg ? 'strangle' : 'straddle'}">${pairType} · ${tfLbl}</span></div>
+      <span class="watch-expiry" title="${safeText(r.expiry)}">${safeText(formatDateDisplay(r.expiry))}</span>
+    </td>
+    <td class="num">${fmt(r.ceStrike)}</td><td class="num">${fmt(r.ceLtp)}</td>
+    <td class="num">${fmt(r.peStrike)}</td><td class="num">${fmt(r.peLtp)}</td>
+    ${straddleCell(r)}${macdCell(r)}${emaCell(r)}
+    <td>${r.alert === 5 ? '<span class="star">★★★★★</span>' : r.alert === 3 ? '<span class="signal-three star">★★★</span>' : '<span class="neutral">—</span>'}</td>
+    <td><button class="remove-watch" data-remove="${safeText(r.symbol)}" title="Remove pair">✕</button></td>
+  </tr>`;
+}
+
 function renderWatchlist(contracts = []) {
   liveRows = contracts;
 
-  // Filter for Stocks Watchlist
-  const stockRows = contracts.filter(r => !isIndexPair(r));
-  const stockSearch = (byId('search')?.value || '').trim().toLowerCase();
-  const stockFilter = byId('signalFilter')?.value || 'all';
-
-  const filteredStocks = stockRows.filter(r => {
-    if (stockSearch && !r.symbol.toLowerCase().includes(stockSearch) && !(r.underlying || '').toLowerCase().includes(stockSearch)) return false;
-    if (stockFilter === 'five' && r.alert !== 5) return false;
-    if (stockFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+  // 1. Index Straddles (Same strike, 5m)
+  const idxStraddles = contracts.filter(r => isIndexPair(r) && !isStranglePair(r));
+  const idxStraddleSearch = (byId('indexStraddleSearch')?.value || '').trim().toLowerCase();
+  const idxStraddleFilter = byId('indexStraddleFilter')?.value || 'all';
+  const filteredIdxStraddles = idxStraddles.filter(r => {
+    if (idxStraddleSearch && !r.symbol.toLowerCase().includes(idxStraddleSearch) && !(r.underlying || '').toLowerCase().includes(idxStraddleSearch)) return false;
+    if (idxStraddleFilter === 'five' && r.alert !== 5) return false;
+    if (idxStraddleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
     return true;
   });
-
-  const stockTbody = byId('scannerRows');
-  if (stockTbody) {
-    stockTbody.innerHTML = filteredStocks.map(r => {
-      const isStrg = isStranglePair(r);
-      const pairType = isStrg ? 'Strangle' : 'Straddle';
-      const tf = pairTimeframe(r);
-      const tfLbl = timeframeLabel(tf);
-      return `<tr>
-        <td>
-          <div class="symbol">${safeText(r.underlying || r.symbol)}<span class="instrument-type">${safeText(r.kind || 'Stock')}</span><span class="pair-type-tag ${isStrg ? 'strangle' : 'straddle'}">${pairType} · ${tfLbl}</span></div>
-          <span class="watch-expiry" title="${safeText(r.expiry)}">${safeText(formatDateDisplay(r.expiry))}</span>
-        </td>
-        <td class="num">${fmt(r.ceStrike)}</td><td class="num">${fmt(r.ceLtp)}</td>
-        <td class="num">${fmt(r.peStrike)}</td><td class="num">${fmt(r.peLtp)}</td>
-        ${straddleCell(r)}${macdCell(r)}${emaCell(r)}
-        <td>${r.alert === 5 ? '<span class="star">★★★★★</span>' : r.alert === 3 ? '<span class="signal-three star">★★★</span>' : '<span class="neutral">—</span>'}</td>
-        <td><button class="remove-watch" data-remove="${safeText(r.symbol)}" title="Remove pair">✕</button></td>
-      </tr>`;
-    }).join('') || '<tr><td colspan="10" class="empty">No stock straddles/strangles added yet. Select an underlying above.</td></tr>';
+  const idxStraddleTbody = byId('indexStraddleRows');
+  if (idxStraddleTbody) {
+    idxStraddleTbody.innerHTML = filteredIdxStraddles.map(renderPairRow).join('') ||
+      '<tr><td colspan="10" class="empty">No Index Straddles added yet. Choose an index above and pick matching CE &amp; PE strikes.</td></tr>';
   }
+  if (byId('indexStraddleCountBadge')) byId('indexStraddleCountBadge').textContent = String(idxStraddles.length);
+  if (byId('indexStraddleSummary')) byId('indexStraddleSummary').textContent = `Showing ${filteredIdxStraddles.length} of ${idxStraddles.length} Index Straddle${idxStraddles.length === 1 ? '' : 's'}`;
 
-  const stockSummary = byId('rowSummary');
-  if (stockSummary) stockSummary.textContent = `Showing ${filteredStocks.length} of ${stockRows.length} stock pair${stockRows.length === 1 ? '' : 's'}`;
-
-  // Filter for Indices Watchlist
-  const indexRows = contracts.filter(r => isIndexPair(r));
-  const indexSearch = (byId('indexSearch')?.value || '').trim().toLowerCase();
-  const indexFilter = byId('indexSignalFilter')?.value || 'all';
-
-  const filteredIndices = indexRows.filter(r => {
-    if (indexSearch && !r.symbol.toLowerCase().includes(indexSearch) && !(r.underlying || '').toLowerCase().includes(indexSearch)) return false;
-    if (indexFilter === 'five' && r.alert !== 5) return false;
-    if (indexFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+  // 2. Index Strangles (Different strikes, 1m)
+  const idxStrangles = contracts.filter(r => isIndexPair(r) && isStranglePair(r));
+  const idxStrangleSearch = (byId('indexStrangleSearch')?.value || '').trim().toLowerCase();
+  const idxStrangleFilter = byId('indexStrangleFilter')?.value || 'all';
+  const filteredIdxStrangles = idxStrangles.filter(r => {
+    if (idxStrangleSearch && !r.symbol.toLowerCase().includes(idxStrangleSearch) && !(r.underlying || '').toLowerCase().includes(idxStrangleSearch)) return false;
+    if (idxStrangleFilter === 'five' && r.alert !== 5) return false;
+    if (idxStrangleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
     return true;
   });
-
-  const indexTbody = byId('indexScannerRows');
-  if (indexTbody) {
-    indexTbody.innerHTML = filteredIndices.map(r => {
-      const isStrg = isStranglePair(r);
-      const pairType = isStrg ? 'Strangle' : 'Straddle';
-      const tf = pairTimeframe(r);
-      const tfLbl = timeframeLabel(tf);
-      return `<tr>
-        <td>
-          <div class="symbol">${safeText(r.underlying || r.symbol)}<span class="instrument-type">${safeText(r.kind || 'Index')}</span><span class="pair-type-tag ${isStrg ? 'strangle' : 'straddle'}">${pairType} · ${tfLbl}</span></div>
-          <span class="watch-expiry" title="${safeText(r.expiry)}">${safeText(formatDateDisplay(r.expiry))}</span>
-        </td>
-        <td class="num">${fmt(r.ceStrike)}</td><td class="num">${fmt(r.ceLtp)}</td>
-        <td class="num">${fmt(r.peStrike)}</td><td class="num">${fmt(r.peLtp)}</td>
-        ${straddleCell(r)}${macdCell(r)}${emaCell(r)}
-        <td>${r.alert === 5 ? '<span class="star">★★★★★</span>' : r.alert === 3 ? '<span class="signal-three star">★★★</span>' : '<span class="neutral">—</span>'}</td>
-        <td><button class="remove-watch" data-remove="${safeText(r.symbol)}" title="Remove pair">✕</button></td>
-      </tr>`;
-    }).join('') || '<tr><td colspan="10" class="empty">No index straddles/strangles added yet. Select an index above.</td></tr>';
+  const idxStrangleTbody = byId('indexStrangleRows');
+  if (idxStrangleTbody) {
+    idxStrangleTbody.innerHTML = filteredIdxStrangles.map(renderPairRow).join('') ||
+      '<tr><td colspan="10" class="empty">No Index Strangles added yet. Choose an index above and pick different CE &amp; PE strikes.</td></tr>';
   }
+  if (byId('indexStrangleCountBadge')) byId('indexStrangleCountBadge').textContent = String(idxStrangles.length);
+  if (byId('indexStrangleSummary')) byId('indexStrangleSummary').textContent = `Showing ${filteredIdxStrangles.length} of ${idxStrangles.length} Index Strangle${idxStrangles.length === 1 ? '' : 's'}`;
 
-  const indexSummary = byId('indexRowSummary');
-  if (indexSummary) indexSummary.textContent = `Showing ${filteredIndices.length} of ${indexRows.length} index pair${indexRows.length === 1 ? '' : 's'}`;
+  // 3. Stock Straddles (Same strike, 15m)
+  const stkStraddles = contracts.filter(r => !isIndexPair(r) && !isStranglePair(r));
+  const stkStraddleSearch = (byId('stockStraddleSearch')?.value || byId('search')?.value || '').trim().toLowerCase();
+  const stkStraddleFilter = byId('stockStraddleFilter')?.value || byId('signalFilter')?.value || 'all';
+  const filteredStkStraddles = stkStraddles.filter(r => {
+    if (stkStraddleSearch && !r.symbol.toLowerCase().includes(stkStraddleSearch) && !(r.underlying || '').toLowerCase().includes(stkStraddleSearch)) return false;
+    if (stkStraddleFilter === 'five' && r.alert !== 5) return false;
+    if (stkStraddleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+    return true;
+  });
+  const stkStraddleTbody = byId('stockStraddleRows');
+  if (stkStraddleTbody) {
+    stkStraddleTbody.innerHTML = filteredStkStraddles.map(renderPairRow).join('') ||
+      '<tr><td colspan="10" class="empty">No Stock Straddles added yet. Choose a stock above and select matching CE &amp; PE strikes.</td></tr>';
+  }
+  if (byId('stockStraddleCountBadge')) byId('stockStraddleCountBadge').textContent = String(stkStraddles.length);
+  if (byId('stockStraddleSummary')) byId('stockStraddleSummary').textContent = `Showing ${filteredStkStraddles.length} of ${stkStraddles.length} Stock Straddle${stkStraddles.length === 1 ? '' : 's'}`;
+
+  // 4. Stock Strangles (Different strikes, 5m)
+  const stkStrangles = contracts.filter(r => !isIndexPair(r) && isStranglePair(r));
+  const stkStrangleSearch = (byId('stockStrangleSearch')?.value || '').trim().toLowerCase();
+  const stkStrangleFilter = byId('stockStrangleFilter')?.value || 'all';
+  const filteredStkStrangles = stkStrangles.filter(r => {
+    if (stkStrangleSearch && !r.symbol.toLowerCase().includes(stkStrangleSearch) && !(r.underlying || '').toLowerCase().includes(stkStrangleSearch)) return false;
+    if (stkStrangleFilter === 'five' && r.alert !== 5) return false;
+    if (stkStrangleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+    return true;
+  });
+  const stkStrangleTbody = byId('stockStrangleRows');
+  if (stkStrangleTbody) {
+    stkStrangleTbody.innerHTML = filteredStkStrangles.map(renderPairRow).join('') ||
+      '<tr><td colspan="10" class="empty">No Stock Strangles added yet. Choose a stock above and select different CE &amp; PE strikes.</td></tr>';
+  }
+  if (byId('stockStrangleCountBadge')) byId('stockStrangleCountBadge').textContent = String(stkStrangles.length);
+  if (byId('stockStrangleSummary')) byId('stockStrangleSummary').textContent = `Showing ${filteredStkStrangles.length} of ${stkStrangles.length} Stock Strangle${stkStrangles.length === 1 ? '' : 's'}`;
 
   renderAlerts();
   renderStrategyViews();
@@ -506,6 +524,41 @@ function updateSelectionUI(mode) {
   }
 }
 
+const WATCHLIST_STORAGE_KEY = 'fixed_straddle_persistent_contracts';
+
+function getStoredContracts() {
+  try {
+    const raw = localStorage.getItem(WATCHLIST_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+    const today = new Date().toISOString().slice(0, 10);
+    // Keep only contracts that have not expired (expiry >= today)
+    return parsed.filter(c => c && c.symbol && (!c.expiry || c.expiry.slice(0, 10) >= today));
+  } catch {
+    return [];
+  }
+}
+
+function saveStoredContracts(contracts) {
+  try {
+    localStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify(contracts));
+  } catch {}
+}
+
+function addToStoredContracts(contract) {
+  if (!contract || !contract.symbol) return;
+  const list = getStoredContracts();
+  const idx = list.findIndex(c => c.symbol === contract.symbol);
+  if (idx >= 0) list[idx] = { ...list[idx], ...contract };
+  else list.push(contract);
+  saveStoredContracts(list);
+}
+
+function removeFromStoredContracts(symbol) {
+  const list = getStoredContracts().filter(c => c.symbol !== symbol);
+  saveStoredContracts(list);
+}
+
 async function addPairToWatchlist(mode) {
   const ids = chainIds(mode);
   const key = byId(ids.underlying)?.value;
@@ -529,6 +582,7 @@ async function addPairToWatchlist(mode) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Could not add pair');
+    if (data.contract) addToStoredContracts(data.contract);
     toast(`Saved ${data.contract?.pairType || 'pair'} ${data.contract?.symbol || ''}`);
     await refreshState();
   } catch (err) {
@@ -543,13 +597,9 @@ async function removeWatchlistPair(event) {
   if (!btn) return;
   const symbol = btn.dataset.remove;
   try {
+    removeFromStoredContracts(symbol);
     const res = await fetch(`/api/watchlist/${encodeURIComponent(symbol)}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Could not remove');
-    try {
-      const localSaved = JSON.parse(localStorage.getItem('fixed_straddle_saved_contracts') || '[]');
-      const updated = localSaved.filter(c => c.symbol !== symbol);
-      localStorage.setItem('fixed_straddle_saved_contracts', JSON.stringify(updated));
-    } catch {}
     toast(`Removed ${symbol}`);
     await refreshState();
   } catch (err) {
@@ -646,54 +696,47 @@ async function refreshState() {
     const fiveStarCount = (data.contracts || []).filter(c => c.alert === 5).length;
 
     // -------------------------------------------------------------
-    // Auto-Restore & LocalStorage Persistence for Pairs
+    // Auto-Restore & Persistent Watchlist Backup
     // -------------------------------------------------------------
     if (Array.isArray(data.contracts) && data.contracts.length > 0) {
-      try {
-        localStorage.setItem('fixed_straddle_saved_contracts', JSON.stringify(data.contracts));
-      } catch (e) {}
-    } else if (Array.isArray(data.contracts) && data.contracts.length === 0 && !window._hasRestoredContracts) {
-      try {
-        const localSaved = JSON.parse(localStorage.getItem('fixed_straddle_saved_contracts') || '[]');
-        if (Array.isArray(localSaved) && localSaved.length > 0) {
-          window._hasRestoredContracts = true;
-          console.log(`Auto-restoring ${localSaved.length} saved straddle/strangle pairs from local storage…`);
-          fetch('/api/watchlist/sync-batch', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contracts: localSaved })
-          }).then(() => refreshState());
-        }
-      } catch (e) {}
+      for (const c of data.contracts) {
+        addToStoredContracts(c);
+      }
+    }
+
+    // Check if server is missing any contracts that are in localStorage (e.g. after Render restart)
+    const stored = getStoredContracts();
+    const serverSymbols = new Set((data.contracts || []).map(c => c.symbol));
+    const missingOnServer = stored.filter(c => !serverSymbols.has(c.symbol));
+
+    if (missingOnServer.length > 0 && !window._isSyncingWatchlist) {
+      window._isSyncingWatchlist = true;
+      console.log(`Auto-restoring ${missingOnServer.length} custom straddles/strangles to server…`);
+      fetch('/api/watchlist/sync-batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contracts: stored })
+      })
+      .then(r => r.json())
+      .then(res => {
+        window._isSyncingWatchlist = false;
+        if (res.added > 0) refreshState();
+      })
+      .catch(() => { window._isSyncingWatchlist = false; });
     }
 
     // -------------------------------------------------------------
-    // Auto-Restore & LocalStorage Persistence for Dhan Credentials
+    // LocalStorage Persistence for Dhan Credentials
     // -------------------------------------------------------------
     if (data.configured) {
       try {
         const creds = {
           clientId: byId('dhanClientId')?.value || data.clientId || '1100616877',
           pin: byId('dhanPin')?.value || '172711',
-          totpSecret: byId('dhanTotpSecret')?.value || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC'
+          totpSecret: byId('dhanTotpSecret')?.value || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC',
+          accessToken: byId('dhanAccessToken')?.value || ''
         };
         localStorage.setItem('fixed_straddle_dhan_creds', JSON.stringify(creds));
-      } catch (e) {}
-    } else if (!data.configured && !window._hasAutoRestoredDhan) {
-      try {
-        const creds = JSON.parse(localStorage.getItem('fixed_straddle_dhan_creds') || '{}');
-        const clientId = creds.clientId || byId('dhanClientId')?.value || '1100616877';
-        const pin = creds.pin || byId('dhanPin')?.value || '172711';
-        const totpSecret = creds.totpSecret || byId('dhanTotpSecret')?.value || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC';
-        if (clientId && pin && totpSecret) {
-          window._hasAutoRestoredDhan = true;
-          console.log('Auto-restoring Dhan TOTP login from local storage…');
-          fetch('/api/dhan/totp-login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ clientId, pin, totpSecret })
-          }).then(() => refreshState());
-        }
       } catch (e) {}
     }
 
@@ -868,10 +911,22 @@ function setupEventListeners() {
   byId('addIndexWatchlist')?.addEventListener('click', () => addPairToWatchlist('indices'));
 
   // Remove watchlist pairs
-  byId('scannerRows')?.addEventListener('click', removeWatchlistPair);
-  byId('indexScannerRows')?.addEventListener('click', removeWatchlistPair);
+  byId('indexStraddleRows')?.addEventListener('click', removeWatchlistPair);
+  byId('indexStrangleRows')?.addEventListener('click', removeWatchlistPair);
+  byId('stockStraddleRows')?.addEventListener('click', removeWatchlistPair);
+  byId('stockStrangleRows')?.addEventListener('click', removeWatchlistPair);
 
-  // Filters & Searches
+  // Filters & Searches for Index & Stock Straddles/Strangles
+  byId('indexStraddleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
+  byId('indexStraddleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
+  byId('indexStrangleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
+  byId('indexStrangleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
+
+  byId('stockStraddleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
+  byId('stockStraddleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
+  byId('stockStrangleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
+  byId('stockStrangleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
+
   byId('search')?.addEventListener('input', () => renderWatchlist(liveRows));
   byId('signalFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
   byId('indexSearch')?.addEventListener('input', () => renderWatchlist(liveRows));

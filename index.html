@@ -301,10 +301,83 @@
           <div class="table-wrap chain-scroll"><table class="option-chain-table"><thead><tr><th>Call Δ</th><th>Call LTP</th><th>Call OI</th><th>Strike · Both</th><th>IV</th><th>Put OI</th><th>Put LTP</th><th>Put Δ</th></tr></thead><tbody id="indicesChainRows"><tr><td colspan="8" class="empty">Connect Dhan and choose an index to load its option chain.</td></tr></tbody></table></div>
           <div class="table-foot"><span id="indicesChainSummary">Choose an index and expiry type to view available expiries.</span><span id="indicesChainUnderlyingPrice">Underlying —</span></div>
         </section>
-        <section class="panel scanner-panel" id="indexScannerPanel">
-          <div class="panel-head"><div><div class="panel-title">Index watchlist</div><div class="panel-desc">Saved index straddles · Live prices and signals</div></div><div class="head-actions"><input class="search" id="indexSearch" type="search" placeholder="Search index…" aria-label="Search indices"/><select class="select" id="indexSignalFilter" aria-label="Filter index signals"><option value="all">All pairs</option><option value="alerts">With alerts</option><option value="five">5-star only</option></select></div></div>
-          <div class="table-wrap"><table><thead><tr><th>Index · Expiry</th><th>Call strike</th><th>Call LTP</th><th>Put strike</th><th>Put LTP</th><th>Straddle</th><th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th><th>200 EMA</th><th>Alert</th><th></th></tr></thead><tbody id="indexScannerRows"></tbody></table></div>
-          <div class="table-foot"><span id="indexRowSummary">Waiting for backend…</span><span>Index pairs are separate from the F&amp;O Stocks watchlist.</span></div>
+        <!-- Separate Sections for Index Straddles and Index Strangles -->
+        <section class="panel scanner-panel" id="indexStraddlePanel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title" style="display:flex;align-items:center;gap:8px">
+                <span>Index Straddles</span>
+                <span class="pair-type-tag straddle">5 min TF</span>
+                <span class="strategy-badge up" id="indexStraddleCountBadge">0</span>
+              </div>
+              <div class="panel-desc">Same Strike CE &amp; PE pairs for Indices · 5-minute candle timeframe · Live prices and signals</div>
+            </div>
+            <div class="head-actions">
+              <input class="search" id="indexStraddleSearch" type="search" placeholder="Search index…" aria-label="Search index straddles"/>
+              <select class="select" id="indexStraddleFilter" aria-label="Filter signals">
+                <option value="all">All straddles</option>
+                <option value="alerts">With alerts</option>
+                <option value="five">5-star only</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Index · Expiry</th>
+                  <th>Call strike</th><th>Call LTP</th>
+                  <th>Put strike</th><th>Put LTP</th>
+                  <th>Combined Straddle</th>
+                  <th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th>
+                  <th>200 EMA</th>
+                  <th>Alert</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="indexStraddleRows"></tbody>
+            </table>
+          </div>
+          <div class="table-foot"><span id="indexStraddleSummary">0 index straddles</span><span>Timeframe: 5m</span></div>
+        </section>
+
+        <section class="panel scanner-panel" id="indexStranglePanel" style="margin-top:16px">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title" style="display:flex;align-items:center;gap:8px">
+                <span>Index Strangles</span>
+                <span class="pair-type-tag strangle">1 min TF</span>
+                <span class="strategy-badge warn" id="indexStrangleCountBadge">0</span>
+              </div>
+              <div class="panel-desc">Different Strike CE &amp; PE pairs for Indices · 1-minute candle timeframe · Live prices and signals</div>
+            </div>
+            <div class="head-actions">
+              <input class="search" id="indexStrangleSearch" type="search" placeholder="Search index…" aria-label="Search index strangles"/>
+              <select class="select" id="indexStrangleFilter" aria-label="Filter signals">
+                <option value="all">All strangles</option>
+                <option value="alerts">With alerts</option>
+                <option value="five">5-star only</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Index · Expiry</th>
+                  <th>Call strike</th><th>Call LTP</th>
+                  <th>Put strike</th><th>Put LTP</th>
+                  <th>Combined Strangle</th>
+                  <th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th>
+                  <th>200 EMA</th>
+                  <th>Alert</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="indexStrangleRows"></tbody>
+            </table>
+          </div>
+          <div class="table-foot"><span id="indexStrangleSummary">0 index strangles</span><span>Timeframe: 1m</span></div>
         </section>
       </section>
       <section class="page-view" id="watchlistPage" hidden>
@@ -314,12 +387,85 @@
         <div class="table-wrap chain-scroll"><table class="option-chain-table"><thead><tr><th>Call Δ</th><th>Call LTP</th><th>Call OI</th><th>Strike · Both</th><th>IV</th><th>Put OI</th><th>Put LTP</th><th>Put Δ</th></tr></thead><tbody id="chainRows"><tr><td colspan="8" class="empty">Connect Dhan and choose an underlying to load live strikes.</td></tr></tbody></table></div>
         <div class="table-foot"><span id="chainSummary">Dhan option-chain snapshots are refreshed on demand.</span><span id="chainUnderlyingPrice">Underlying —</span></div>
       </section>
-      <section class="layout">
-        <div class="panel scanner-panel" id="scannerPanel">
-          <div class="panel-head"><div><div class="panel-title">My watchlist</div><div class="panel-desc">Your hand-picked option pairs · Live prices and signals</div></div><div class="head-actions"><input class="search" id="search" type="search" placeholder="Search symbol…" aria-label="Search symbols"/><select class="select" id="signalFilter" aria-label="Filter signals"><option value="all">All pairs</option><option value="alerts">With alerts</option><option value="five">5-star only</option></select></div></div>
-          <div class="table-wrap"><table><thead><tr><th>Underlying · Expiry</th><th>Call strike</th><th>Call LTP</th><th>Put strike</th><th>Put LTP</th><th>Straddle</th><th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th><th>200 EMA</th><th>Alert</th><th></th></tr></thead><tbody id="scannerRows"></tbody></table></div>
-          <div class="table-foot"><span id="rowSummary">Waiting for backend…</span><span id="dataFoot">No data loaded</span></div>
-        </div>
+      <section class="layout" style="display:flex;flex-direction:column;gap:16px">
+        <!-- Separate Sections for Stock Straddles and Stock Strangles -->
+        <section class="panel scanner-panel" id="stockStraddlePanel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title" style="display:flex;align-items:center;gap:8px">
+                <span>Stock Straddles</span>
+                <span class="pair-type-tag straddle">15 min TF</span>
+                <span class="strategy-badge up" id="stockStraddleCountBadge">0</span>
+              </div>
+              <div class="panel-desc">Same Strike CE &amp; PE pairs for F&amp;O Stocks · 15-minute candle timeframe · Live prices and signals</div>
+            </div>
+            <div class="head-actions">
+              <input class="search" id="stockStraddleSearch" type="search" placeholder="Search stock…" aria-label="Search stock straddles"/>
+              <select class="select" id="stockStraddleFilter" aria-label="Filter signals">
+                <option value="all">All straddles</option>
+                <option value="alerts">With alerts</option>
+                <option value="five">5-star only</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Stock · Expiry</th>
+                  <th>Call strike</th><th>Call LTP</th>
+                  <th>Put strike</th><th>Put LTP</th>
+                  <th>Combined Straddle</th>
+                  <th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th>
+                  <th>200 EMA</th>
+                  <th>Alert</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="stockStraddleRows"></tbody>
+            </table>
+          </div>
+          <div class="table-foot"><span id="stockStraddleSummary">0 stock straddles</span><span>Timeframe: 15m</span></div>
+        </section>
+
+        <section class="panel scanner-panel" id="stockStranglePanel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title" style="display:flex;align-items:center;gap:8px">
+                <span>Stock Strangles</span>
+                <span class="pair-type-tag strangle">5 min TF</span>
+                <span class="strategy-badge warn" id="stockStrangleCountBadge">0</span>
+              </div>
+              <div class="panel-desc">Different Strike CE &amp; PE pairs for F&amp;O Stocks · 5-minute candle timeframe · Live prices and signals</div>
+            </div>
+            <div class="head-actions">
+              <input class="search" id="stockStrangleSearch" type="search" placeholder="Search stock…" aria-label="Search stock strangles"/>
+              <select class="select" id="stockStrangleFilter" aria-label="Filter signals">
+                <option value="all">All strangles</option>
+                <option value="alerts">With alerts</option>
+                <option value="five">5-star only</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Stock · Expiry</th>
+                  <th>Call strike</th><th>Call LTP</th>
+                  <th>Put strike</th><th>Put LTP</th>
+                  <th>Combined Strangle</th>
+                  <th title="MACD = 12-Period EMA − 26-Period EMA">MACD (12 − 26 EMA)</th>
+                  <th>200 EMA</th>
+                  <th>Alert</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="stockStrangleRows"></tbody>
+            </table>
+          </div>
+          <div class="table-foot"><span id="stockStrangleSummary">0 stock strangles</span><span>Timeframe: 5m</span></div>
+        </section>
       </section>
       </section>
       <section class="page-view" id="apiSettingsPage" hidden>
