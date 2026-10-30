@@ -1574,7 +1574,9 @@ const server = http.createServer(async (req, res) => {
     for await (const chunk of req) { body += chunk; if (body.length > 20_000) return json(res, 413, { error: 'Request too large' }); }
     try {
       const input = JSON.parse(body || '{}');
-      const result = await loginWithDhanTotp(input.clientId, input.pin, input.totpSecret);
+      totpAutoSuspended = false;
+      totpAutoSuspensionReason = '';
+      const result = await loginWithDhanTotp(input.clientId, input.pin, input.totpSecret, true);
       if (!result.ok) return json(res, 400, { error: result.error });
       return json(res, 200, result);
     } catch (err) {
