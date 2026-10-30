@@ -1,3 +1,80 @@
 {
-  "contracts": []
+  "contracts": [
+    {
+      "underlying": "NIFTY",
+      "expiry": "2026-11-03",
+      "kind": "Index",
+      "ceStrike": 24000,
+      "peStrike": 24000,
+      "source": "manual",
+      "ce": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 24000,
+        "securityId": ""
+      },
+      "pe": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 24000,
+        "securityId": ""
+      },
+      "symbol": "NIFTY 2026-11-03 24000C/24000P"
+    },
+    {
+      "underlying": "NIFTY",
+      "expiry": "2026-11-03",
+      "kind": "Index",
+      "ceStrike": 24200,
+      "peStrike": 23800,
+      "source": "manual",
+      "ce": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 24200,
+        "securityId": ""
+      },
+      "pe": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 23800,
+        "securityId": ""
+      },
+      "symbol": "NIFTY 2026-11-03 24200C/23800P"
+    },
+    {
+      "underlying": "RELIANCE",
+      "expiry": "2026-11-26",
+      "kind": "Stock",
+      "ceStrike": 1300,
+      "peStrike": 1300,
+      "source": "manual",
+      "ce": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 1300,
+        "securityId": ""
+      },
+      "pe": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 1300,
+        "securityId": ""
+      },
+      "symbol": "RELIANCE 2026-11-26 1300C/1300P"
+    },
+    {
+      "underlying": "RELIANCE",
+      "expiry": "2026-11-26",
+      "kind": "Stock",
+      "ceStrike": 1340,
+      "peStrike": 1260,
+      "source": "manual",
+      "ce": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 1340,
+        "securityId": ""
+      },
+      "pe": {
+        "exchangeSegment": "NSE_FNO",
+        "strike": 1260,
+        "securityId": ""
+      },
+      "symbol": "RELIANCE 2026-11-26 1340C/1260P"
+    }
+  ]
 }
