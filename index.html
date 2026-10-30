@@ -534,14 +534,22 @@
 
                 <!-- TOTP Section -->
                 <div id="totpAuthSection">
-                  <div class="credential-copy">Enter your 6-digit Dhan PIN and TOTP Secret. The system will automatically generate fresh 24-hr tokens every morning at 08:30 AM IST.</div>
+                  <div style="background:rgba(23,124,104,0.08);border:1px solid rgba(23,124,104,0.28);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12px;line-height:1.65;color:var(--text)">
+                    <div style="font-weight:700;color:var(--mint);margin-bottom:5px">📌 How to set up 24/7 Auto-Login with Dhan:</div>
+                    1. Log in to <a href="https://web.dhan.co" target="_blank" rel="noopener noreferrer" style="color:var(--mint);font-weight:700">web.dhan.co</a>.<br/>
+                    2. Click your <b>Profile (top right)</b> ➔ <b>Access DhanHQ APIs</b>.<br/>
+                    3. Under <i>Access Token generation</i>, click <b>Set-up TOTP</b> (or <i>Reset TOTP</i>).<br/>
+                    4. Copy the <b>Secret Key</b> shown on your Dhan screen.<br/>
+                    5. <b style="color:#ffb74d">Critical Step:</b> Scan the QR code in Google Authenticator, enter the 6-digit code on Dhan's webpage, and click <b>Verify &amp; Activate</b> so Dhan saves it!<br/>
+                    6. Paste that <b>Secret Key</b> and your <b>6-digit Dhan PIN</b> below, then click <b>⚡ Login via TOTP &amp; Auto-Connect</b>.
+                  </div>
                   <div class="field"><label for="dhanClientId">Dhan Client ID</label><input id="dhanClientId" type="text" inputmode="numeric" autocomplete="off" placeholder="Your client ID" value="1100616877"/></div>
-                  <div class="field"><label for="dhanPin">Dhan 6-Digit PIN <span style="color:var(--muted)">your login PIN</span></label><input id="dhanPin" type="password" maxlength="6" inputmode="numeric" autocomplete="off" placeholder="e.g. 123456" value="172711"/></div>
-                  <div class="field"><label for="dhanTotpSecret">Dhan TOTP Secret Key <span style="color:var(--muted)">from web.dhan.co ➔ Access DhanHQ APIs ➔ Setup TOTP</span></label><input id="dhanTotpSecret" type="password" autocomplete="off" placeholder="e.g. JBSWY3DPEHPK3PXP" value="4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC"/></div>
+                  <div class="field"><label for="dhanPin">Dhan 6-Digit PIN <span style="color:var(--muted)">your Dhan login PIN</span></label><input id="dhanPin" type="password" maxlength="6" inputmode="numeric" autocomplete="off" placeholder="e.g. 123456" value="172711"/></div>
+                  <div class="field"><label for="dhanTotpSecret">Dhan TOTP Secret Key <span style="color:var(--muted)">from web.dhan.co ➔ Access DhanHQ APIs ➔ Setup TOTP</span></label><input id="dhanTotpSecret" type="password" autocomplete="off" placeholder="Paste TOTP Secret Key here" value=""/></div>
                   <div class="field" style="margin-top:10px">
                     <label class="checkbox-label" for="autoTotpRefresh" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;color:var(--text)">
                       <input type="checkbox" id="autoTotpRefresh" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
-                      <span>Automatically refresh token every morning at 08:30 AM IST (Hands-free)</span>
+                      <span>Automatically refresh token every morning at 08:30 AM IST (24/7 Hands-free)</span>
                     </label>
                   </div>
                   <div class="credential-actions" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">

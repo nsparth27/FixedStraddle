@@ -33,13 +33,13 @@ let settings = loadJson(SETTINGS_FILE, {
 });
 settings.dhanClientId ||= '1100616877';
 settings.dhanPin ||= '172711';
-settings.dhanTotpSecret ||= '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC';
+settings.dhanTotpSecret ||= '';
 
 let dhanCredentials = {
   clientId: process.env.DHAN_CLIENT_ID || settings.dhanClientId || '1100616877',
   accessToken: process.env.DHAN_ACCESS_TOKEN || settings.dhanAccessToken || '',
   pin: process.env.DHAN_PIN || settings.dhanPin || '172711',
-  totpSecret: process.env.DHAN_TOTP_SECRET || settings.dhanTotpSecret || '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC',
+  totpSecret: process.env.DHAN_TOTP_SECRET || settings.dhanTotpSecret || '',
   tokenExpiry: null
 };
 settings.indexStrangleTimeframe = Number(settings.indexStrangleTimeframe) || 1;
@@ -126,12 +126,12 @@ function base32Decode(base32) {
   return Buffer.from(bytes);
 }
 
-function generateTOTP(secret, step = 30) {
+function generateTOTP(secret, step = 30, offsetSteps = 0) {
   if (!secret) return null;
   try {
     const key = base32Decode(secret);
     if (!key.length) return null;
-    const counter = Math.floor(Date.now() / 1000 / step);
+    const counter = Math.floor(Date.now() / 1000 / step) + offsetSteps;
     const buf = Buffer.alloc(8);
     buf.writeBigInt64BE(BigInt(counter));
     const hmac = crypto.createHmac('sha1', key).update(buf).digest();
@@ -193,72 +193,101 @@ async function loginWithDhanTotp(clientId, pin, totpSecret) {
   if (!clientId || !pin || !totpSecret) {
     return { ok: false, error: 'Dhan Client ID, 6-digit PIN, and TOTP Secret Key are required.' };
   }
-  const totpCode = generateTOTP(totpSecret);
-  if (!totpCode) {
-    return { ok: false, error: 'Could not generate TOTP code. Please verify your TOTP Secret Key.' };
+
+  // Attempt current time step first (0), and if rejected, fallback to -1 and +1 step in case of clock drift
+  const stepsToTry = [0, -1, 1];
+  let lastResponseData = null;
+  let lastHttpStatus = 0;
+
+  for (const stepOffset of stepsToTry) {
+    const totpCode = generateTOTP(totpSecret, 30, stepOffset);
+    if (!totpCode) {
+      return { ok: false, error: 'Could not generate TOTP code. Please verify your TOTP Secret Key.' };
+    }
+
+    const url = `https://auth.dhan.co/app/generateAccessToken?dhanClientId=${encodeURIComponent(clientId)}&pin=${encodeURIComponent(pin)}&totp=${encodeURIComponent(totpCode)}`;
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        signal: AbortSignal.timeout(10000)
+      });
+
+      lastHttpStatus = res.status;
+      const data = await res.json().catch(() => ({}));
+      lastResponseData = data;
+
+      if (res.ok && data.status !== 'error' && data.status !== 'failure' && data.accessToken) {
+        dhanCredentials.clientId = clientId;
+        dhanCredentials.accessToken = data.accessToken;
+        dhanCredentials.pin = pin;
+        dhanCredentials.totpSecret = totpSecret;
+        dhanCredentials.tokenExpiry = data.expiryTime || null;
+
+        settings.dhanClientId = clientId;
+        settings.dhanAccessToken = data.accessToken;
+        settings.dhanPin = pin;
+        settings.dhanTotpSecret = totpSecret;
+        saveJson(SETTINGS_FILE, settings);
+
+        lastError = null;
+        saveEnvCredentials();
+        refreshFeedSubscriptions();
+        void syncFnoUniverse();
+        void warmupWatchlist();
+
+        const expiryLabel = data.expiryTime ? new Date(data.expiryTime).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '24 hours';
+        console.log(`Dhan auto-login via TOTP successful! Token active until ${expiryLabel}.`);
+
+        if (settings.telegramEnabled && settings.telegramBotToken && settings.telegramChatId) {
+          const msg = `🔐 <b>Dhan Auto-Login Successful</b>\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `<b>Client ID:</b> ${clientId}\n` +
+            `<b>Method:</b> TOTP Auto-Authentication\n` +
+            `<b>Token Valid Until:</b> ${expiryLabel} IST\n` +
+            `<b>Market Feed:</b> Connected & Scanning live\n` +
+            `━━━━━━━━━━━━━━━━━━━━`;
+          queueTelegramAlert(settings.telegramBotToken, settings.telegramChatId, msg);
+        }
+
+        return {
+          ok: true,
+          clientId,
+          clientName: data.dhanClientName || null,
+          tokenValidity: expiryLabel,
+          message: `Dhan connected via TOTP! Token active until ${expiryLabel}.`
+        };
+      }
+
+      const rawMsg = data.errorMessage || data.message || data.error || '';
+      // If error is not Invalid TOTP (e.g. rate limit "Too many attempts"), stop immediately
+      if (!rawMsg.toLowerCase().includes('invalid totp')) {
+        break;
+      }
+    } catch (err) {
+      console.error('Dhan TOTP login error:', err.message);
+      return { ok: false, error: `Connection failed: ${err.message}` };
+    }
   }
 
-  const url = `https://auth.dhan.co/app/generateAccessToken?dhanClientId=${encodeURIComponent(clientId)}&pin=${encodeURIComponent(pin)}&totp=${encodeURIComponent(totpCode)}`;
+  const rawMsg = lastResponseData?.errorMessage || lastResponseData?.message || lastResponseData?.error || (lastResponseData?.status === 'error' ? 'Dhan authentication failed' : `Dhan auth failed (HTTP ${lastHttpStatus})`);
 
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      signal: AbortSignal.timeout(10000)
-    });
-
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || data.status === 'error' || data.status === 'failure' || !data.accessToken) {
-      const errMsg = data.errorMessage || data.message || data.error || (data.status === 'error' ? 'Dhan authentication failed' : `Dhan auth failed (HTTP ${res.status})`);
-      return { ok: false, error: errMsg };
-    }
-
-    dhanCredentials.clientId = clientId;
-    dhanCredentials.accessToken = data.accessToken;
-    dhanCredentials.pin = pin;
-    dhanCredentials.totpSecret = totpSecret;
-    dhanCredentials.tokenExpiry = data.expiryTime || null;
-
-    settings.dhanClientId = clientId;
-    settings.dhanAccessToken = data.accessToken;
-    settings.dhanPin = pin;
-    settings.dhanTotpSecret = totpSecret;
-    saveJson(SETTINGS_FILE, settings);
-
-    lastError = null;
-    saveEnvCredentials();
-    refreshFeedSubscriptions();
-    void syncFnoUniverse();
-    void warmupWatchlist();
-
-    const expiryLabel = data.expiryTime ? new Date(data.expiryTime).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '24 hours';
-    console.log(`Dhan auto-login via TOTP successful! Token active until ${expiryLabel}.`);
-
-    if (settings.telegramEnabled && settings.telegramBotToken && settings.telegramChatId) {
-      const msg = `🔐 <b>Dhan Auto-Login Successful</b>\n` +
-        `━━━━━━━━━━━━━━━━━━━━\n` +
-        `<b>Client ID:</b> ${clientId}\n` +
-        `<b>Method:</b> TOTP Auto-Authentication\n` +
-        `<b>Token Valid Until:</b> ${expiryLabel} IST\n` +
-        `<b>Market Feed:</b> Connected & Scanning live\n` +
-        `━━━━━━━━━━━━━━━━━━━━`;
-      queueTelegramAlert(settings.telegramBotToken, settings.telegramChatId, msg);
-    }
-
+  if (rawMsg.toLowerCase().includes('invalid totp')) {
     return {
-      ok: true,
-      clientId,
-      clientName: data.dhanClientName || null,
-      tokenValidity: expiryLabel,
-      message: `Dhan connected via TOTP! Token active until ${expiryLabel}.`
+      ok: false,
+      error: `Dhan error: "Invalid TOTP". The TOTP Secret Key in settings is not recognized by DhanHQ. Please verify your Dhan 6-digit PIN and generate a fresh TOTP Secret Key on web.dhan.co ➔ Access DhanHQ APIs ➔ Set-up TOTP.`
     };
-  } catch (err) {
-    console.error('Dhan TOTP login error:', err.message);
-    return { ok: false, error: `Connection failed: ${err.message}` };
   }
+  if (rawMsg.toLowerCase().includes('too many attempts')) {
+    return {
+      ok: false,
+      error: `Dhan temporary lock: "Too many attempts". Please wait 15 minutes before retrying, or generate an Access Token manually on web.dhan.co and paste it into the Manual Access Token tab.`
+    };
+  }
+  return { ok: false, error: rawMsg };
 }
 
 let lastTotpAttemptAt = 0;
