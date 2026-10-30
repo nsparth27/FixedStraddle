@@ -323,6 +323,8 @@ async function validateExistingAccessToken() {
 
 setInterval(async () => {
   if (!settings.autoTotpRefresh) return;
+  // If auto-attempts are suspended due to an authentication error, NEVER retry in the background to prevent Dhan account lock
+  if (totpAutoSuspended) return;
   if (!dhanCredentials.pin || !dhanCredentials.totpSecret || !dhanCredentials.clientId) return;
 
   const now = new Date();
@@ -331,17 +333,14 @@ setInterval(async () => {
   const minutes = indiaNow.getUTCMinutes();
   const isMorningSlot = hours === 8 && minutes >= 30 && minutes <= 40;
   const isWeekday = indiaNow.getUTCDay() >= 1 && indiaNow.getUTCDay() <= 5;
-  const isExpiredOrExpiringSoon = !dhanCredentials.accessToken || (dhanCredentials.tokenExpiry && new Date(dhanCredentials.tokenExpiry).getTime() - Date.now() < 30 * 60_000);
+  const isExpiringSoon = dhanCredentials.accessToken && dhanCredentials.tokenExpiry && (new Date(dhanCredentials.tokenExpiry).getTime() - Date.now() < 30 * 60_000);
 
-  if ((isWeekday && isMorningSlot) || isExpiredOrExpiringSoon) {
+  if ((isWeekday && isMorningSlot) || isExpiringSoon) {
     if (Date.now() - lastTotpAttemptAt > totpCooldownMs) {
-      lastTotpAttemptAt = Date.now();
-      console.log('Initiating automatic Dhan token refresh via TOTP…');
+      console.log('[Dhan] Scheduled morning token refresh via TOTP…');
       const res = await loginWithDhanTotp(dhanCredentials.clientId, dhanCredentials.pin, dhanCredentials.totpSecret);
       if (!res.ok) {
-        totpCooldownMs = 30 * 60_000; // Backoff 30 minutes on failure so Dhan does not trigger 'Too many attempts'
-      } else {
-        totpCooldownMs = 15 * 60_000;
+        console.warn(`[Dhan] Background auto-refresh paused: ${res.error}`);
       }
     }
   }
