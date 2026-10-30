@@ -409,6 +409,14 @@
         <div class="table-foot"><span id="chainSummary">Dhan option-chain snapshots are refreshed on demand.</span><span id="chainUnderlyingPrice">Underlying —</span></div>
       </section>
       <section class="layout" style="display:flex;flex-direction:column;gap:16px">
+        <!-- View Filter Bar for Stock Straddles / Strangles -->
+        <div class="view-switch-bar" style="display:flex;align-items:center;gap:8px;margin:0 0 2px;background:#f8fafc;padding:8px 12px;border:1px solid #edf0f4;border-radius:8px">
+          <span style="font-size:11px;font-weight:700;color:#52647c;text-transform:uppercase;letter-spacing:.05em">Sections:</span>
+          <button type="button" class="tab-pill-btn active" id="pillStkAll" data-stk-tab="all">All (Straddles + Strangles)</button>
+          <button type="button" class="tab-pill-btn" id="pillStkStraddle" data-stk-tab="straddle">Only Stock Straddles (15m)</button>
+          <button type="button" class="tab-pill-btn" id="pillStkStrangle" data-stk-tab="strangle">Only Stock Strangles (5m)</button>
+        </div>
+
         <!-- Separate Sections for Stock Straddles and Stock Strangles -->
         <section class="panel scanner-panel" id="stockStraddlePanel">
           <div class="panel-head">
