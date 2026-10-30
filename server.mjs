@@ -185,7 +185,11 @@ function saveEnvCredentials() {
   }
 }
 
-async function loginWithDhanTotp(clientId, pin, totpSecret) {
+let totpAutoSuspended = false;
+let totpAutoSuspensionReason = '';
+let lastTotpAttemptAt = 0;
+
+async function loginWithDhanTotp(clientId, pin, totpSecret, isManual = false) {
   clientId = String(clientId || dhanCredentials.clientId || '').trim();
   pin = String(pin || dhanCredentials.pin || '').trim();
   totpSecret = String(totpSecret || dhanCredentials.totpSecret || '').trim();
@@ -194,104 +198,103 @@ async function loginWithDhanTotp(clientId, pin, totpSecret) {
     return { ok: false, error: 'Dhan Client ID, 6-digit PIN, and TOTP Secret Key are required.' };
   }
 
-  // Attempt current time step first (0), and if rejected, fallback to -1 and +1 step in case of clock drift
-  const stepsToTry = [0, -1, 1];
-  let lastResponseData = null;
-  let lastHttpStatus = 0;
+  // Anti-lockout guard: enforce a minimum 10-second gap between any attempts to prevent Dhan rate limits
+  const now = Date.now();
+  if (now - lastTotpAttemptAt < 10_000) {
+    const waitSec = Math.ceil((10_000 - (now - lastTotpAttemptAt)) / 1000);
+    return { ok: false, error: `Please wait ${waitSec}s before retrying. Protecting account from lockout.` };
+  }
+  lastTotpAttemptAt = now;
 
-  for (const stepOffset of stepsToTry) {
-    const totpCode = generateTOTP(totpSecret, 30, stepOffset);
-    if (!totpCode) {
-      return { ok: false, error: 'Could not generate TOTP code. Please verify your TOTP Secret Key.' };
-    }
+  const totpCode = generateTOTP(totpSecret, 30, 0);
+  if (!totpCode) {
+    return { ok: false, error: 'Could not generate TOTP code. Please verify your TOTP Secret Key format.' };
+  }
 
-    const url = `https://auth.dhan.co/app/generateAccessToken?dhanClientId=${encodeURIComponent(clientId)}&pin=${encodeURIComponent(pin)}&totp=${encodeURIComponent(totpCode)}`;
+  const url = `https://auth.dhan.co/app/generateAccessToken?dhanClientId=${encodeURIComponent(clientId)}&pin=${encodeURIComponent(pin)}&totp=${encodeURIComponent(totpCode)}`;
 
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json'
-        },
-        signal: AbortSignal.timeout(10000)
-      });
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json'
+      },
+      signal: AbortSignal.timeout(10000)
+    });
 
-      lastHttpStatus = res.status;
-      const data = await res.json().catch(() => ({}));
-      lastResponseData = data;
+    const data = await res.json().catch(() => ({}));
 
-      if (res.ok && data.status !== 'error' && data.status !== 'failure' && data.accessToken) {
-        dhanCredentials.clientId = clientId;
-        dhanCredentials.accessToken = data.accessToken;
-        dhanCredentials.pin = pin;
-        dhanCredentials.totpSecret = totpSecret;
-        dhanCredentials.tokenExpiry = data.expiryTime || null;
+    if (res.ok && data.status !== 'error' && data.status !== 'failure' && data.accessToken) {
+      dhanCredentials.clientId = clientId;
+      dhanCredentials.accessToken = data.accessToken;
+      dhanCredentials.pin = pin;
+      dhanCredentials.totpSecret = totpSecret;
+      dhanCredentials.tokenExpiry = data.expiryTime || null;
 
-        settings.dhanClientId = clientId;
-        settings.dhanAccessToken = data.accessToken;
-        settings.dhanPin = pin;
-        settings.dhanTotpSecret = totpSecret;
-        saveJson(SETTINGS_FILE, settings);
+      settings.dhanClientId = clientId;
+      settings.dhanAccessToken = data.accessToken;
+      settings.dhanPin = pin;
+      settings.dhanTotpSecret = totpSecret;
+      saveJson(SETTINGS_FILE, settings);
 
-        lastError = null;
-        saveEnvCredentials();
-        refreshFeedSubscriptions();
-        void syncFnoUniverse();
-        void warmupWatchlist();
+      totpAutoSuspended = false;
+      totpAutoSuspensionReason = '';
+      lastError = null;
+      saveEnvCredentials();
+      refreshFeedSubscriptions();
+      void syncFnoUniverse();
+      void warmupWatchlist();
 
-        const expiryLabel = data.expiryTime ? new Date(data.expiryTime).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '24 hours';
-        console.log(`Dhan auto-login via TOTP successful! Token active until ${expiryLabel}.`);
+      const expiryLabel = data.expiryTime ? new Date(data.expiryTime).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '24 hours';
+      console.log(`[Dhan] Auto-login via TOTP successful! Token active until ${expiryLabel}.`);
 
-        if (settings.telegramEnabled && settings.telegramBotToken && settings.telegramChatId) {
-          const msg = `🔐 <b>Dhan Auto-Login Successful</b>\n` +
-            `━━━━━━━━━━━━━━━━━━━━\n` +
-            `<b>Client ID:</b> ${clientId}\n` +
-            `<b>Method:</b> TOTP Auto-Authentication\n` +
-            `<b>Token Valid Until:</b> ${expiryLabel} IST\n` +
-            `<b>Market Feed:</b> Connected & Scanning live\n` +
-            `━━━━━━━━━━━━━━━━━━━━`;
-          queueTelegramAlert(settings.telegramBotToken, settings.telegramChatId, msg);
-        }
-
-        return {
-          ok: true,
-          clientId,
-          clientName: data.dhanClientName || null,
-          tokenValidity: expiryLabel,
-          message: `Dhan connected via TOTP! Token active until ${expiryLabel}.`
-        };
+      if (settings.telegramEnabled && settings.telegramBotToken && settings.telegramChatId) {
+        const msg = `🔐 <b>Dhan Auto-Login Successful</b>\n` +
+          `━━━━━━━━━━━━━━━━━━━━\n` +
+          `<b>Client ID:</b> ${clientId}\n` +
+          `<b>Method:</b> TOTP Auto-Authentication\n` +
+          `<b>Token Valid Until:</b> ${expiryLabel} IST\n` +
+          `<b>Market Feed:</b> Connected & Scanning live\n` +
+          `━━━━━━━━━━━━━━━━━━━━`;
+        queueTelegramAlert(settings.telegramBotToken, settings.telegramChatId, msg);
       }
 
-      const rawMsg = data.errorMessage || data.message || data.error || '';
-      // If error is not Invalid TOTP (e.g. rate limit "Too many attempts"), stop immediately
-      if (!rawMsg.toLowerCase().includes('invalid totp')) {
-        break;
-      }
-    } catch (err) {
-      console.error('Dhan TOTP login error:', err.message);
-      return { ok: false, error: `Connection failed: ${err.message}` };
+      return {
+        ok: true,
+        clientId,
+        clientName: data.dhanClientName || null,
+        tokenValidity: expiryLabel,
+        message: `Dhan connected via TOTP! Token active until ${expiryLabel}.`
+      };
     }
-  }
 
-  const rawMsg = lastResponseData?.errorMessage || lastResponseData?.message || lastResponseData?.error || (lastResponseData?.status === 'error' ? 'Dhan authentication failed' : `Dhan auth failed (HTTP ${lastHttpStatus})`);
+    // Authentication was rejected by Dhan
+    const rawMsg = data.errorMessage || data.message || data.error || (data.status === 'error' ? 'Dhan authentication failed' : `Dhan auth failed (HTTP ${res.status})`);
+    
+    // Crucial: immediately suspend automatic background attempts so we NEVER spam Dhan or cause account lock
+    totpAutoSuspended = true;
+    totpAutoSuspensionReason = rawMsg;
 
-  if (rawMsg.toLowerCase().includes('invalid totp')) {
-    return {
-      ok: false,
-      error: `Dhan error: "Invalid TOTP". The TOTP Secret Key in settings is not recognized by DhanHQ. Please verify your Dhan 6-digit PIN and generate a fresh TOTP Secret Key on web.dhan.co ➔ Access DhanHQ APIs ➔ Set-up TOTP.`
-    };
+    if (rawMsg.toLowerCase().includes('invalid totp')) {
+      return {
+        ok: false,
+        error: `Dhan error: "Invalid TOTP". Your TOTP Secret was rejected. Auto-attempts are PAUSED to prevent locking your account. Please verify your PIN and generate a fresh TOTP Secret on web.dhan.co ➔ Access DhanHQ APIs ➔ Set-up TOTP.`
+      };
+    }
+    if (rawMsg.toLowerCase().includes('too many attempts')) {
+      return {
+        ok: false,
+        error: `Dhan temporary lock: "Too many attempts". Auto-retries stopped immediately to allow your account to unlock. Please wait 15 minutes, or paste an Access Token manually.`
+      };
+    }
+    return { ok: false, error: rawMsg };
+  } catch (err) {
+    console.error('Dhan TOTP request exception:', err.message);
+    return { ok: false, error: `Connection failed: ${err.message}` };
   }
-  if (rawMsg.toLowerCase().includes('too many attempts')) {
-    return {
-      ok: false,
-      error: `Dhan temporary lock: "Too many attempts". Please wait 15 minutes before retrying, or generate an Access Token manually on web.dhan.co and paste it into the Manual Access Token tab.`
-    };
-  }
-  return { ok: false, error: rawMsg };
 }
 
-let lastTotpAttemptAt = 0;
-let totpCooldownMs = 15 * 60_000;
+let totpCooldownMs = 60 * 60_000;
 
 async function validateExistingAccessToken() {
   if (!dhanCredentials.accessToken || !dhanCredentials.clientId) return false;
