@@ -826,15 +826,74 @@ function setupNavigation() {
   const titles = {
     alertsPage: { title: 'Live straddle alerts', desc: 'Real-time alerts meeting your specific Straddle and Strangle timeframe rules.' },
     indicesPage: { title: 'Indices workspace', desc: 'Browse Index option chains and monitor custom Index Straddles and Strangles.' },
+    indexStraddlePage: { title: 'Index Straddles (5m)', desc: 'Same-strike CE & PE pairs for Benchmark Indices · 5-minute candle timeframe · Live signals' },
+    indexStranglePage: { title: 'Index Strangles (1m)', desc: 'Different-strike CE & PE pairs for Benchmark Indices · 1-minute candle timeframe · Rapid momentum' },
     watchlistPage: { title: 'F&O Stocks workspace', desc: 'Select individual F&O stock options to build custom fixed straddles and strangles.' },
+    stockStraddlePage: { title: 'Stock Straddles (15m)', desc: 'Same-strike CE & PE pairs for F&O Stocks · 15-minute candle timeframe · Trend tracking' },
+    stockStranglePage: { title: 'Stock Strangles (5m)', desc: 'Different-strike CE & PE pairs for F&O Stocks · 5-minute candle timeframe · Volatility tracking' },
     apiSettingsPage: { title: 'API & Strategy Settings', desc: 'Configure Dhan TOTP auto-connect, specific timeframes, and Telegram notifications.' },
     strategyPage: { title: 'MACD Momentum Strategy', desc: 'Option strike momentum views based on MACD zero line crossings.' }
   };
 
+  function setIndexSectionView(mode) {
+    const straddlePanel = byId('indexStraddlePanel');
+    const stranglePanel = byId('indexStranglePanel');
+    document.querySelectorAll('[data-idx-tab]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.idxTab === mode);
+    });
+    if (mode === 'straddle') {
+      if (straddlePanel) straddlePanel.style.display = 'block';
+      if (stranglePanel) stranglePanel.style.display = 'none';
+    } else if (mode === 'strangle') {
+      if (straddlePanel) straddlePanel.style.display = 'none';
+      if (stranglePanel) stranglePanel.style.display = 'block';
+    } else {
+      if (straddlePanel) straddlePanel.style.display = 'block';
+      if (stranglePanel) stranglePanel.style.display = 'block';
+    }
+  }
+
+  function setStockSectionView(mode) {
+    const straddlePanel = byId('stockStraddlePanel');
+    const stranglePanel = byId('stockStranglePanel');
+    document.querySelectorAll('[data-stk-tab]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.stkTab === mode);
+    });
+    if (mode === 'straddle') {
+      if (straddlePanel) straddlePanel.style.display = 'block';
+      if (stranglePanel) stranglePanel.style.display = 'none';
+    } else if (mode === 'strangle') {
+      if (straddlePanel) straddlePanel.style.display = 'none';
+      if (stranglePanel) stranglePanel.style.display = 'block';
+    } else {
+      if (straddlePanel) straddlePanel.style.display = 'block';
+      if (stranglePanel) stranglePanel.style.display = 'block';
+    }
+  }
+
   function showPage(pageId) {
+    let actualPage = pageId;
+    if (pageId === 'indexStraddlePage') {
+      actualPage = 'indicesPage';
+      setIndexSectionView('straddle');
+    } else if (pageId === 'indexStranglePage') {
+      actualPage = 'indicesPage';
+      setIndexSectionView('strangle');
+    } else if (pageId === 'indicesPage') {
+      setIndexSectionView('all');
+    } else if (pageId === 'stockStraddlePage') {
+      actualPage = 'watchlistPage';
+      setStockSectionView('straddle');
+    } else if (pageId === 'stockStranglePage') {
+      actualPage = 'watchlistPage';
+      setStockSectionView('strangle');
+    } else if (pageId === 'watchlistPage') {
+      setStockSectionView('all');
+    }
+
     pages.forEach(p => {
       const el = byId(p);
-      if (el) el.hidden = p !== pageId;
+      if (el) el.hidden = p !== actualPage;
     });
 
     document.querySelectorAll('[data-page-link]').forEach(a => {
@@ -842,10 +901,18 @@ function setupNavigation() {
       a.classList.toggle('active', target === pageId);
     });
 
-    const info = titles[pageId] || titles.alertsPage;
+    const info = titles[pageId] || titles[actualPage] || titles.alertsPage;
     if (byId('pageTitle')) byId('pageTitle').textContent = info.title;
     if (byId('pageDescription')) byId('pageDescription').textContent = info.desc;
   }
+
+  document.querySelectorAll('[data-idx-tab]').forEach(btn => {
+    btn.addEventListener('click', () => setIndexSectionView(btn.dataset.idxTab));
+  });
+
+  document.querySelectorAll('[data-stk-tab]').forEach(btn => {
+    btn.addEventListener('click', () => setStockSectionView(btn.dataset.stkTab));
+  });
 
   document.querySelectorAll('[data-page-link]').forEach(a => {
     a.addEventListener('click', e => {
