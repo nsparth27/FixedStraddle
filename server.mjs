@@ -389,7 +389,41 @@ function allowedLocalOrigin(req) {
   } catch {}
   return origin === `http://127.0.0.1:${PORT}` || origin === `http://localhost:${PORT}`;
 }
-function json(res, status, value) { res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }); res.end(JSON.stringify(value)); }
+
+function sendGzipOrRaw(req, res, status, bufferOrString, contentType = 'application/json; charset=utf-8', cacheControl = 'no-store') {
+  const acceptEncoding = String(req?.headers?.['accept-encoding'] || '');
+  const buffer = Buffer.isBuffer(bufferOrString) ? bufferOrString : Buffer.from(bufferOrString, 'utf8');
+
+  if (buffer.length > 512 && acceptEncoding.includes('gzip')) {
+    zlib.gzip(buffer, (err, compressed) => {
+      if (err) {
+        res.writeHead(status, { 'content-type': contentType, 'cache-control': cacheControl, 'content-length': buffer.length });
+        res.end(buffer);
+        return;
+      }
+      res.writeHead(status, {
+        'content-type': contentType,
+        'content-encoding': 'gzip',
+        'cache-control': cacheControl,
+        'content-length': compressed.length
+      });
+      res.end(compressed);
+    });
+  } else {
+    res.writeHead(status, { 'content-type': contentType, 'cache-control': cacheControl, 'content-length': buffer.length });
+    res.end(buffer);
+  }
+}
+
+function json(res, status, value, req = null) {
+  const str = JSON.stringify(value);
+  if (req) {
+    sendGzipOrRaw(req, res, status, str, 'application/json; charset=utf-8', 'no-store');
+  } else {
+    res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' });
+    res.end(str);
+  }
+}
 async function requestJson(req, maxBytes=20_000) {
   let body=''; for await (const chunk of req) { body+=chunk; if (body.length>maxBytes) throw new Error('Request too large'); }
   return JSON.parse(body || '{}');
