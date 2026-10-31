@@ -1862,7 +1862,7 @@ const server = http.createServer(async (req, res) => {
     if (!symbol) return json(res, 400, { error: 'Missing symbol parameter' });
     try {
       const chartData = getChartDataForSymbol(symbol, tf);
-      return json(res, 200, chartData);
+      return json(res, 200, chartData, req);
     } catch (err) {
       return json(res, 500, { error: err.message || 'Failed to get chart data' });
     }
