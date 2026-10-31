@@ -726,18 +726,12 @@ async function refreshState() {
     }
 
     // -------------------------------------------------------------
-    // LocalStorage Persistence for Dhan Credentials
+    // LocalStorage Persistence for Dhan Credentials & Auto-Connect
     // -------------------------------------------------------------
     if (data.configured) {
-      try {
-        const creds = {
-          clientId: byId('dhanClientId')?.value || data.clientId || '1100616877',
-          pin: byId('dhanPin')?.value || '172711',
-          totpSecret: byId('dhanTotpSecret')?.value || '',
-          accessToken: byId('dhanAccessToken')?.value || ''
-        };
-        localStorage.setItem('fixed_straddle_dhan_creds', JSON.stringify(creds));
-      } catch (e) {}
+      saveDhanLocalCreds({ clientId: data.clientId });
+    } else {
+      void autoConnectDhanIfSaved(data);
     }
 
     if (byId('universeCount')) byId('universeCount').innerHTML = `${totalPairs}<span class="metric-foot">monitored</span>`;
