@@ -120,13 +120,34 @@ function renderPairRow(r) {
   </tr>`;
 }
 
-function renderWatchlist(contracts = []) {
+let lastWatchlistSignature = '';
+let lastAlertSignature = '';
+
+function renderWatchlist(contracts = [], force = false) {
   liveRows = contracts;
+
+  const idxStraddleSearch = (byId('indexStraddleSearch')?.value || '').trim().toLowerCase();
+  const idxStraddleFilter = byId('indexStraddleFilter')?.value || 'all';
+  const idxStrangleSearch = (byId('indexStrangleSearch')?.value || '').trim().toLowerCase();
+  const idxStrangleFilter = byId('indexStrangleFilter')?.value || 'all';
+  const stkStraddleSearch = (byId('stockStraddleSearch')?.value || byId('search')?.value || '').trim().toLowerCase();
+  const stkStraddleFilter = byId('stockStraddleFilter')?.value || byId('signalFilter')?.value || 'all';
+  const stkStrangleSearch = (byId('stockStrangleSearch')?.value || '').trim().toLowerCase();
+  const stkStrangleFilter = byId('stockStrangleFilter')?.value || 'all';
+
+  const filterSig = `${idxStraddleSearch}:${idxStraddleFilter}:${idxStrangleSearch}:${idxStrangleFilter}:${stkStraddleSearch}:${stkStraddleFilter}:${stkStrangleSearch}:${stkStrangleFilter}`;
+  const dataSig = contracts.map(r => `${r.symbol}:${r.ceLtp}:${r.peLtp}:${r.straddle}:${r.macd}:${r.ema}:${r.alert}:${r.indicatorBars}:${r.timeframe}:${r.customName}`).join(';');
+  const fullSig = `${filterSig}__${dataSig}`;
+
+  if (!force && fullSig === lastWatchlistSignature) {
+    renderAlerts(false);
+    renderStrategyViews();
+    return;
+  }
+  lastWatchlistSignature = fullSig;
 
   // 1. Index Straddles (Same strike, 5m)
   const idxStraddles = contracts.filter(r => isIndexPair(r) && !isStranglePair(r));
-  const idxStraddleSearch = (byId('indexStraddleSearch')?.value || '').trim().toLowerCase();
-  const idxStraddleFilter = byId('indexStraddleFilter')?.value || 'all';
   const filteredIdxStraddles = idxStraddles.filter(r => {
     if (idxStraddleSearch && !r.symbol.toLowerCase().includes(idxStraddleSearch) && !(r.underlying || '').toLowerCase().includes(idxStraddleSearch)) return false;
     if (idxStraddleFilter === 'five' && r.alert !== 5) return false;
@@ -143,8 +164,6 @@ function renderWatchlist(contracts = []) {
 
   // 2. Index Strangles (Different strikes, 1m)
   const idxStrangles = contracts.filter(r => isIndexPair(r) && isStranglePair(r));
-  const idxStrangleSearch = (byId('indexStrangleSearch')?.value || '').trim().toLowerCase();
-  const idxStrangleFilter = byId('indexStrangleFilter')?.value || 'all';
   const filteredIdxStrangles = idxStrangles.filter(r => {
     if (idxStrangleSearch && !r.symbol.toLowerCase().includes(idxStrangleSearch) && !(r.underlying || '').toLowerCase().includes(idxStrangleSearch)) return false;
     if (idxStrangleFilter === 'five' && r.alert !== 5) return false;
@@ -161,8 +180,6 @@ function renderWatchlist(contracts = []) {
 
   // 3. Stock Straddles (Same strike, 15m)
   const stkStraddles = contracts.filter(r => !isIndexPair(r) && !isStranglePair(r));
-  const stkStraddleSearch = (byId('stockStraddleSearch')?.value || byId('search')?.value || '').trim().toLowerCase();
-  const stkStraddleFilter = byId('stockStraddleFilter')?.value || byId('signalFilter')?.value || 'all';
   const filteredStkStraddles = stkStraddles.filter(r => {
     if (stkStraddleSearch && !r.symbol.toLowerCase().includes(stkStraddleSearch) && !(r.underlying || '').toLowerCase().includes(stkStraddleSearch)) return false;
     if (stkStraddleFilter === 'five' && r.alert !== 5) return false;
@@ -179,8 +196,6 @@ function renderWatchlist(contracts = []) {
 
   // 4. Stock Strangles (Different strikes, 5m)
   const stkStrangles = contracts.filter(r => !isIndexPair(r) && isStranglePair(r));
-  const stkStrangleSearch = (byId('stockStrangleSearch')?.value || '').trim().toLowerCase();
-  const stkStrangleFilter = byId('stockStrangleFilter')?.value || 'all';
   const filteredStkStrangles = stkStrangles.filter(r => {
     if (stkStrangleSearch && !r.symbol.toLowerCase().includes(stkStrangleSearch) && !(r.underlying || '').toLowerCase().includes(stkStrangleSearch)) return false;
     if (stkStrangleFilter === 'five' && r.alert !== 5) return false;
@@ -199,9 +214,13 @@ function renderWatchlist(contracts = []) {
   renderStrategyViews();
 }
 
-function renderAlerts() {
+function renderAlerts(force = false) {
   const filter = byId('alertLevelFilter')?.value || 'all';
   const rows = liveRows.filter(r => r.alert > 0 && (filter === 'all' || (filter === 'five' && r.alert === 5) || (filter === 'three' && r.alert === 3)));
+  const alertSig = `${filter}__` + rows.map(r => `${r.symbol}:${r.ceLtp}:${r.peLtp}:${r.straddle}:${r.macd}:${r.ema}:${r.alert}`).join(';');
+  if (!force && alertSig === lastAlertSignature) return;
+  lastAlertSignature = alertSig;
+
   const alertTbody = byId('alertRows');
   if (alertTbody) {
     alertTbody.innerHTML = rows.map(r => {
