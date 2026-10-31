@@ -850,14 +850,9 @@ async function refreshState() {
     }
 
     const credMsg = byId('credentialMessage');
-    if (credMsg && !connected) {
-      if (data.totpAutoSuspended && data.totpAutoSuspensionReason) {
-        credMsg.textContent = `🛡️ Anti-Lockout Active: ${data.totpAutoSuspensionReason}`;
-        credMsg.style.color = '#ffb74d';
-      } else if (data.error) {
-        credMsg.textContent = data.error;
-        credMsg.style.color = '#ffb74d';
-      }
+    if (credMsg && !connected && !window._userTriggeredAuthError) {
+      credMsg.textContent = 'Enter your Dhan access token or login via TOTP above to connect.';
+      credMsg.style.color = 'var(--muted)';
     }
 
     // Populate Settings fields if not yet touched
