@@ -1440,6 +1440,29 @@ function updateTodayClock() {
   el.textContent = `${time} IST`;
 }
 
+let pollTimer = null;
+async function pollStateLoop() {
+  clearTimeout(pollTimer);
+  const isHidden = typeof document !== 'undefined' && Boolean(document.hidden);
+  // Adaptive polling: 10s when user is on another tab to save CPU & network, 3.5s when active tab
+  const nextInterval = isHidden ? 10000 : 3500;
+  try {
+    await refreshState();
+  } catch (err) {
+    console.warn('Poll cycle error:', err);
+  } finally {
+    pollTimer = setTimeout(pollStateLoop, nextInterval);
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) {
+    // User returned to active tab: refresh immediately
+    clearTimeout(pollTimer);
+    pollStateLoop();
+  }
+});
+
 async function boot() {
   updateTodayClock();
   setInterval(updateTodayClock, 1000);
@@ -1455,8 +1478,8 @@ async function boot() {
 
   setupNavigation();
   setupEventListeners();
-  await refreshState();
-  setInterval(refreshState, 3000);
+  // Start non-blocking adaptive chained polling loop
+  pollStateLoop();
 }
 
 document.addEventListener('DOMContentLoaded', boot);
