@@ -1950,7 +1950,7 @@ const server = http.createServer(async (req, res) => {
       eodTelegramReport: settings.eodTelegramReport ?? true,
       todayAlertsCount: alertsHistory.filter(a => a.date === indiaDateTime().date).length,
       updatedAt: state.updatedAt, settings, count: rows.length, contracts: rows, universe: universeSync, underlyingPrices:underlyingPriceState, stockEma:stockEmaRows(), stockEmaScan
-    });
+    }, req);
   }
   if (req.method === 'GET' && url.pathname === '/api/health') return json(res, 200, { ok: true, configured: configured(), feed: state.feed });
   if (req.method === 'PUT' && url.pathname === '/api/settings') {
