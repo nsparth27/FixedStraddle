@@ -1121,11 +1121,67 @@ function setupEventListeners() {
   byId('addWatchlist')?.addEventListener('click', () => addPairToWatchlist('stocks'));
   byId('addIndexWatchlist')?.addEventListener('click', () => addPairToWatchlist('indices'));
 
-  // Remove watchlist pairs
-  byId('indexStraddleRows')?.addEventListener('click', removeWatchlistPair);
-  byId('indexStrangleRows')?.addEventListener('click', removeWatchlistPair);
-  byId('stockStraddleRows')?.addEventListener('click', removeWatchlistPair);
-  byId('stockStrangleRows')?.addEventListener('click', removeWatchlistPair);
+  // Watchlist pair actions (Edit & Delete)
+  byId('indexStraddleRows')?.addEventListener('click', handleWatchlistTableClick);
+  byId('indexStrangleRows')?.addEventListener('click', handleWatchlistTableClick);
+  byId('stockStraddleRows')?.addEventListener('click', handleWatchlistTableClick);
+  byId('stockStrangleRows')?.addEventListener('click', handleWatchlistTableClick);
+
+  // Edit Modal controls
+  byId('editCeStrike')?.addEventListener('input', updateModalTypeBadge);
+  byId('editPeStrike')?.addEventListener('input', updateModalTypeBadge);
+  byId('editTimeframe')?.addEventListener('change', updateModalTypeBadge);
+  byId('closeEditModal')?.addEventListener('click', closeEditPairModal);
+  byId('cancelEditBtn')?.addEventListener('click', closeEditPairModal);
+  byId('btnMakeAtmStraddle')?.addEventListener('click', () => {
+    const ce = byId('editCeStrike')?.value;
+    if (ce && byId('editPeStrike')) {
+      byId('editPeStrike').value = ce;
+      updateModalTypeBadge();
+    }
+  });
+
+  byId('editPairForm')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const oldSymbol = byId('editOldSymbol')?.value;
+    const ceStrike = Number(byId('editCeStrike')?.value);
+    const peStrike = Number(byId('editPeStrike')?.value);
+    const timeframe = Number(byId('editTimeframe')?.value);
+    const customName = (byId('editCustomName')?.value || '').trim();
+    const saveBtn = byId('saveEditBtn');
+
+    if (!ceStrike || !peStrike) {
+      toast('Please enter valid Call and Put strikes');
+      return;
+    }
+
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving…'; }
+    try {
+      const res = await fetch('/api/watchlist/edit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldSymbol, ceStrike, peStrike, timeframe, customName })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to update pair');
+
+      // Update localStorage persistent backup
+      if (data.oldSymbol && data.oldSymbol !== data.newSymbol) {
+        removeFromStoredContracts(data.oldSymbol);
+      }
+      if (data.contract) {
+        addToStoredContracts(data.contract);
+      }
+
+      closeEditPairModal();
+      toast('Straddle / Strangle updated successfully!');
+      await refreshState();
+    } catch (err) {
+      toast(err.message);
+    } finally {
+      if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '💾 Save Changes'; }
+    }
+  });
 
   // Filters & Searches for Index & Stock Straddles/Strangles
   byId('indexStraddleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
