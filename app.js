@@ -1295,10 +1295,10 @@ async function boot() {
 
   // Pre-fill credentials from localStorage or defaults
   try {
-    const creds = JSON.parse(localStorage.getItem('fixed_straddle_dhan_creds') || '{}');
+    const creds = JSON.parse(localStorage.getItem(DHAN_CREDS_STORAGE_KEY) || '{}');
     if (byId('dhanClientId')) byId('dhanClientId').value = creds.clientId || '1100616877';
     if (byId('dhanPin')) byId('dhanPin').value = creds.pin || '172711';
-    if (byId('dhanTotpSecret')) byId('dhanTotpSecret').value = creds.totpSecret || '';
+    if (byId('dhanTotpSecret') && creds.totpSecret) byId('dhanTotpSecret').value = creds.totpSecret;
     if (byId('dhanAccessToken') && creds.accessToken) byId('dhanAccessToken').value = creds.accessToken;
   } catch {}
 
