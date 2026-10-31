@@ -17,7 +17,9 @@
         "strike": 24000,
         "securityId": ""
       },
-      "symbol": "NIFTY 2026-11-03 24000C/24000P"
+      "symbol": "NIFTY 2026-11-03 24000C/24000P",
+      "timeframe": 5,
+      "customName": "NIFTY 24000"
     },
     {
       "underlying": "NIFTY",
