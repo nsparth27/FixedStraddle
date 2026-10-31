@@ -681,6 +681,61 @@ async function addPairToWatchlist(mode) {
   }
 }
 
+function openEditPairModal(symbol) {
+  const contract = (liveRows || []).find(c => c.symbol === symbol) || getStoredContracts().find(c => c.symbol === symbol);
+  if (!contract) {
+    toast('Contract not found');
+    return;
+  }
+  const modal = byId('editPairModal');
+  if (!modal) return;
+
+  byId('editOldSymbol').value = contract.symbol;
+  byId('editUnderlyingDisplay').textContent = contract.underlying || contract.symbol;
+  byId('editExpiryDisplay').textContent = `Expiry: ${formatDateDisplay(contract.expiry)}`;
+  
+  const ceStrike = contract.ceStrike || contract.ce?.strike || '';
+  const peStrike = contract.peStrike || contract.pe?.strike || '';
+  byId('editCeStrike').value = ceStrike;
+  byId('editPeStrike').value = peStrike;
+
+  const tf = pairTimeframe(contract);
+  if (byId('editTimeframe')) byId('editTimeframe').value = String(tf);
+  if (byId('editCustomName')) byId('editCustomName').value = contract.customName || '';
+
+  updateModalTypeBadge();
+  modal.style.display = 'flex';
+}
+
+function closeEditPairModal() {
+  const modal = byId('editPairModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function updateModalTypeBadge() {
+  const ce = Number(byId('editCeStrike')?.value || 0);
+  const pe = Number(byId('editPeStrike')?.value || 0);
+  const tf = byId('editTimeframe')?.value || '5';
+  const badge = byId('editPairTypeBadge');
+  if (!badge) return;
+  const isStrg = ce > 0 && pe > 0 && ce !== pe;
+  badge.className = `pair-type-tag ${isStrg ? 'strangle' : 'straddle'}`;
+  badge.textContent = `${isStrg ? 'Strangle' : 'Straddle'} · ${tf}m`;
+}
+
+function handleWatchlistTableClick(event) {
+  const removeBtn = event.target.closest('[data-remove]');
+  if (removeBtn) {
+    removeWatchlistPair(event);
+    return;
+  }
+  const editBtn = event.target.closest('[data-edit]');
+  if (editBtn) {
+    openEditPairModal(editBtn.dataset.edit);
+    return;
+  }
+}
+
 async function removeWatchlistPair(event) {
   const btn = event.target.closest('[data-remove]');
   if (!btn) return;
