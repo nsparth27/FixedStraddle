@@ -559,6 +559,90 @@ function removeFromStoredContracts(symbol) {
   saveStoredContracts(list);
 }
 
+const DHAN_CREDS_STORAGE_KEY = 'fixed_straddle_dhan_creds';
+
+function saveDhanLocalCreds(incoming = {}) {
+  try {
+    const existing = JSON.parse(localStorage.getItem(DHAN_CREDS_STORAGE_KEY) || '{}');
+    const updated = {
+      clientId: incoming.clientId || existing.clientId || byId('dhanClientId')?.value || '1100616877',
+      pin: incoming.pin || existing.pin || byId('dhanPin')?.value || '172711',
+      totpSecret: incoming.totpSecret !== undefined && incoming.totpSecret !== '' ? incoming.totpSecret : (existing.totpSecret || byId('dhanTotpSecret')?.value || ''),
+      accessToken: incoming.accessToken !== undefined && incoming.accessToken !== '' ? incoming.accessToken : (existing.accessToken || byId('dhanAccessToken')?.value || '')
+    };
+    localStorage.setItem(DHAN_CREDS_STORAGE_KEY, JSON.stringify(updated));
+    return updated;
+  } catch (e) {
+    return incoming;
+  }
+}
+
+let _autoConnectAttempted = false;
+async function autoConnectDhanIfSaved(serverData) {
+  if (_autoConnectAttempted || serverData?.connected) return;
+
+  let creds = {};
+  try {
+    creds = JSON.parse(localStorage.getItem(DHAN_CREDS_STORAGE_KEY) || '{}');
+  } catch {}
+
+  const clientId = (creds.clientId || byId('dhanClientId')?.value || '1100616877').trim();
+  const accessToken = (creds.accessToken || byId('dhanAccessToken')?.value || '').trim();
+  const pin = (creds.pin || byId('dhanPin')?.value || '172711').trim();
+  const totpSecret = (creds.totpSecret || byId('dhanTotpSecret')?.value || '').trim();
+
+  // 1. If we have a saved access token, test it first
+  if (clientId && accessToken) {
+    _autoConnectAttempted = true;
+    console.log('[Auto-Connect] Testing saved access token from localStorage…');
+    try {
+      const res = await fetch('/api/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId, accessToken })
+      });
+      if (res.ok) {
+        console.log('[Auto-Connect] Successfully auto-connected using saved access token!');
+        toast('Dhan auto-connected!');
+        universeLoaded = false;
+        await refreshState();
+        return;
+      }
+      console.warn('[Auto-Connect] Saved token expired or invalid.');
+    } catch (e) {
+      console.warn('[Auto-Connect] Error validating saved token:', e.message);
+    }
+  }
+
+  // 2. If token did not connect, but we have valid TOTP credentials saved, try TOTP auto-login
+  if (clientId && pin && totpSecret) {
+    if (!serverData?.totpAutoSuspended) {
+      _autoConnectAttempted = true;
+      console.log('[Auto-Connect] Attempting auto-login via saved TOTP…');
+      try {
+        const res = await fetch('/api/dhan/totp-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientId, pin, totpSecret, autoRefresh: true })
+        });
+        const d = await res.json().catch(() => ({}));
+        if (res.ok && d.ok) {
+          console.log('[Auto-Connect] Successfully auto-connected via TOTP!');
+          if (d.accessToken) {
+            saveDhanLocalCreds({ clientId, pin, totpSecret, accessToken: d.accessToken });
+          }
+          toast('Dhan auto-connected via TOTP!');
+          universeLoaded = false;
+          await refreshState();
+          return;
+        }
+      } catch (e) {
+        console.warn('[Auto-Connect] Error during TOTP auto-login:', e.message);
+      }
+    }
+  }
+}
+
 async function addPairToWatchlist(mode) {
   const ids = chainIds(mode);
   const key = byId(ids.underlying)?.value;
