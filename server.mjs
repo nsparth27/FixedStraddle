@@ -1157,6 +1157,12 @@ async function fetchCandles(instrument, fromDate, toDate, interval) {
 }
 async function warmupContract(contract) {
   if(!configured()||!validContract(contract))return;
+  if (!contract.ce?.securityId || !contract.pe?.securityId) {
+    await resolveContractSecurityIds(contract);
+  }
+  if (!contract.ce?.securityId || !contract.pe?.securityId) {
+    return;
+  }
   try {
     const timeframe=timeframeFor(contract),now=new Date(),end=formatDate(now),daily=timeframe===1440,baseInterval=daily?'day':historyInterval(timeframe);
     const lookbackDays=daily?450:90;
