@@ -1362,6 +1362,54 @@ async function getOptionChain(item, expiry, maxCacheAgeMs = 15_000) {
   optionChainQueue = task.then(() => undefined, () => undefined);
   return task;
 }
+
+async function resolveContractSecurityIds(contract) {
+  if (contract.ce?.securityId && contract.pe?.securityId) return true;
+  if (!configured()) return false;
+
+  const item = fnoUniverse.find(x => x.symbol === contract.underlying || x.key === contract.key || (contract.symbol && contract.symbol.startsWith(x.symbol)));
+  if (!item) return false;
+
+  try {
+    const data = await getOptionChain(item, contract.expiry);
+    const oc = data?.oc || data;
+    if (!oc) return false;
+
+    const ceStrike = Number(contract.ce?.strike ?? contract.ceStrike);
+    const peStrike = Number(contract.pe?.strike ?? contract.peStrike);
+
+    const chainLegAt = strike => oc[strike] || oc[String(strike)] || oc[`${strike}.000000`] || oc[Number(strike).toFixed(6)] || Object.entries(oc).find(([key]) => Number(key) === strike)?.[1];
+    const ce = chainLegAt(ceStrike)?.ce;
+    const pe = chainLegAt(peStrike)?.pe;
+
+    if (ce?.security_id && pe?.security_id) {
+      contract.ce = {
+        exchangeSegment: 'NSE_FNO',
+        securityId: String(ce.security_id),
+        instrument: item.instrument || (item.kind === 'Index' ? 'OPTIDX' : 'OPTSTK'),
+        strike: ceStrike,
+        oiAtSelection: Number(ce.oi) || 0,
+        lastPrice: Number(ce.last_price) || 0
+      };
+      contract.pe = {
+        exchangeSegment: 'NSE_FNO',
+        securityId: String(pe.security_id),
+        instrument: item.instrument || (item.kind === 'Index' ? 'OPTIDX' : 'OPTSTK'),
+        strike: peStrike,
+        oiAtSelection: Number(pe.oi) || 0,
+        lastPrice: Number(pe.last_price) || 0
+      };
+      saveJson(CONFIG_FILE, config);
+      saveJson(STATE_FILE, state);
+      refreshFeedSubscriptions();
+      console.log(`[Contract Resolution] Resolved Dhan security IDs for ${contract.symbol}: CE=${ce.security_id}, PE=${pe.security_id}`);
+      return true;
+    }
+  } catch (err) {
+    console.warn(`[Contract Resolution] Failed for ${contract.symbol}:`, err.message);
+  }
+  return false;
+}
 async function syncFnoUniverse() {
   if (universeSync.status === 'running') return;
   universeSync = { status: 'running', total: 0, done: 0, errors: [] };
