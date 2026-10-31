@@ -17,7 +17,8 @@
   "telegramAlertFive": true,
   "dhanClientId": "1100616877",
   "dhanPin": "172711",
-  "dhanTotpSecret": "4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC",
+  "dhanTotpSecret": "",
   "autoTotpRefresh": true,
-  "eodTelegramReport": true
+  "eodTelegramReport": true,
+  "dhanAccessToken": ""
 }
