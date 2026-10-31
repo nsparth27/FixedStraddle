@@ -860,15 +860,36 @@ async function refreshState() {
 
     // -------------------------------------------------------------
     // Auto-Restore & Persistent Watchlist Backup
+    // (Only write to localStorage when new contracts are discovered)
     // -------------------------------------------------------------
+    const stored = getStoredContracts();
+    const storedMap = new Map(stored.map(c => [c.symbol, c]));
+    let storedChanged = false;
+
     if (Array.isArray(data.contracts) && data.contracts.length > 0) {
       for (const c of data.contracts) {
-        addToStoredContracts(c);
+        if (c && c.symbol && !storedMap.has(c.symbol)) {
+          storedMap.set(c.symbol, {
+            symbol: c.symbol,
+            kind: c.kind,
+            underlying: c.underlying,
+            expiry: c.expiry,
+            ceStrike: c.ceStrike,
+            peStrike: c.peStrike,
+            timeframe: c.timeframe,
+            customName: c.customName,
+            ce: c.ce ? { securityId: c.ce.securityId, symbol: c.ce.symbol, strike: c.ce.strike } : undefined,
+            pe: c.pe ? { securityId: c.pe.securityId, symbol: c.pe.symbol, strike: c.pe.strike } : undefined
+          });
+          storedChanged = true;
+        }
+      }
+      if (storedChanged) {
+        saveStoredContracts(Array.from(storedMap.values()));
       }
     }
 
     // Check if server is missing any contracts that are in localStorage (e.g. after Render restart)
-    const stored = getStoredContracts();
     const serverSymbols = new Set((data.contracts || []).map(c => c.symbol));
     const missingOnServer = stored.filter(c => !serverSymbols.has(c.symbol));
 
