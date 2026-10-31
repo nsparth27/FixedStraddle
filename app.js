@@ -1224,21 +1224,21 @@ function setupEventListeners() {
   });
 
   // Filters & Searches for Index & Stock Straddles/Strangles
-  byId('indexStraddleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
-  byId('indexStraddleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
-  byId('indexStrangleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
-  byId('indexStrangleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
+  byId('indexStraddleSearch')?.addEventListener('input', () => renderWatchlist(liveRows, true));
+  byId('indexStraddleFilter')?.addEventListener('change', () => renderWatchlist(liveRows, true));
+  byId('indexStrangleSearch')?.addEventListener('input', () => renderWatchlist(liveRows, true));
+  byId('indexStrangleFilter')?.addEventListener('change', () => renderWatchlist(liveRows, true));
 
-  byId('stockStraddleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
-  byId('stockStraddleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
-  byId('stockStrangleSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
-  byId('stockStrangleFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
+  byId('stockStraddleSearch')?.addEventListener('input', () => renderWatchlist(liveRows, true));
+  byId('stockStraddleFilter')?.addEventListener('change', () => renderWatchlist(liveRows, true));
+  byId('stockStrangleSearch')?.addEventListener('input', () => renderWatchlist(liveRows, true));
+  byId('stockStrangleFilter')?.addEventListener('change', () => renderWatchlist(liveRows, true));
 
-  byId('search')?.addEventListener('input', () => renderWatchlist(liveRows));
-  byId('signalFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
-  byId('indexSearch')?.addEventListener('input', () => renderWatchlist(liveRows));
-  byId('indexSignalFilter')?.addEventListener('change', () => renderWatchlist(liveRows));
-  byId('alertLevelFilter')?.addEventListener('change', renderAlerts);
+  byId('search')?.addEventListener('input', () => renderWatchlist(liveRows, true));
+  byId('signalFilter')?.addEventListener('change', () => renderWatchlist(liveRows, true));
+  byId('indexSearch')?.addEventListener('input', () => renderWatchlist(liveRows, true));
+  byId('indexSignalFilter')?.addEventListener('change', () => renderWatchlist(liveRows, true));
+  byId('alertLevelFilter')?.addEventListener('change', () => renderAlerts(true));
 
   // Settings saving
   byId('saveSettings')?.addEventListener('click', async () => {
