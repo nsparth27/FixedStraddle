@@ -1781,6 +1781,46 @@ const server = http.createServer(async (req, res) => {
     saveJson(CONFIG_FILE, config);
     return json(res, 200, { ok: true, customName: c.customName });
   }
+  if (req.method === 'POST' && url.pathname === '/api/watchlist/edit') {
+    let input; try { input = await requestJson(req); } catch { return json(res, 400, { error: 'Invalid JSON' }); }
+    const { oldSymbol, ceStrike, peStrike, timeframe, customName } = input;
+    if (!oldSymbol) return json(res, 400, { error: 'Missing oldSymbol' });
+
+    const contractIndex = config.contracts.findIndex(c => c.symbol === oldSymbol);
+    if (contractIndex === -1) return json(res, 404, { error: 'Contract not found in watchlist' });
+
+    const c = config.contracts[contractIndex];
+    const newCeStrike = Number(ceStrike) || Number(c.ce?.strike ?? c.ceStrike);
+    const newPeStrike = Number(peStrike) || Number(c.pe?.strike ?? c.peStrike);
+    const expiryLabel = String(c.expiry || '').trim().slice(0, 10);
+    const isSameStrike = newCeStrike === newPeStrike;
+    const defaultName = isSameStrike ? `${c.underlying} ${newCeStrike}` : `${c.underlying} ${newCeStrike}C/${newPeStrike}P`;
+    const newSymbol = `${c.underlying} ${expiryLabel} ${newCeStrike}C/${newPeStrike}P`;
+
+    const symbolChanged = newSymbol !== oldSymbol;
+    if (symbolChanged) {
+      delete state.contracts[oldSymbol];
+      candles.delete(oldSymbol);
+    }
+
+    c.symbol = newSymbol;
+    c.ceStrike = newCeStrike;
+    c.peStrike = newPeStrike;
+    c.timeframe = Number(timeframe) || c.timeframe;
+    c.customName = String(customName || '').trim() || (symbolChanged ? defaultName : c.customName);
+    c.ce = { exchangeSegment: 'NSE_FNO', strike: newCeStrike, securityId: (symbolChanged ? '' : c.ce?.securityId) || '' };
+    c.pe = { exchangeSegment: 'NSE_FNO', strike: newPeStrike, securityId: (symbolChanged ? '' : c.pe?.securityId) || '' };
+
+    await resolveContractSecurityIds(c);
+
+    saveJson(CONFIG_FILE, config);
+    saveJson(STATE_FILE, state);
+    refreshFeedSubscriptions();
+    void warmupContract(c);
+
+    console.log(`[Watchlist Edit] Updated ${oldSymbol} -> ${newSymbol} (CE: ${newCeStrike}, PE: ${newPeStrike}, TF: ${c.timeframe}m)`);
+    return json(res, 200, { ok: true, contract: contractState(c), oldSymbol, newSymbol });
+  }
   if (req.method === 'GET' && url.pathname === '/api/contract/chart') {
     const symbol = url.searchParams.get('symbol') || '';
     const tf = Number(url.searchParams.get('timeframe')) || 0;
