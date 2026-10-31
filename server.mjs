@@ -2138,15 +2138,14 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && (url.pathname === '/lightweight-charts.js' || url.pathname === '/lightweight-charts.standalone.production.js')) {
     const lwPath = path.join(ROOT, 'node_modules', 'lightweight-charts', 'dist', 'lightweight-charts.standalone.production.js');
     if (fs.existsSync(lwPath)) {
-      res.writeHead(200, { 'content-type': 'text/javascript; charset=utf-8', 'cache-control': 'public, max-age=86400' });
-      return fs.createReadStream(lwPath).pipe(res);
+      return sendGzipOrRaw(req, res, 200, fs.readFileSync(lwPath), 'text/javascript; charset=utf-8', 'public, max-age=86400');
     }
   }
   if (req.method === 'GET' && url.pathname === '/app.js') {
-    res.writeHead(200, { 'content-type': 'text/javascript; charset=utf-8', 'cache-control':'no-cache' }); return fs.createReadStream(path.join(ROOT, 'app.js')).pipe(res);
+    return sendGzipOrRaw(req, res, 200, fs.readFileSync(path.join(ROOT, 'app.js')), 'text/javascript; charset=utf-8', 'no-cache');
   }
   if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
-    res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' }); return fs.createReadStream(path.join(ROOT, 'index.html')).pipe(res);
+    return sendGzipOrRaw(req, res, 200, fs.readFileSync(path.join(ROOT, 'index.html')), 'text/html; charset=utf-8', 'no-cache');
   }
   if (req.method === 'GET' && url.pathname === '/favicon.ico') { res.writeHead(204); return res.end(); }
   res.writeHead(404, { 'content-type': 'text/plain' }); res.end('Not found');
