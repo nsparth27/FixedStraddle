@@ -1728,7 +1728,7 @@ const server = http.createServer(async (req, res) => {
       ...item,
       expiries: (item.expiries || []).filter(e => e >= todayInIndia)
     })).filter(x => x.expiries.length > 0);
-    return json(res, 200, { status:universeSync.status, total:activeUniverse.length, errors:universeSync.errors, updatedAt:universeSync.updatedAt||null, underlyings:activeUniverse });
+    return json(res, 200, { status:universeSync.status, total:activeUniverse.length, errors:universeSync.errors, updatedAt:universeSync.updatedAt||null, underlyings:activeUniverse }, req);
   }
   if (req.method === 'GET' && url.pathname === '/api/expiries') {
     if (!configured()) return json(res,401,{error:'Connect your Dhan account first.'});
