@@ -111,7 +111,12 @@ function renderPairRow(r) {
     <td class="num">${fmt(r.peStrike)}</td><td class="num">${fmt(r.peLtp)}</td>
     ${straddleCell(r)}${macdCell(r)}${emaCell(r)}
     <td>${r.alert === 5 ? '<span class="star">★★★★★</span>' : r.alert === 3 ? '<span class="signal-three star">★★★</span>' : '<span class="neutral">—</span>'}</td>
-    <td><button class="remove-watch" data-remove="${safeText(r.symbol)}" title="Remove pair">✕</button></td>
+    <td>
+      <div class="action-cell">
+        <button class="edit-watch" data-edit="${safeText(r.symbol)}" title="Edit Straddle / Strangle strikes and timeframe">✏️ Edit</button>
+        <button class="remove-watch" data-remove="${safeText(r.symbol)}" title="Remove pair">✕</button>
+      </div>
+    </td>
   </tr>`;
 }
 
