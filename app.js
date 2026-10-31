@@ -1201,9 +1201,8 @@ function setupEventListeners() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Login failed');
-      try {
-        localStorage.setItem('fixed_straddle_dhan_creds', JSON.stringify({ clientId, pin, totpSecret, accessToken: data.accessToken }));
-      } catch {}
+      saveDhanLocalCreds({ clientId, pin, totpSecret, accessToken: data.accessToken });
+      _autoConnectAttempted = false;
       toast('Connected to Dhan via TOTP!');
       universeLoaded = false;
       await refreshState();
@@ -1233,10 +1232,8 @@ function setupEventListeners() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Connection failed');
-      try {
-        const existing = JSON.parse(localStorage.getItem('fixed_straddle_dhan_creds') || '{}');
-        localStorage.setItem('fixed_straddle_dhan_creds', JSON.stringify({ ...existing, clientId, accessToken }));
-      } catch {}
+      saveDhanLocalCreds({ clientId, accessToken });
+      _autoConnectAttempted = false;
       toast('Dhan connected with manual token!');
       universeLoaded = false;
       await refreshState();
@@ -1251,6 +1248,12 @@ function setupEventListeners() {
   byId('disconnectDhan')?.addEventListener('click', async () => {
     try {
       await fetch('/api/disconnect', { method: 'POST' });
+      _autoConnectAttempted = true;
+      try {
+        const existing = JSON.parse(localStorage.getItem(DHAN_CREDS_STORAGE_KEY) || '{}');
+        existing.accessToken = '';
+        localStorage.setItem(DHAN_CREDS_STORAGE_KEY, JSON.stringify(existing));
+      } catch {}
       toast('Dhan disconnected.');
       await refreshState();
     } catch (err) {
