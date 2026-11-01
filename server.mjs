@@ -27,6 +27,8 @@ let settings = loadJson(SETTINGS_FILE, {
   macdFast: 12, macdSlow: 26, macdSignal: 9, emaPeriod: 200,
   telegramEnabled: true, telegramBotToken: process.env.TELEGRAM_BOT_TOKEN || '9066894671:AAF0y0eoWlddAlmE1EfDdyDkx33U2f33f7g', telegramChatId: process.env.TELEGRAM_CHAT_ID || '723433781',
   telegramAlertThree: true, telegramAlertFive: true,
+  telegramStraddleThree: true, telegramStraddleFive: true,
+  telegramStrangleThree: true, telegramStrangleFive: true,
   dhanClientId: '1100616877', dhanPin: '172711', dhanTotpSecret: '4KCM2ASGEDJBC6R2RO63EKLMLXN7WYNC',
   dhanAccessToken: '',
   autoTotpRefresh: true,
@@ -52,8 +54,12 @@ settings.indexTimeframe = settings.indexStraddleTimeframe;
 settings.telegramEnabled ??= true;
 settings.telegramBotToken ||= process.env.TELEGRAM_BOT_TOKEN || '9066894671:AAF0y0eoWlddAlmE1EfDdyDkx33U2f33f7g';
 settings.telegramChatId ||= process.env.TELEGRAM_CHAT_ID || '723433781';
-settings.telegramAlertThree ??= true;
-settings.telegramAlertFive ??= true;
+settings.telegramStraddleThree = Boolean(settings.telegramStraddleThree ?? settings.telegramAlertThree ?? true);
+settings.telegramStraddleFive = Boolean(settings.telegramStraddleFive ?? settings.telegramAlertFive ?? true);
+settings.telegramStrangleThree = Boolean(settings.telegramStrangleThree ?? settings.telegramAlertThree ?? true);
+settings.telegramStrangleFive = Boolean(settings.telegramStrangleFive ?? settings.telegramAlertFive ?? true);
+settings.telegramAlertThree = Boolean(settings.telegramStraddleThree || settings.telegramStrangleThree);
+settings.telegramAlertFive = Boolean(settings.telegramStraddleFive || settings.telegramStrangleFive);
 settings.autoTotpRefresh ??= true;
 settings.eodTelegramReport ??= true;
 delete settings.timeframe;
@@ -672,15 +678,21 @@ async function checkAndSendTelegramAlert(c, alertLevel, straddleData) {
 
   if (alertLevel <= 0) return;
   if (alertLevel === prevAlert) return;
-  if (alertLevel === 3 && !settings.telegramAlertThree) return;
-  if (alertLevel === 5 && !settings.telegramAlertFive) return;
+
+  const strangle = isStrangle(c);
+  if (!strangle) {
+    if (alertLevel === 3 && !settings.telegramStraddleThree) return;
+    if (alertLevel === 5 && !settings.telegramStraddleFive) return;
+  } else {
+    if (alertLevel === 3 && !settings.telegramStrangleThree) return;
+    if (alertLevel === 5 && !settings.telegramStrangleFive) return;
+  }
 
   const underlying = c.underlying || c.symbol;
   const sector = getSector(underlying, c.kind);
   const tf = timeframeFor(c);
   const tfStr = tf === 1440 ? '1 Day' : tf >= 60 ? `${tf / 60} Hour` : `${tf} Min`;
   const isFiveStar = alertLevel === 5;
-  const strangle = isStrangle(c);
   const pairType = strangle ? 'Strangle' : 'Straddle';
   const pairTypeUpper = strangle ? 'STRANGLE' : 'STRADDLE';
   const header = isFiveStar ? `🌟🌟🌟🌟🌟 <b>5-STAR ${pairTypeUpper} ALERT</b>` : `⭐⭐⭐ <b>3-STAR ${pairTypeUpper} ALERT</b>`;
@@ -1093,13 +1105,14 @@ function evaluate(c, isLive = false) {
     lastUpdated: new Date().toISOString(), status: emaReady ? 'live' : 'warming-up' };
   state.updatedAt = new Date().toISOString();
   saveStateDebounced();
-  if (alert > 0) {
+  if (!isLive) {
+    // Record baseline alert state during historical warmup so we NEVER spam old alerts on startup!
+    lastAlertState.set(key, alert);
+  } else if (alert > 0) {
     const latestBar = validBars.at(-1);
-    logAlertEvent(c, alert, state.contracts[key], isLive ? 'Live Trigger' : 'Warmup Snapshot', latestBar?.time);
-  }
-  if (isLive && alert > 0) {
+    logAlertEvent(c, alert, state.contracts[key], 'Live Trigger', latestBar?.time);
     void checkAndSendTelegramAlert(c, alert, state.contracts[key]);
-  } else if (isLive && alert === 0) {
+  } else if (alert === 0) {
     lastAlertState.set(key, 0);
   }
 }
@@ -1994,8 +2007,14 @@ const server = http.createServer(async (req, res) => {
       if ('telegramEnabled' in incoming) settings.telegramEnabled = Boolean(incoming.telegramEnabled);
       if ('telegramBotToken' in incoming) settings.telegramBotToken = String(incoming.telegramBotToken || '').trim();
       if ('telegramChatId' in incoming) settings.telegramChatId = String(incoming.telegramChatId || '').trim();
-      if ('telegramAlertThree' in incoming) settings.telegramAlertThree = Boolean(incoming.telegramAlertThree);
-      if ('telegramAlertFive' in incoming) settings.telegramAlertFive = Boolean(incoming.telegramAlertFive);
+      if ('telegramStraddleThree' in incoming) settings.telegramStraddleThree = Boolean(incoming.telegramStraddleThree);
+      if ('telegramStraddleFive' in incoming) settings.telegramStraddleFive = Boolean(incoming.telegramStraddleFive);
+      if ('telegramStrangleThree' in incoming) settings.telegramStrangleThree = Boolean(incoming.telegramStrangleThree);
+      if ('telegramStrangleFive' in incoming) settings.telegramStrangleFive = Boolean(incoming.telegramStrangleFive);
+      settings.telegramAlertThree = Boolean(settings.telegramStraddleThree || settings.telegramStrangleThree);
+      settings.telegramAlertFive = Boolean(settings.telegramStraddleFive || settings.telegramStrangleFive);
+      if ('telegramAlertThree' in incoming && !('telegramStraddleThree' in incoming)) settings.telegramAlertThree = Boolean(incoming.telegramAlertThree);
+      if ('telegramAlertFive' in incoming && !('telegramStraddleFive' in incoming)) settings.telegramAlertFive = Boolean(incoming.telegramAlertFive);
       if ('autoTotpRefresh' in incoming) settings.autoTotpRefresh = Boolean(incoming.autoTotpRefresh);
       if ('eodTelegramReport' in incoming) settings.eodTelegramReport = Boolean(incoming.eodTelegramReport);
 
@@ -2155,6 +2174,20 @@ pruneExpiredContracts();
 const HOST = process.env.HOST || '0.0.0.0';
 server.listen(PORT, HOST, async () => {
   console.log(`Straddle Signal running at http://${HOST}:${PORT}`);
+
+  // 24/7 Self-Ping Keep-Alive to prevent Render free-tier from sleeping
+  const keepAliveTarget = process.env.RENDER_EXTERNAL_URL || process.env.KEEP_ALIVE_URL || 'https://fixedstraddle.onrender.com';
+  if (keepAliveTarget) {
+    setInterval(async () => {
+      try {
+        const pingUrl = `${keepAliveTarget.replace(/\/$/, '')}/api/health`;
+        const res = await fetch(pingUrl, { signal: AbortSignal.timeout(8000) });
+        if (res.ok) {
+          console.log(`[Keep-Alive 24/7] Pinged ${pingUrl} (HTTP ${res.status}) - server running 24/7.`);
+        }
+      } catch (err) {}
+    }, 8 * 60_000).unref();
+  }
 
   // 1. First, check if existing Access Token is already valid
   const tokenValid = await validateExistingAccessToken();

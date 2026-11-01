@@ -126,6 +126,17 @@ let lastAlertSignature = '';
 function renderWatchlist(contracts = [], force = false) {
   liveRows = contracts;
 
+  // Lightweight Badge & Counter Updates
+  const idxStraddles = contracts.filter(r => isIndexPair(r) && !isStranglePair(r));
+  const idxStrangles = contracts.filter(r => isIndexPair(r) && isStranglePair(r));
+  const stkStraddles = contracts.filter(r => !isIndexPair(r) && !isStranglePair(r));
+  const stkStrangles = contracts.filter(r => !isIndexPair(r) && isStranglePair(r));
+
+  if (byId('indexStraddleCountBadge')) byId('indexStraddleCountBadge').textContent = String(idxStraddles.length);
+  if (byId('indexStrangleCountBadge')) byId('indexStrangleCountBadge').textContent = String(idxStrangles.length);
+  if (byId('stockStraddleCountBadge')) byId('stockStraddleCountBadge').textContent = String(stkStraddles.length);
+  if (byId('stockStrangleCountBadge')) byId('stockStrangleCountBadge').textContent = String(stkStrangles.length);
+
   const idxStraddleSearch = (byId('indexStraddleSearch')?.value || '').trim().toLowerCase();
   const idxStraddleFilter = byId('indexStraddleFilter')?.value || 'all';
   const idxStrangleSearch = (byId('indexStrangleSearch')?.value || '').trim().toLowerCase();
@@ -140,78 +151,86 @@ function renderWatchlist(contracts = [], force = false) {
   const fullSig = `${filterSig}__${dataSig}`;
 
   if (!force && fullSig === lastWatchlistSignature) {
-    renderAlerts(false);
-    renderStrategyViews();
+    if (!byId('alertsPage')?.hidden) renderAlerts(false);
+    if (!byId('strategyPage')?.hidden) renderStrategyViews();
     return;
   }
   lastWatchlistSignature = fullSig;
 
-  // 1. Index Straddles (Same strike, 5m)
-  const idxStraddles = contracts.filter(r => isIndexPair(r) && !isStranglePair(r));
-  const filteredIdxStraddles = idxStraddles.filter(r => {
-    if (idxStraddleSearch && !r.symbol.toLowerCase().includes(idxStraddleSearch) && !(r.underlying || '').toLowerCase().includes(idxStraddleSearch)) return false;
-    if (idxStraddleFilter === 'five' && r.alert !== 5) return false;
-    if (idxStraddleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
-    return true;
-  });
-  const idxStraddleTbody = byId('indexStraddleRows');
-  if (idxStraddleTbody) {
-    idxStraddleTbody.innerHTML = filteredIdxStraddles.map(renderPairRow).join('') ||
-      '<tr><td colspan="10" class="empty">No Index Straddles added yet. Choose an index above and pick matching CE &amp; PE strikes.</td></tr>';
-  }
-  if (byId('indexStraddleCountBadge')) byId('indexStraddleCountBadge').textContent = String(idxStraddles.length);
-  if (byId('indexStraddleSummary')) byId('indexStraddleSummary').textContent = `Showing ${filteredIdxStraddles.length} of ${idxStraddles.length} Index Straddle${idxStraddles.length === 1 ? '' : 's'}`;
+  const isIndicesVisible = !byId('indicesPage')?.hidden;
+  const isStocksVisible = !byId('watchlistPage')?.hidden;
+  const isAlertsVisible = !byId('alertsPage')?.hidden;
+  const isStrategyVisible = !byId('strategyPage')?.hidden;
 
-  // 2. Index Strangles (Different strikes, 1m)
-  const idxStrangles = contracts.filter(r => isIndexPair(r) && isStranglePair(r));
-  const filteredIdxStrangles = idxStrangles.filter(r => {
-    if (idxStrangleSearch && !r.symbol.toLowerCase().includes(idxStrangleSearch) && !(r.underlying || '').toLowerCase().includes(idxStrangleSearch)) return false;
-    if (idxStrangleFilter === 'five' && r.alert !== 5) return false;
-    if (idxStrangleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
-    return true;
-  });
-  const idxStrangleTbody = byId('indexStrangleRows');
-  if (idxStrangleTbody) {
-    idxStrangleTbody.innerHTML = filteredIdxStrangles.map(renderPairRow).join('') ||
-      '<tr><td colspan="10" class="empty">No Index Strangles added yet. Choose an index above and pick different CE &amp; PE strikes.</td></tr>';
-  }
-  if (byId('indexStrangleCountBadge')) byId('indexStrangleCountBadge').textContent = String(idxStrangles.length);
-  if (byId('indexStrangleSummary')) byId('indexStrangleSummary').textContent = `Showing ${filteredIdxStrangles.length} of ${idxStrangles.length} Index Strangle${idxStrangles.length === 1 ? '' : 's'}`;
+  // 1 & 2. Indices Tables (only updated when Indices page is open or forced)
+  if (isIndicesVisible || force) {
+    // 1. Index Straddles (Same strike, 5m)
+    const filteredIdxStraddles = idxStraddles.filter(r => {
+      if (idxStraddleSearch && !r.symbol.toLowerCase().includes(idxStraddleSearch) && !(r.underlying || '').toLowerCase().includes(idxStraddleSearch)) return false;
+      if (idxStraddleFilter === 'five' && r.alert !== 5) return false;
+      if (idxStraddleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+      return true;
+    });
+    const idxStraddleTbody = byId('indexStraddleRows');
+    if (idxStraddleTbody) {
+      idxStraddleTbody.innerHTML = filteredIdxStraddles.map(renderPairRow).join('') ||
+        '<tr><td colspan="10" class="empty">No Index Straddles added yet. Choose an index above and pick matching CE &amp; PE strikes.</td></tr>';
+    }
+    if (byId('indexStraddleSummary')) byId('indexStraddleSummary').textContent = `Showing ${filteredIdxStraddles.length} of ${idxStraddles.length} Index Straddle${idxStraddles.length === 1 ? '' : 's'}`;
 
-  // 3. Stock Straddles (Same strike, 15m)
-  const stkStraddles = contracts.filter(r => !isIndexPair(r) && !isStranglePair(r));
-  const filteredStkStraddles = stkStraddles.filter(r => {
-    if (stkStraddleSearch && !r.symbol.toLowerCase().includes(stkStraddleSearch) && !(r.underlying || '').toLowerCase().includes(stkStraddleSearch)) return false;
-    if (stkStraddleFilter === 'five' && r.alert !== 5) return false;
-    if (stkStraddleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
-    return true;
-  });
-  const stkStraddleTbody = byId('stockStraddleRows');
-  if (stkStraddleTbody) {
-    stkStraddleTbody.innerHTML = filteredStkStraddles.map(renderPairRow).join('') ||
-      '<tr><td colspan="10" class="empty">No Stock Straddles added yet. Choose a stock above and select matching CE &amp; PE strikes.</td></tr>';
+    // 2. Index Strangles (Different strikes, 1m)
+    const filteredIdxStrangles = idxStrangles.filter(r => {
+      if (idxStrangleSearch && !r.symbol.toLowerCase().includes(idxStrangleSearch) && !(r.underlying || '').toLowerCase().includes(idxStrangleSearch)) return false;
+      if (idxStrangleFilter === 'five' && r.alert !== 5) return false;
+      if (idxStrangleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+      return true;
+    });
+    const idxStrangleTbody = byId('indexStrangleRows');
+    if (idxStrangleTbody) {
+      idxStrangleTbody.innerHTML = filteredIdxStrangles.map(renderPairRow).join('') ||
+        '<tr><td colspan="10" class="empty">No Index Strangles added yet. Choose an index above and pick different CE &amp; PE strikes.</td></tr>';
+    }
+    if (byId('indexStrangleSummary')) byId('indexStrangleSummary').textContent = `Showing ${filteredIdxStrangles.length} of ${idxStrangles.length} Index Strangle${idxStrangles.length === 1 ? '' : 's'}`;
   }
-  if (byId('stockStraddleCountBadge')) byId('stockStraddleCountBadge').textContent = String(stkStraddles.length);
-  if (byId('stockStraddleSummary')) byId('stockStraddleSummary').textContent = `Showing ${filteredStkStraddles.length} of ${stkStraddles.length} Stock Straddle${stkStraddles.length === 1 ? '' : 's'}`;
 
-  // 4. Stock Strangles (Different strikes, 5m)
-  const stkStrangles = contracts.filter(r => !isIndexPair(r) && isStranglePair(r));
-  const filteredStkStrangles = stkStrangles.filter(r => {
-    if (stkStrangleSearch && !r.symbol.toLowerCase().includes(stkStrangleSearch) && !(r.underlying || '').toLowerCase().includes(stkStrangleSearch)) return false;
-    if (stkStrangleFilter === 'five' && r.alert !== 5) return false;
-    if (stkStrangleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
-    return true;
-  });
-  const stkStrangleTbody = byId('stockStrangleRows');
-  if (stkStrangleTbody) {
-    stkStrangleTbody.innerHTML = filteredStkStrangles.map(renderPairRow).join('') ||
-      '<tr><td colspan="10" class="empty">No Stock Strangles added yet. Choose a stock above and select different CE &amp; PE strikes.</td></tr>';
+  // 3 & 4. Stock Tables (only updated when Stock page is open or forced)
+  if (isStocksVisible || force) {
+    // 3. Stock Straddles (Same strike, 15m)
+    const filteredStkStraddles = stkStraddles.filter(r => {
+      if (stkStraddleSearch && !r.symbol.toLowerCase().includes(stkStraddleSearch) && !(r.underlying || '').toLowerCase().includes(stkStraddleSearch)) return false;
+      if (stkStraddleFilter === 'five' && r.alert !== 5) return false;
+      if (stkStraddleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+      return true;
+    });
+    const stkStraddleTbody = byId('stockStraddleRows');
+    if (stkStraddleTbody) {
+      stkStraddleTbody.innerHTML = filteredStkStraddles.map(renderPairRow).join('') ||
+        '<tr><td colspan="10" class="empty">No Stock Straddles added yet. Choose a stock above and select matching CE &amp; PE strikes.</td></tr>';
+    }
+    if (byId('stockStraddleSummary')) byId('stockStraddleSummary').textContent = `Showing ${filteredStkStraddles.length} of ${stkStraddles.length} Stock Straddle${stkStraddles.length === 1 ? '' : 's'}`;
+
+    // 4. Stock Strangles (Different strikes, 5m)
+    const filteredStkStrangles = stkStrangles.filter(r => {
+      if (stkStrangleSearch && !r.symbol.toLowerCase().includes(stkStrangleSearch) && !(r.underlying || '').toLowerCase().includes(stkStrangleSearch)) return false;
+      if (stkStrangleFilter === 'five' && r.alert !== 5) return false;
+      if (stkStrangleFilter === 'alerts' && (!r.alert || r.alert < 3)) return false;
+      return true;
+    });
+    const stkStrangleTbody = byId('stockStrangleRows');
+    if (stkStrangleTbody) {
+      stkStrangleTbody.innerHTML = filteredStkStrangles.map(renderPairRow).join('') ||
+        '<tr><td colspan="10" class="empty">No Stock Strangles added yet. Choose a stock above and select different CE &amp; PE strikes.</td></tr>';
+    }
+    if (byId('stockStrangleSummary')) byId('stockStrangleSummary').textContent = `Showing ${filteredStkStrangles.length} of ${stkStrangles.length} Stock Strangle${stkStrangles.length === 1 ? '' : 's'}`;
   }
-  if (byId('stockStrangleCountBadge')) byId('stockStrangleCountBadge').textContent = String(stkStrangles.length);
-  if (byId('stockStrangleSummary')) byId('stockStrangleSummary').textContent = `Showing ${filteredStkStrangles.length} of ${stkStrangles.length} Stock Strangle${stkStrangles.length === 1 ? '' : 's'}`;
 
-  renderAlerts();
-  renderStrategyViews();
+  if (isAlertsVisible || force) {
+    renderAlerts(force);
+  }
+
+  if (isStrategyVisible || force) {
+    renderStrategyViews();
+  }
 }
 
 function renderAlerts(force = false) {
@@ -270,6 +289,9 @@ function renderStrategyViews() {
   if (byId('navPeMacdPosCount')) byId('navPeMacdPosCount').textContent = pePos;
   if (byId('cardPeMacdNegCount')) byId('cardPeMacdNegCount').textContent = peNeg;
   if (byId('navPeMacdNegCount')) byId('navPeMacdNegCount').textContent = peNeg;
+
+  // If strategy page is hidden, skip rebuilding the DOM table
+  if (byId('strategyPage')?.hidden) return;
 
   const tbody = byId('strategyRows');
   if (!tbody) return;
@@ -804,14 +826,56 @@ async function saveStrategySettings(message = 'Strategy settings saved.') {
 }
 
 function telegramSettingsPayload() {
+  const straddleFive = Boolean(byId('telegramStraddleFive')?.checked ?? byId('liveAlertStraddleFive')?.checked ?? true);
+  const straddleThree = Boolean(byId('telegramStraddleThree')?.checked ?? byId('liveAlertStraddleThree')?.checked ?? true);
+  const strangleFive = Boolean(byId('telegramStrangleFive')?.checked ?? byId('liveAlertStrangleFive')?.checked ?? true);
+  const strangleThree = Boolean(byId('telegramStrangleThree')?.checked ?? byId('liveAlertStrangleThree')?.checked ?? true);
   return {
     telegramEnabled: Boolean(byId('telegramEnabled')?.checked),
     telegramBotToken: (byId('telegramBotToken')?.value || '').trim(),
     telegramChatId: (byId('telegramChatId')?.value || '').trim(),
-    telegramAlertThree: Boolean(byId('telegramAlertThree')?.checked),
-    telegramAlertFive: Boolean(byId('telegramAlertFive')?.checked),
+    telegramStraddleFive: straddleFive,
+    telegramStraddleThree: straddleThree,
+    telegramStrangleFive: strangleFive,
+    telegramStrangleThree: strangleThree,
+    telegramAlertThree: Boolean(straddleThree || strangleThree),
+    telegramAlertFive: Boolean(straddleFive || strangleFive),
     eodTelegramReport: Boolean(byId('eodTelegramReport')?.checked)
   };
+}
+
+function setupTelegramAlertToggles() {
+  const pairs = [
+    ['liveAlertStraddleFive', 'telegramStraddleFive'],
+    ['liveAlertStraddleThree', 'telegramStraddleThree'],
+    ['liveAlertStrangleFive', 'telegramStrangleFive'],
+    ['liveAlertStrangleThree', 'telegramStrangleThree']
+  ];
+
+  pairs.forEach(([id1, id2]) => {
+    const el1 = byId(id1);
+    const el2 = byId(id2);
+    const syncAndSave = async (sourceEl, targetEl) => {
+      if (!sourceEl) return;
+      if (targetEl) targetEl.checked = sourceEl.checked;
+      const fb = byId('liveAlertTgFeedback');
+      if (fb) {
+        fb.textContent = 'Saving…';
+        fb.classList.add('show');
+      }
+      try {
+        await saveStrategySettings('Telegram 24/7 alert filter updated.');
+        if (fb) fb.textContent = '✓ Saved 24/7';
+        setTimeout(() => fb?.classList.remove('show'), 2200);
+      } catch (err) {
+        if (fb) fb.textContent = 'Save failed';
+        toast(err.message);
+      }
+    };
+
+    el1?.addEventListener('change', () => syncAndSave(el1, el2));
+    el2?.addEventListener('change', () => syncAndSave(el2, el1));
+  });
 }
 
 async function triggerTelegramTest(mode = 'test', btnId) {
@@ -977,8 +1041,22 @@ async function refreshState() {
       if (byId('telegramEnabled')) byId('telegramEnabled').checked = Boolean(data.settings.telegramEnabled ?? true);
       if (byId('telegramBotToken') && !byId('telegramBotToken').value) byId('telegramBotToken').value = data.settings.telegramBotToken || '';
       if (byId('telegramChatId') && !byId('telegramChatId').value) byId('telegramChatId').value = data.settings.telegramChatId || '';
-      if (byId('telegramAlertThree')) byId('telegramAlertThree').checked = Boolean(data.settings.telegramAlertThree ?? true);
-      if (byId('telegramAlertFive')) byId('telegramAlertFive').checked = Boolean(data.settings.telegramAlertFive ?? true);
+
+      const s5 = Boolean(data.settings.telegramStraddleFive ?? data.settings.telegramAlertFive ?? true);
+      const s3 = Boolean(data.settings.telegramStraddleThree ?? data.settings.telegramAlertThree ?? true);
+      const g5 = Boolean(data.settings.telegramStrangleFive ?? data.settings.telegramAlertFive ?? true);
+      const g3 = Boolean(data.settings.telegramStrangleThree ?? data.settings.telegramAlertThree ?? true);
+
+      if (byId('liveAlertStraddleFive')) byId('liveAlertStraddleFive').checked = s5;
+      if (byId('liveAlertStraddleThree')) byId('liveAlertStraddleThree').checked = s3;
+      if (byId('liveAlertStrangleFive')) byId('liveAlertStrangleFive').checked = g5;
+      if (byId('liveAlertStrangleThree')) byId('liveAlertStrangleThree').checked = g3;
+
+      if (byId('telegramStraddleFive')) byId('telegramStraddleFive').checked = s5;
+      if (byId('telegramStraddleThree')) byId('telegramStraddleThree').checked = s3;
+      if (byId('telegramStrangleFive')) byId('telegramStrangleFive').checked = g5;
+      if (byId('telegramStrangleThree')) byId('telegramStrangleThree').checked = g3;
+
       if (byId('eodTelegramReport')) byId('eodTelegramReport').checked = Boolean(data.settings.eodTelegramReport ?? true);
     }
 
@@ -1088,6 +1166,8 @@ function setupNavigation() {
     const info = titles[pageId] || titles[actualPage] || titles.alertsPage;
     if (byId('pageTitle')) byId('pageTitle').textContent = info.title;
     if (byId('pageDescription')) byId('pageDescription').textContent = info.desc;
+    // Re-render active view instantly upon switching tabs
+    renderWatchlist(liveRows, true);
   }
 
   document.querySelectorAll('[data-idx-tab]').forEach(btn => {
@@ -1144,6 +1224,8 @@ function setupNavigation() {
 // Event Listeners Initialization
 // -------------------------------------------------------------
 function setupEventListeners() {
+  setupTelegramAlertToggles();
+
   // Option chain selects
   byId('underlyingSelect')?.addEventListener('change', () => chooseUnderlying('stocks'));
   byId('expirySelect')?.addEventListener('change', () => loadChain('stocks'));

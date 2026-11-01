@@ -105,6 +105,18 @@
     .action-cell{display:inline-flex;align-items:center;justify-content:flex-end;gap:6px}
     .edit-watch{display:inline-flex;align-items:center;gap:3px;border:1px solid #dce2ea;background:#f8fafc;color:#334458;padding:3px 8px;border-radius:6px;font:700 11px var(--sans);cursor:pointer;transition:all .15s}
     .edit-watch:hover{background:#eaf3f0;color:#176c59;border-color:#b8dfd4}
+    .alert-telegram-filter-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:linear-gradient(135deg,#f4faf7,#f0f7ff);border:1px solid #cce3dc;border-radius:9px;margin-bottom:12px;flex-wrap:wrap}
+    .alert-tg-title{display:flex;align-items:center;gap:10px}
+    .tg-plane-icon{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:#29b6f6;color:#fff;border-radius:50%;font-size:14px;box-shadow:0 2px 6px #29b6f640}
+    .alert-tg-heading{font-size:12.5px;font-weight:700;color:#1c2d42}
+    .alert-tg-sub{font-size:10.5px;color:#617285}
+    .alert-tg-toggles{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .tg-toggle-chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1.5px solid #d4dfe8;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:11.5px;font-weight:600;color:#2c3e50;transition:all .15s;user-select:none}
+    .tg-toggle-chip:hover{border-color:#50ba9a;background:#f9fdfb}
+    .tg-toggle-chip input[type="checkbox"]{accent-color:#13876f;width:15px;height:15px;cursor:pointer}
+    .tg-toggle-chip.active{border-color:#13876f;background:#edf8f4;color:#0f6b57}
+    .alert-tg-feedback{font:700 10.5px var(--mono);color:#13876f;display:none}
+    .alert-tg-feedback.show{display:inline-block}
     @keyframes popIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
   </style>
 </head>
@@ -173,6 +185,36 @@
       <section class="page-view" id="alertsPage">
         <section class="panel scanner-panel alert-page-panel" id="alertsPanel">
           <div class="panel-head"><div><div class="panel-title">Live alerts</div><div class="panel-desc" id="alertDescription">Only pairs currently meeting your signal rules.</div></div><div class="head-actions"><select class="select" id="alertLevelFilter" aria-label="Filter alert level"><option value="all">All alerts</option><option value="five">5-star alerts</option><option value="three">3-star alerts</option></select></div></div>
+          
+          <!-- Telegram Live Alert Filters (24/7 Tick Mark Selection) -->
+          <div class="alert-telegram-filter-card" style="margin:12px 16px 0;">
+            <div class="alert-tg-title">
+              <span class="tg-plane-icon">✈</span>
+              <div>
+                <div class="alert-tg-heading">Telegram Real-Time Alerts (24/7 Live Monitoring)</div>
+                <div class="alert-tg-sub">Tick mark which alerts to receive on your Telegram phone app even when your computer is shut down:</div>
+              </div>
+            </div>
+            <div class="alert-tg-toggles">
+              <label class="tg-toggle-chip" title="Receive 5-Star alerts for Straddles on Telegram">
+                <input type="checkbox" id="liveAlertStraddleFive" checked>
+                <span><b class="star">★★★★★</b> Straddle (5★)</span>
+              </label>
+              <label class="tg-toggle-chip" title="Receive 3-Star alerts for Straddles on Telegram">
+                <input type="checkbox" id="liveAlertStraddleThree" checked>
+                <span><b style="color:var(--amber)">★★★</b> Straddle (3★)</span>
+              </label>
+              <label class="tg-toggle-chip" title="Receive 5-Star alerts for Strangles on Telegram">
+                <input type="checkbox" id="liveAlertStrangleFive" checked>
+                <span><b class="star">★★★★★</b> Strangle (5★)</span>
+              </label>
+              <label class="tg-toggle-chip" title="Receive 3-Star alerts for Strangles on Telegram">
+                <input type="checkbox" id="liveAlertStrangleThree" checked>
+                <span><b style="color:var(--amber)">★★★</b> Strangle (3★)</span>
+              </label>
+            </div>
+            <div class="alert-tg-feedback" id="liveAlertTgFeedback">✓ Saved</div>
+          </div>
           <div class="eod-export-bar">
             <div class="eod-export-left">
               <div class="eod-badge">
@@ -601,17 +643,27 @@
                 <input id="telegramChatId" type="text" autocomplete="off" placeholder="e.g. 987654321 or -1001234567890" value="723433781"/>
               </div>
               <div class="field">
-                <label>Alert levels to notify</label>
-                <div style="display:flex;gap:20px;margin-top:8px;flex-wrap:wrap">
-                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text)">
-                    <input type="checkbox" id="telegramAlertThree" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--amber)"/>
-                    <span style="font-size:13px"><b style="color:var(--amber)">★★★</b> 3-Star (MACD ≥ 0)</span>
+                <label>Alert levels to notify on Telegram (Tick mark selection)</label>
+                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px">
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text);background:#f8fafc;padding:8px 10px;border-radius:6px;border:1px solid #e2e8f0">
+                    <input type="checkbox" id="telegramStraddleFive" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
+                    <span style="font-size:12px"><b class="star">★★★★★</b> Straddle (5★)</span>
                   </label>
-                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text)">
-                    <input type="checkbox" id="telegramAlertFive" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
-                    <span style="font-size:13px"><b style="color:var(--mint)">★★★★★</b> 5-Star (MACD + 200 EMA)</span>
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text);background:#f8fafc;padding:8px 10px;border-radius:6px;border:1px solid #e2e8f0">
+                    <input type="checkbox" id="telegramStraddleThree" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--amber)"/>
+                    <span style="font-size:12px"><b style="color:var(--amber)">★★★</b> Straddle (3★)</span>
                   </label>
-                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text);width:100%;margin-top:6px">
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text);background:#f8fafc;padding:8px 10px;border-radius:6px;border:1px solid #e2e8f0">
+                    <input type="checkbox" id="telegramStrangleFive" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
+                    <span style="font-size:12px"><b class="star">★★★★★</b> Strangle (5★)</span>
+                  </label>
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text);background:#f8fafc;padding:8px 10px;border-radius:6px;border:1px solid #e2e8f0">
+                    <input type="checkbox" id="telegramStrangleThree" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--amber)"/>
+                    <span style="font-size:12px"><b style="color:var(--amber)">★★★</b> Strangle (3★)</span>
+                  </label>
+                </div>
+                <div style="margin-top:8px">
+                  <label style="display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text)">
                     <input type="checkbox" id="eodTelegramReport" checked style="width:16px;height:16px;cursor:pointer;accent-color:var(--mint)"/>
                     <span style="font-size:13px">📊 <b>End-of-Day Excel report:</b> Auto-send .xlsx backtest file after 08:30 PM IST</span>
                   </label>
