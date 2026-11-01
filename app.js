@@ -278,8 +278,13 @@ function renderAlerts(force = false) {
         <td class="num">${fmt(r.peStrike)}</td><td class="num">${fmt(r.peLtp)}</td>
         ${straddleCell(r)}${macdCell(r)}${emaCell(r)}
         <td>${r.alert === 5 ? '<span class="star">★★★★★</span>' : '<span class="signal-three star">★★★</span>'}</td>
+        <td style="text-align:center">
+          <button class="btn-send-tg" data-send-tg="${safeText(r.symbol)}" data-alert-level="${r.alert || 5}" title="Send this ${pairType} ${r.alert}★ alert to Telegram" type="button">
+            <span>✈</span> Send
+          </button>
+        </td>
       </tr>`;
-    }).join('') || '<tr><td colspan="9" class="empty">No active alerts matching your selected tick marks. Monitored pairs remain in the Watchlist.</td></tr>';
+    }).join('') || '<tr><td colspan="10" class="empty">No active alerts matching your selected tick marks. Monitored pairs remain in the Watchlist.</td></tr>';
   }
   const summary = byId('alertSummary');
   if (summary) summary.textContent = `Showing ${rows.length} active ${rows.length === 1 ? 'alert' : 'alerts'} from ${liveRows.length} watched pairs`;
