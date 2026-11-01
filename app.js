@@ -235,8 +235,30 @@ function renderWatchlist(contracts = [], force = false) {
 
 function renderAlerts(force = false) {
   const filter = byId('alertLevelFilter')?.value || 'all';
-  const rows = liveRows.filter(r => r.alert > 0 && (filter === 'all' || (filter === 'five' && r.alert === 5) || (filter === 'three' && r.alert === 3)));
-  const alertSig = `${filter}__` + rows.map(r => `${r.symbol}:${r.ceLtp}:${r.peLtp}:${r.straddle}:${r.macd}:${r.ema}:${r.alert}`).join(';');
+
+  const showStraddleFive = Boolean(byId('liveAlertStraddleFive') ? byId('liveAlertStraddleFive').checked : (byId('telegramStraddleFive')?.checked ?? true));
+  const showStraddleThree = Boolean(byId('liveAlertStraddleThree') ? byId('liveAlertStraddleThree').checked : (byId('telegramStraddleThree')?.checked ?? true));
+  const showStrangleFive = Boolean(byId('liveAlertStrangleFive') ? byId('liveAlertStrangleFive').checked : (byId('telegramStrangleFive')?.checked ?? true));
+  const showStrangleThree = Boolean(byId('liveAlertStrangleThree') ? byId('liveAlertStrangleThree').checked : (byId('telegramStrangleThree')?.checked ?? true));
+
+  const rows = liveRows.filter(r => {
+    if (!r.alert || r.alert <= 0) return false;
+    if (filter === 'five' && r.alert !== 5) return false;
+    if (filter === 'three' && r.alert !== 3) return false;
+
+    const isStrg = isStranglePair(r);
+    if (!isStrg) {
+      if (r.alert === 5 && !showStraddleFive) return false;
+      if (r.alert === 3 && !showStraddleThree) return false;
+    } else {
+      if (r.alert === 5 && !showStrangleFive) return false;
+      if (r.alert === 3 && !showStrangleThree) return false;
+    }
+    return true;
+  });
+
+  const toggleSig = `${showStraddleFive}:${showStraddleThree}:${showStrangleFive}:${showStrangleThree}`;
+  const alertSig = `${filter}__${toggleSig}__` + rows.map(r => `${r.symbol}:${r.ceLtp}:${r.peLtp}:${r.straddle}:${r.macd}:${r.ema}:${r.alert}`).join(';');
   if (!force && alertSig === lastAlertSignature) return;
   lastAlertSignature = alertSig;
 
@@ -257,7 +279,7 @@ function renderAlerts(force = false) {
         ${straddleCell(r)}${macdCell(r)}${emaCell(r)}
         <td>${r.alert === 5 ? '<span class="star">★★★★★</span>' : '<span class="signal-three star">★★★</span>'}</td>
       </tr>`;
-    }).join('') || '<tr><td colspan="9" class="empty">No active alerts right now. Your monitored pairs remain in the Watchlist.</td></tr>';
+    }).join('') || '<tr><td colspan="9" class="empty">No active alerts matching your selected tick marks. Monitored pairs remain in the Watchlist.</td></tr>';
   }
   const summary = byId('alertSummary');
   if (summary) summary.textContent = `Showing ${rows.length} active ${rows.length === 1 ? 'alert' : 'alerts'} from ${liveRows.length} watched pairs`;
