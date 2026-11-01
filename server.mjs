@@ -1301,7 +1301,7 @@ setInterval(()=>{
       const rep=generateDailyExcelWorkbook(todayKey);
       console.log(`[EOD] Auto-generated daily Excel report for ${todayKey}: ${rep.fileName} (${rep.alertCount} alerts)`);
       if(settings.eodTelegramReport&&settings.telegramEnabled){
-        void sendEodTelegramReport(todayKey,rep);
+        void sendEodTelegramReport(todayKey,rep).catch(err => console.warn('[EOD Telegram]', err.message));
       }
     }catch(err){
       console.error(`[EOD] Failed to generate daily Excel report for ${todayKey}:`,err.message);
