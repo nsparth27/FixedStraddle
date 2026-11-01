@@ -826,12 +826,21 @@ async function saveStrategySettings(message = 'Strategy settings saved.') {
 }
 
 function telegramSettingsPayload() {
-  const straddleFive = Boolean(byId('telegramStraddleFive')?.checked ?? byId('liveAlertStraddleFive')?.checked ?? true);
-  const straddleThree = Boolean(byId('telegramStraddleThree')?.checked ?? byId('liveAlertStraddleThree')?.checked ?? true);
-  const strangleFive = Boolean(byId('telegramStrangleFive')?.checked ?? byId('liveAlertStrangleFive')?.checked ?? true);
-  const strangleThree = Boolean(byId('telegramStrangleThree')?.checked ?? byId('liveAlertStrangleThree')?.checked ?? true);
+  const readCheckbox = (id1, id2) => {
+    const el1 = byId(id1);
+    const el2 = byId(id2);
+    if (el1) return Boolean(el1.checked);
+    if (el2) return Boolean(el2.checked);
+    return true;
+  };
+
+  const straddleFive = readCheckbox('liveAlertStraddleFive', 'telegramStraddleFive');
+  const straddleThree = readCheckbox('liveAlertStraddleThree', 'telegramStraddleThree');
+  const strangleFive = readCheckbox('liveAlertStrangleFive', 'telegramStrangleFive');
+  const strangleThree = readCheckbox('liveAlertStrangleThree', 'telegramStrangleThree');
+
   return {
-    telegramEnabled: Boolean(byId('telegramEnabled')?.checked),
+    telegramEnabled: Boolean(byId('telegramEnabled')?.checked ?? true),
     telegramBotToken: (byId('telegramBotToken')?.value || '').trim(),
     telegramChatId: (byId('telegramChatId')?.value || '').trim(),
     telegramStraddleFive: straddleFive,
@@ -840,8 +849,28 @@ function telegramSettingsPayload() {
     telegramStrangleThree: strangleThree,
     telegramAlertThree: Boolean(straddleThree || strangleThree),
     telegramAlertFive: Boolean(straddleFive || strangleFive),
-    eodTelegramReport: Boolean(byId('eodTelegramReport')?.checked)
+    eodTelegramReport: Boolean(byId('eodTelegramReport')?.checked ?? true)
   };
+}
+
+async function saveTelegramSettingsAjax(message = 'Telegram 24/7 alert filter updated.') {
+  window._isSavingTelegramSettings = true;
+  try {
+    const payload = telegramSettingsPayload();
+    const res = await fetch('/api/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to save settings');
+    if (data.settings && state) {
+      state.settings = { ...(state.settings || {}), ...data.settings };
+    }
+    return data;
+  } finally {
+    setTimeout(() => { window._isSavingTelegramSettings = false; }, 800);
+  }
 }
 
 function setupTelegramAlertToggles() {
@@ -855,7 +884,7 @@ function setupTelegramAlertToggles() {
   pairs.forEach(([id1, id2]) => {
     const el1 = byId(id1);
     const el2 = byId(id2);
-    const syncAndSave = async (sourceEl, targetEl) => {
+    const onToggle = async (sourceEl, targetEl) => {
       if (!sourceEl) return;
       if (targetEl) targetEl.checked = sourceEl.checked;
       const fb = byId('liveAlertTgFeedback');
@@ -864,7 +893,7 @@ function setupTelegramAlertToggles() {
         fb.classList.add('show');
       }
       try {
-        await saveStrategySettings('Telegram 24/7 alert filter updated.');
+        await saveTelegramSettingsAjax('Telegram alert filter updated.');
         if (fb) fb.textContent = '✓ Saved 24/7';
         setTimeout(() => fb?.classList.remove('show'), 2200);
       } catch (err) {
@@ -873,8 +902,8 @@ function setupTelegramAlertToggles() {
       }
     };
 
-    el1?.addEventListener('change', () => syncAndSave(el1, el2));
-    el2?.addEventListener('change', () => syncAndSave(el2, el1));
+    el1?.addEventListener('change', () => onToggle(el1, el2));
+    el2?.addEventListener('change', () => onToggle(el2, el1));
   });
 }
 
