@@ -2046,10 +2046,11 @@ const server = http.createServer(async (req, res) => {
       let message = '';
       const nowStr = new Intl.DateTimeFormat('en-IN', { timeZone:'Asia/Kolkata', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false }).format(new Date());
 
-      if (mode === 'sampleFive') {
+      if (mode === 'sampleFive' || mode === 'sampleStraddleFive') {
         message = `🌟🌟🌟🌟🌟 <b>5-STAR STRADDLE ALERT (SAMPLE)</b>\n` +
           `━━━━━━━━━━━━━━━━━━━━\n` +
           `<b>Instrument:</b> #NIFTY (Index)\n` +
+          `<b>Strategy:</b> Straddle (15 Min)\n` +
           `<b>Sector:</b> Index / Sector\n` +
           `<b>Expiry:</b> 27-Oct-2026\n\n` +
           `<b>Call Strike:</b> 24500 CE @ ₹125.40\n` +
@@ -2064,10 +2065,11 @@ const server = http.createServer(async (req, res) => {
           `<b>Time:</b> ${nowStr} IST\n` +
           `━━━━━━━━━━━━━━━━━━━━\n` +
           `<i>Fixed Straddle Scanner · Test Alert</i>`;
-      } else if (mode === 'sampleThree') {
+      } else if (mode === 'sampleThree' || mode === 'sampleStraddleThree') {
         message = `⭐⭐⭐ <b>3-STAR STRADDLE ALERT (SAMPLE)</b>\n` +
           `━━━━━━━━━━━━━━━━━━━━\n` +
           `<b>Instrument:</b> #RELIANCE (Stock)\n` +
+          `<b>Strategy:</b> Straddle (15 Min)\n` +
           `<b>Sector:</b> Energy / Oil & Gas\n` +
           `<b>Expiry:</b> 27-Oct-2026\n\n` +
           `<b>Call Strike:</b> 1300 CE @ ₹28.50\n` +
@@ -2081,6 +2083,43 @@ const server = http.createServer(async (req, res) => {
           `<b>Time:</b> ${nowStr} IST\n` +
           `━━━━━━━━━━━━━━━━━━━━\n` +
           `<i>Fixed Straddle Scanner · Test Alert</i>`;
+      } else if (mode === 'sampleStrangleFive') {
+        message = `🌟🌟🌟🌟🌟 <b>5-STAR STRANGLE ALERT (SAMPLE)</b>\n` +
+          `━━━━━━━━━━━━━━━━━━━━\n` +
+          `<b>Instrument:</b> #BANKNIFTY (Index)\n` +
+          `<b>Strategy:</b> Strangle (15 Min)\n` +
+          `<b>Sector:</b> Banking / Financials\n` +
+          `<b>Expiry:</b> 27-Oct-2026\n\n` +
+          `<b>Call Strike:</b> 52500 CE @ ₹140.20\n` +
+          `<b>Put Strike:</b> 52000 PE @ ₹115.80\n` +
+          `<b>Strangle LTP:</b> <b>₹256.00</b>\n\n` +
+          `<b>📊 Indicators (15 Min):</b>\n` +
+          `• <b>MACD (12, 26):</b> +5.1200\n` +
+          `  (12 EMA: 258.40 | 26 EMA: 253.28)\n` +
+          `• <b>200 EMA:</b> ₹242.00\n` +
+          `  • Strangle is <b>₹14.00 above 200 EMA</b>\n\n` +
+          `<b>Rule:</b> MACD ≥ 0 AND Strangle > 200 EMA\n` +
+          `<b>Time:</b> ${nowStr} IST\n` +
+          `━━━━━━━━━━━━━━━━━━━━\n` +
+          `<i>Fixed Straddle Scanner · Test Strangle Alert</i>`;
+      } else if (mode === 'sampleStrangleThree') {
+        message = `⭐⭐⭐ <b>3-STAR STRANGLE ALERT (SAMPLE)</b>\n` +
+          `━━━━━━━━━━━━━━━━━━━━\n` +
+          `<b>Instrument:</b> #TCS (Stock)\n` +
+          `<b>Strategy:</b> Strangle (15 Min)\n` +
+          `<b>Sector:</b> Information Technology\n` +
+          `<b>Expiry:</b> 27-Oct-2026\n\n` +
+          `<b>Call Strike:</b> 4100 CE @ ₹32.00\n` +
+          `<b>Put Strike:</b> 3900 PE @ ₹28.50\n` +
+          `<b>Strangle LTP:</b> <b>₹60.50</b>\n\n` +
+          `<b>📊 Indicators (15 Min):</b>\n` +
+          `• <b>MACD (12, 26):</b> +1.8500\n` +
+          `  (12 EMA: 61.20 | 26 EMA: 59.35)\n` +
+          `• <b>200 EMA:</b> ₹64.00\n\n` +
+          `<b>Rule:</b> MACD (12 − 26 EMA) ≥ 0\n` +
+          `<b>Time:</b> ${nowStr} IST\n` +
+          `━━━━━━━━━━━━━━━━━━━━\n` +
+          `<i>Fixed Straddle Scanner · Test Strangle Alert</i>`;
       } else {
         message = `🔔 <b>Straddle Signal Scanner · Telegram Connected!</b>\n\n` +
           `✅ Your Telegram Bot connection is working!\n` +
