@@ -2196,6 +2196,92 @@ const server = http.createServer(async (req, res) => {
       return json(res, 500, { error: err.message || 'Failed to generate report' });
     }
   }
+  if (req.method === 'POST' && url.pathname === '/api/reports/dispatch-telegram') {
+    let body = ''; for await (const chunk of req) { body += chunk; if (body.length > 10_000) return json(res, 413, { error: 'Request too large' }); }
+    try {
+      const incoming = body ? JSON.parse(body) : {};
+      const today = indiaDateTime().date;
+      const targetDate = incoming.date || today;
+      const report = generateDailyExcelWorkbook(targetDate);
+      const result = await sendEodTelegramReport(targetDate, report);
+      return json(res, 200, { ok: true, message: `Today's EOD report for ${targetDate} sent to Telegram (${report.alertCount} alerts)!`, report, result });
+    } catch (err) {
+      return json(res, 500, { error: err.message || 'Failed to dispatch report to Telegram' });
+    }
+  }
+  if (req.method === 'POST' && url.pathname === '/api/telegram/send-alert') {
+    let body = ''; for await (const chunk of req) { body += chunk; if (body.length > 20_000) return json(res, 413, { error: 'Request too large' }); }
+    try {
+      const incoming = body ? JSON.parse(body) : {};
+      const botToken = String(incoming.telegramBotToken || settings.telegramBotToken || '').trim();
+      const chatId = String(incoming.telegramChatId || settings.telegramChatId || '').trim();
+      if (!botToken || !chatId) {
+        return json(res, 400, { error: 'Please configure Telegram Bot Token and Chat ID.' });
+      }
+
+      const symbol = String(incoming.symbol || '').trim();
+      const c = watchlist.find(w => w.symbol === symbol) || watchlist.find(w => (w.underlying || w.symbol) === symbol);
+      if (!c) {
+        return json(res, 404, { error: `Contract '${symbol}' not found in watchlist.` });
+      }
+
+      const straddleData = state.contracts[c.symbol] || state.contracts[symbol] || {};
+      const alertLevel = Number(incoming.alertLevel || straddleData.alert || 5);
+      const strangle = isStrangle(c);
+      const pairType = strangle ? 'Strangle' : 'Straddle';
+      const pairTypeUpper = strangle ? 'STRANGLE' : 'STRADDLE';
+      const underlying = c.underlying || c.symbol;
+      const sector = getSector(underlying, c.kind);
+      const tf = timeframeFor(c);
+      const tfStr = tf === 1440 ? '1 Day' : tf >= 60 ? `${tf / 60} Hour` : `${tf} Min`;
+      const isFiveStar = alertLevel === 5;
+      const header = isFiveStar ? `🌟🌟🌟🌟🌟 <b>5-STAR ${pairTypeUpper} ALERT</b>` : `⭐⭐⭐ <b>3-STAR ${pairTypeUpper} ALERT</b>`;
+      const condition = isFiveStar ? `MACD ≥ 0 AND ${pairType} &gt; 200 EMA` : 'MACD (12 − 26 EMA) ≥ 0';
+      const nowStr = new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      }).format(new Date());
+
+      const ltpVal = Number(straddleData.straddle ?? (Number(c.ce?.ltp || 0) + Number(c.pe?.ltp || 0)));
+      const emaVal = straddleData.ema != null ? Number(straddleData.ema) : null;
+      const diffEma = emaVal != null ? (ltpVal - emaVal).toFixed(2) : null;
+      const emaDiffText = isFiveStar && diffEma != null ? `\n  • ${pairType} is <b>₹${diffEma} above 200 EMA</b>` : '';
+
+      const ceStrike = c.ce?.strike ?? '—';
+      const ceLtp = straddleData.ceLtp != null ? Number(straddleData.ceLtp).toFixed(2) : (c.ce?.ltp != null ? Number(c.ce.ltp).toFixed(2) : '—');
+      const peStrike = c.pe?.strike ?? '—';
+      const peLtp = straddleData.peLtp != null ? Number(straddleData.peLtp).toFixed(2) : (c.pe?.ltp != null ? Number(c.pe.ltp).toFixed(2) : '—');
+
+      const macdVal = straddleData.macd != null ? Number(straddleData.macd) : 0;
+      const macdSign = macdVal >= 0 ? '+' : '';
+
+      const msg = `${header}\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `<b>Instrument:</b> #${underlying} (${c.kind || 'F&O'})\n` +
+        `<b>Strategy:</b> ${pairType} (${tfStr})\n` +
+        `<b>Sector:</b> ${sector}\n` +
+        `<b>Expiry:</b> ${c.expiry || '—'}\n\n` +
+        `<b>Call Strike:</b> ${ceStrike} CE @ ₹${ceLtp}\n` +
+        `<b>Put Strike:</b> ${peStrike} PE @ ₹${peLtp}\n` +
+        `<b>${pairType} LTP:</b> <b>₹${ltpVal.toFixed(2)}</b>\n\n` +
+        `<b>📊 Indicators (${tfStr}):</b>\n` +
+        `• <b>MACD (12, 26):</b> ${macdSign}${macdVal.toFixed(4)}\n` +
+        `  (12 EMA: ${straddleData.macdFastEma != null ? Number(straddleData.macdFastEma).toFixed(2) : '—'} | 26 EMA: ${straddleData.macdSlowEma != null ? Number(straddleData.macdSlowEma).toFixed(2) : '—'})\n` +
+        `• <b>200 EMA:</b> ₹${emaVal != null ? emaVal.toFixed(2) : '—'}${emaDiffText}\n\n` +
+        `<b>Rule:</b> ${condition}\n` +
+        `<b>Time:</b> ${nowStr} IST\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `<i>Straddle & Strangle Signal Scanner</i>`;
+
+      const result = await sendTelegramMessage(botToken, chatId, msg);
+      if (!result.ok) {
+        return json(res, 400, { error: `Telegram error: ${result.description || 'Failed to send alert'}` });
+      }
+      return json(res, 200, { ok: true, message: `${pairType} ${alertLevel}★ alert for ${underlying} sent to Telegram!` });
+    } catch (err) {
+      return json(res, 500, { error: err.message || 'Failed to send alert to Telegram' });
+    }
+  }
   if (req.method === 'GET' && (url.pathname === '/lightweight-charts.js' || url.pathname === '/lightweight-charts.standalone.production.js')) {
     const lwPath = path.join(ROOT, 'node_modules', 'lightweight-charts', 'dist', 'lightweight-charts.standalone.production.js');
     if (fs.existsSync(lwPath)) {
