@@ -949,9 +949,11 @@ async function triggerTelegramTest(mode = 'test', btnId) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    const data = await res.json();
+    const text = await res.text();
+    let data = {};
+    try { data = JSON.parse(text); } catch { throw new Error(text || 'Failed to send message'); }
     if (!res.ok) throw new Error(data.error || 'Failed to send');
-    if (msgEl) msgEl.textContent = data.message || 'Telegram test message delivered!';
+    if (msgEl) msgEl.textContent = data.message || 'Telegram message delivered!';
     toast(data.message || 'Telegram delivered!');
   } catch (err) {
     if (msgEl) msgEl.textContent = err.message;
