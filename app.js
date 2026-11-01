@@ -909,6 +909,9 @@ function setupTelegramAlertToggles() {
     const onToggle = async (sourceEl, targetEl) => {
       if (!sourceEl) return;
       if (targetEl) targetEl.checked = sourceEl.checked;
+      // Immediately filter and update the alerts table on screen!
+      renderAlerts(true);
+
       const fb = byId('liveAlertTgFeedback');
       if (fb) {
         fb.textContent = 'Saving…';
