@@ -1416,7 +1416,41 @@ function setupEventListeners() {
   });
 
   byId('testTelegramBtn')?.addEventListener('click', () => triggerTelegramTest('test', 'testTelegramBtn'));
-  byId('testTelegramAlertBtn')?.addEventListener('click', () => triggerTelegramTest('sampleFive', 'testTelegramAlertBtn'));
+  byId('testStraddleFiveBtn')?.addEventListener('click', () => triggerTelegramTest('sampleStraddleFive', 'testStraddleFiveBtn'));
+  byId('testStraddleThreeBtn')?.addEventListener('click', () => triggerTelegramTest('sampleStraddleThree', 'testStraddleThreeBtn'));
+  byId('testStrangleFiveBtn')?.addEventListener('click', () => triggerTelegramTest('sampleStrangleFive', 'testStrangleFiveBtn'));
+  byId('testStrangleThreeBtn')?.addEventListener('click', () => triggerTelegramTest('sampleStrangleThree', 'testStrangleThreeBtn'));
+  byId('testTelegramAlertBtn')?.addEventListener('click', () => triggerTelegramTest('sampleStraddleFive', 'testTelegramAlertBtn'));
+
+  // Live Alerts table: Click delegation to send a specific alert to Telegram
+  byId('alertRows')?.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.btn-send-tg');
+    if (!btn) return;
+    const symbol = btn.dataset.sendTg;
+    const alertLevel = btn.dataset.alertLevel ? Number(btn.dataset.alertLevel) : 5;
+    if (!symbol) return;
+    btn.disabled = true;
+    const oldText = btn.innerHTML;
+    btn.innerHTML = '<span>⏳</span> Sending…';
+    try {
+      const res = await fetch('/api/telegram/send-alert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol, alertLevel, ...telegramSettingsPayload() })
+      });
+      const text = await res.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch { throw new Error(text || 'Failed to dispatch alert'); }
+      if (!res.ok) throw new Error(data.error || 'Failed to send alert');
+      toast(data.message || 'Alert dispatched to Telegram!');
+      btn.innerHTML = '<span>✓</span> Sent!';
+      setTimeout(() => { btn.innerHTML = oldText; btn.disabled = false; }, 2500);
+    } catch (err) {
+      toast(err.message);
+      btn.innerHTML = oldText;
+      btn.disabled = false;
+    }
+  });
 
   // EOD Excel / CSV downloads
   byId('btnDownloadExcel')?.addEventListener('click', () => {
@@ -1426,23 +1460,35 @@ function setupEventListeners() {
     window.location.href = '/api/reports/download?format=csv';
   });
   byId('btnSendTelegramReport')?.addEventListener('click', async () => {
+    const btn = byId('btnSendTelegramReport');
+    if (btn) btn.disabled = true;
     try {
       const res = await fetch('/api/reports/dispatch-telegram', { method: 'POST' });
-      const data = await res.json();
+      const text = await res.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch { throw new Error(text || 'Dispatch failed'); }
       if (!res.ok) throw new Error(data.error || 'Dispatch failed');
       toast(data.message || 'Report sent to Telegram!');
     } catch (err) {
       toast(err.message);
+    } finally {
+      if (btn) btn.disabled = false;
     }
   });
   byId('sendEodTelegramNowBtn')?.addEventListener('click', async () => {
+    const btn = byId('sendEodTelegramNowBtn');
+    if (btn) btn.disabled = true;
     try {
       const res = await fetch('/api/reports/dispatch-telegram', { method: 'POST' });
-      const data = await res.json();
+      const text = await res.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch { throw new Error(text || 'Dispatch failed'); }
       if (!res.ok) throw new Error(data.error || 'Dispatch failed');
       toast(data.message || 'Report sent to Telegram!');
     } catch (err) {
       toast(err.message);
+    } finally {
+      if (btn) btn.disabled = false;
     }
   });
 
