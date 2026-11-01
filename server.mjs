@@ -2220,7 +2220,7 @@ const server = http.createServer(async (req, res) => {
       }
 
       const symbol = String(incoming.symbol || '').trim();
-      const c = watchlist.find(w => w.symbol === symbol) || watchlist.find(w => (w.underlying || w.symbol) === symbol);
+      const c = config.contracts.find(w => w.symbol === symbol) || config.contracts.find(w => (w.underlying || w.symbol) === symbol);
       if (!c) {
         return json(res, 404, { error: `Contract '${symbol}' not found in watchlist.` });
       }
