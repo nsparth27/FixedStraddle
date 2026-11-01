@@ -1071,20 +1071,22 @@ async function refreshState() {
       if (byId('telegramBotToken') && !byId('telegramBotToken').value) byId('telegramBotToken').value = data.settings.telegramBotToken || '';
       if (byId('telegramChatId') && !byId('telegramChatId').value) byId('telegramChatId').value = data.settings.telegramChatId || '';
 
-      const s5 = Boolean(data.settings.telegramStraddleFive ?? data.settings.telegramAlertFive ?? true);
-      const s3 = Boolean(data.settings.telegramStraddleThree ?? data.settings.telegramAlertThree ?? true);
-      const g5 = Boolean(data.settings.telegramStrangleFive ?? data.settings.telegramAlertFive ?? true);
-      const g3 = Boolean(data.settings.telegramStrangleThree ?? data.settings.telegramAlertThree ?? true);
+      if (!window._isSavingTelegramSettings) {
+        const s5 = data.settings.telegramStraddleFive !== undefined ? Boolean(data.settings.telegramStraddleFive) : true;
+        const s3 = data.settings.telegramStraddleThree !== undefined ? Boolean(data.settings.telegramStraddleThree) : true;
+        const g5 = data.settings.telegramStrangleFive !== undefined ? Boolean(data.settings.telegramStrangleFive) : true;
+        const g3 = data.settings.telegramStrangleThree !== undefined ? Boolean(data.settings.telegramStrangleThree) : true;
 
-      if (byId('liveAlertStraddleFive')) byId('liveAlertStraddleFive').checked = s5;
-      if (byId('liveAlertStraddleThree')) byId('liveAlertStraddleThree').checked = s3;
-      if (byId('liveAlertStrangleFive')) byId('liveAlertStrangleFive').checked = g5;
-      if (byId('liveAlertStrangleThree')) byId('liveAlertStrangleThree').checked = g3;
+        if (byId('liveAlertStraddleFive')) byId('liveAlertStraddleFive').checked = s5;
+        if (byId('liveAlertStraddleThree')) byId('liveAlertStraddleThree').checked = s3;
+        if (byId('liveAlertStrangleFive')) byId('liveAlertStrangleFive').checked = g5;
+        if (byId('liveAlertStrangleThree')) byId('liveAlertStrangleThree').checked = g3;
 
-      if (byId('telegramStraddleFive')) byId('telegramStraddleFive').checked = s5;
-      if (byId('telegramStraddleThree')) byId('telegramStraddleThree').checked = s3;
-      if (byId('telegramStrangleFive')) byId('telegramStrangleFive').checked = g5;
-      if (byId('telegramStrangleThree')) byId('telegramStrangleThree').checked = g3;
+        if (byId('telegramStraddleFive')) byId('telegramStraddleFive').checked = s5;
+        if (byId('telegramStraddleThree')) byId('telegramStraddleThree').checked = s3;
+        if (byId('telegramStrangleFive')) byId('telegramStrangleFive').checked = g5;
+        if (byId('telegramStrangleThree')) byId('telegramStrangleThree').checked = g3;
+      }
 
       if (byId('eodTelegramReport')) byId('eodTelegramReport').checked = Boolean(data.settings.eodTelegramReport ?? true);
     }
