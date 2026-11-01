@@ -1031,10 +1031,10 @@ async function sendTelegramDocument(botToken, chatId, filePath, caption) {
 }
 
 async function sendEodTelegramReport(targetDate, report) {
-  if (!settings.telegramEnabled) return;
+  if (!settings.telegramEnabled) throw new Error('Telegram alerts are disabled in settings.');
   const botToken = String(settings.telegramBotToken || '').trim();
   const chatId = String(settings.telegramChatId || '').trim();
-  if (!botToken || !chatId) return;
+  if (!botToken || !chatId) throw new Error('Telegram Bot Token or Chat ID is not configured.');
 
   const caption = `📊 <b>END-OF-DAY STRADDLE ALERT REPORT</b>\n` +
     `━━━━━━━━━━━━━━━━━━━━\n` +
@@ -1050,9 +1050,12 @@ async function sendEodTelegramReport(targetDate, report) {
   const docRes = await sendTelegramDocument(botToken, chatId, report.xlsxPath, caption);
   if (!docRes.ok) {
     console.warn('sendTelegramDocument failed, falling back to text message:', docRes.description);
-    await sendTelegramMessage(botToken, chatId, caption);
+    const textRes = await sendTelegramMessage(botToken, chatId, caption);
+    if (!textRes.ok) throw new Error(`Telegram error: ${textRes.description || 'Failed to send message'}`);
+    return { ok: true, type: 'text', alertCount: report.alertCount };
   } else {
     console.log(`EOD Excel document sent to Telegram for ${targetDate}`);
+    return { ok: true, type: 'document', alertCount: report.alertCount };
   }
 }
 
