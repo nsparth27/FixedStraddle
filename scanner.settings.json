@@ -20,5 +20,9 @@
   "dhanTotpSecret": "",
   "autoTotpRefresh": true,
   "eodTelegramReport": true,
-  "dhanAccessToken": ""
+  "dhanAccessToken": "",
+  "telegramStraddleThree": true,
+  "telegramStraddleFive": true,
+  "telegramStrangleThree": true,
+  "telegramStrangleFive": true
 }
