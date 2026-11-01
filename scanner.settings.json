@@ -21,7 +21,7 @@
   "autoTotpRefresh": true,
   "eodTelegramReport": true,
   "dhanAccessToken": "",
-  "telegramStraddleThree": true,
+  "telegramStraddleThree": false,
   "telegramStraddleFive": true,
   "telegramStrangleThree": true,
   "telegramStrangleFive": true
