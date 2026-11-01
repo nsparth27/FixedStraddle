@@ -675,8 +675,12 @@
               <div class="credential-actions" style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
                 <button class="save-btn" id="saveTelegramSettings" type="button">Save Telegram settings</button>
                 <button class="secondary-btn" id="testTelegramBtn" type="button" title="Send a quick connectivity test">Send Test Message</button>
-                <button class="secondary-btn" id="testTelegramAlertBtn" type="button" title="Send a sample formatted 5-star alert">Send Sample 5★ Alert</button>
+                <button class="secondary-btn" id="testStraddleFiveBtn" type="button" title="Send sample 5-star Straddle alert">Straddle 5★ Sample</button>
+                <button class="secondary-btn" id="testStraddleThreeBtn" type="button" title="Send sample 3-star Straddle alert">Straddle 3★ Sample</button>
+                <button class="secondary-btn" id="testStrangleFiveBtn" type="button" title="Send sample 5-star Strangle alert">Strangle 5★ Sample</button>
+                <button class="secondary-btn" id="testStrangleThreeBtn" type="button" title="Send sample 3-star Strangle alert">Strangle 3★ Sample</button>
                 <button class="secondary-btn" id="sendEodTelegramNowBtn" type="button" title="Send today's End-of-Day Excel report to Telegram now">Send EOD Excel to Telegram Now</button>
+                <button id="testTelegramAlertBtn" type="button" style="display:none" aria-hidden="true"></button>
               </div>
               <div class="credential-state" id="telegramMessage" role="status">Configure your Bot Token and Chat ID to start receiving live straddle alerts.</div>
             </section>
